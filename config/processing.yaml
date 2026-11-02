@@ -23,8 +23,7 @@ curvecurator:
 # fit_curves: the revision pins the pipeline's container and so the drevalpy and curve-curator
 # versions. backend (overridable with DATA_CURATION_BACKEND) only picks the Nextflow executor
 # config config/nextflow/<backend>.config and max_curves_per_job only how curves are cut into
-# tasks; neither changes a fit, so neither is a DVC param. DATA_CURATION_PIPELINE runs a local
-# checkout of the pipeline instead.
+# tasks; neither changes a fit, so neither is a DVC param.
 execution:
   backend: local
   pipeline: "drevalpy/curate"

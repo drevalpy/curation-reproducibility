@@ -12,6 +12,7 @@ import pandas as pd
 import pytest
 from upath import UPath
 
+from data_curation.core import config
 from data_curation.core.errors import CurationError
 from data_curation.response import pipeline
 from data_curation.response.pipeline import (
@@ -27,7 +28,6 @@ from data_curation.response.pipeline import (
 
 OPTIONS = FitOptions(min_doses=4, fit_speed="fast", max_chunk_size=7)
 EXECUTION = {"backend": "local", "pipeline": "drevalpy/curate", "revision": "abc123"}
-LOCAL_PIPELINE = UPath(os.environ.get("DREVALPY_CURATE_CHECKOUT", "../curate"))
 REPO_CONFIG_DIR = NEXTFLOW_CONFIG_DIR.absolute()
 
 
@@ -63,6 +63,12 @@ def repo(tmp_dir: UPath, monkeypatch) -> UPath:
     return tmp_dir
 
 
+@pytest.fixture
+def pinned_execution() -> dict:
+    """The real ``execution`` block, read before ``repo`` leaves the repository root."""
+    return config.processing_config("execution")
+
+
 def _fake_nextflow(directory: UPath, body: str) -> str:
     """Write an executable ``nextflow`` shell script into *directory* and return a PATH for it."""
     directory.mkdir(parents=True, exist_ok=True)
@@ -94,28 +100,15 @@ class TestBackendName:
 
 
 class TestPipelineSource:
-    def test_a_remote_pipeline_is_pinned_to_its_revision(self) -> None:
-        assert pipeline_source(EXECUTION, {}) == ("drevalpy/curate", "abc123")
+    def test_the_pipeline_is_pinned_to_its_revision(self) -> None:
+        assert pipeline_source(EXECUTION) == ("drevalpy/curate", "abc123")
 
     def test_the_default_pipeline_is_drevalpy_curate(self) -> None:
-        assert pipeline_source({}, {}) == ("drevalpy/curate", None)
+        assert pipeline_source({"revision": "abc123"}) == ("drevalpy/curate", "abc123")
 
-    def test_a_local_checkout_overrides_it_without_a_revision(self, tmp_dir: UPath) -> None:
-        source, revision = pipeline_source(EXECUTION, {"DATA_CURATION_PIPELINE": str(tmp_dir)})
-
-        assert (source, revision) == (str(tmp_dir), None)
-
-    def test_a_relative_checkout_becomes_absolute(self, tmp_dir: UPath, monkeypatch) -> None:
-        (tmp_dir / "curate").mkdir()
-        monkeypatch.chdir(tmp_dir)
-
-        source, revision = pipeline_source(EXECUTION, {"DATA_CURATION_PIPELINE": "./curate"})
-
-        assert UPath(source) == (tmp_dir / "curate").absolute()
-        assert revision is None
-
-    def test_a_local_path_in_the_config_is_not_pinned(self, tmp_dir: UPath) -> None:
-        assert pipeline_source({**EXECUTION, "pipeline": str(tmp_dir)}, {}) == (str(tmp_dir), None)
+    def test_a_missing_revision_is_refused(self) -> None:
+        with pytest.raises(CurationError, match="execution.revision"):
+            pipeline_source({"pipeline": "drevalpy/curate"})
 
 
 class TestWellMetadata:
@@ -132,7 +125,7 @@ class TestWellMetadata:
 
 class TestNextflowCommand:
     def _command(
-        self, revision: str | None = "abc123", *, normalize: bool = False, metadata: list[str] | None = None
+        self, revision: str = "abc123", *, normalize: bool = False, metadata: list[str] | None = None
     ) -> list[str]:
         return nextflow_command(
             "/bin/nextflow",
@@ -149,7 +142,7 @@ class TestNextflowCommand:
     def test_it_passes_the_config_inputs_and_fit_options_and_resumes(self) -> None:
         cmd = self._command("abc123")
 
-        assert cmd[:5] == ["/bin/nextflow", "run", "drevalpy/curate", "-r", "abc123"]
+        assert cmd[:6] == ["/bin/nextflow", "run", "drevalpy/curate", "-r", "abc123", "-latest"]
         assert cmd[cmd.index("-c") + 1] == "/c/local.config"
         assert cmd[cmd.index("--input") + 1] == "/d/wells.parquet"
         assert cmd[cmd.index("--outdir") + 1] == "/l/results"
@@ -158,9 +151,6 @@ class TestNextflowCommand:
         assert cmd[cmd.index("--fit_speed") + 1] == "fast"
         assert cmd[cmd.index("--max_chunk_size") + 1] == "7"
         assert cmd[-1] == "-resume"
-
-    def test_no_revision_passes_no_r(self) -> None:
-        assert "-r" not in self._command(None)
 
     def test_normalize_and_metadata_are_passed_only_when_set(self) -> None:
         plain = self._command()
@@ -239,18 +229,18 @@ def _docker_is_running() -> bool:
 
 @pytest.mark.slow
 @pytest.mark.skipif(
-    shutil.which("nextflow") is None or not _docker_is_running() or not LOCAL_PIPELINE.is_dir(),
-    reason="needs nextflow, a running Docker daemon and a drevalpy/curate checkout (DREVALPY_CURATE_CHECKOUT)",
+    shutil.which("nextflow") is None or not _docker_is_running(),
+    reason="needs nextflow and a running Docker daemon",
 )
-def test_the_local_pipeline_fits_a_tiny_screen(repo: UPath) -> None:
+def test_the_pinned_pipeline_fits_a_tiny_screen(pinned_execution: dict, repo: UPath) -> None:
     _wells(n_pairs=2).to_parquet(str(repo / "data" / "04_response" / "wells" / "TOY.parquet"))
-    environ = {**os.environ, "DATA_CURATION_PIPELINE": str(LOCAL_PIPELINE), "DATA_CURATION_BACKEND": "local"}
+    environ = {**os.environ, "DATA_CURATION_BACKEND": "local"}
 
     output = fit_dataset(
         "TOY",
         normalize=False,
         options=FitOptions(min_doses=4, fit_speed="fast", max_chunk_size=1),
-        execution=EXECUTION,
+        execution=pinned_execution,
         environ=environ,
     )
 

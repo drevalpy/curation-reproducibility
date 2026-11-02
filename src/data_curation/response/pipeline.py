@@ -9,9 +9,9 @@ Two settings come from the ``execution`` block of ``config/processing.yaml``:
 - the **executor**, ``execution.backend`` (``local``, ``slurm`` or ``aws_batch``, overridable
   with ``DATA_CURATION_BACKEND``), which selects ``config/nextflow/<backend>.config``. It decides
   where tasks run, never what they fit, so it is not a DVC param.
-- the **pipeline**, ``execution.pipeline`` at ``execution.revision`` (a DVC param: the revision
-  pins the container and with it the fitting libraries). ``DATA_CURATION_PIPELINE`` replaces it
-  with a local checkout, which Nextflow runs as it is, so ``-r`` is only passed for a remote one.
+- the **pipeline**, ``execution.pipeline`` at ``execution.revision``, run as
+  ``nextflow run <pipeline> -r <revision>`` (DVC params: the revision pins the container and with
+  it the fitting libraries).
 
 Every dataset is launched from its own directory (:func:`data_curation.core.layout.nextflow_launch_dir`),
 which keeps its Nextflow history and work directory, so ``-resume`` reuses its fitted chunks.
@@ -35,7 +35,6 @@ from data_curation.response.prepare.wells import metadata_columns
 logger = logging.getLogger(__name__)
 
 BACKEND_ENV_VAR = "DATA_CURATION_BACKEND"
-PIPELINE_ENV_VAR = "DATA_CURATION_PIPELINE"
 BACKEND_NAMES = ("local", "slurm", "aws_batch")
 NEXTFLOW_CONFIG_DIR = UPath("config/nextflow")
 DEFAULT_PIPELINE = "drevalpy/curate"
@@ -76,22 +75,23 @@ def backend_name(execution: Mapping[str, Any], environ: Mapping[str, str]) -> st
     return name
 
 
-def pipeline_source(execution: Mapping[str, Any], environ: Mapping[str, str]) -> tuple[str, str | None]:
-    """The pipeline to run and the revision to pass with ``-r``.
+def pipeline_source(execution: Mapping[str, Any]) -> tuple[str, str]:
+    """The pipeline to run and the revision it is pinned to.
 
     Args:
         execution: The ``execution`` block of ``config/processing.yaml``.
-        environ: Environment to read ``DATA_CURATION_PIPELINE`` from.
 
     Returns:
-        The pipeline (a remote name, or a local checkout as an absolute path) and its revision,
-        which is None for a local checkout: Nextflow runs that as it is.
+        ``execution.pipeline`` (default ``drevalpy/curate``) and ``execution.revision``.
+
+    Raises:
+        CurationError: If no revision is set.
     """
-    source = environ.get(PIPELINE_ENV_VAR) or execution.get("pipeline", DEFAULT_PIPELINE)
-    local = UPath(source).expanduser()
-    if source.startswith(("/", ".", "~")) or local.is_dir():
-        return str(local.absolute()), None
-    return source, execution.get("revision")
+    revision = execution.get("revision")
+    if not revision:
+        msg = "execution.revision is not set; pin the pipeline to a commit of drevalpy/curate"
+        raise CurationError(msg)
+    return execution.get("pipeline", DEFAULT_PIPELINE), str(revision)
 
 
 def well_metadata(wells: UPath) -> list[str]:
@@ -109,7 +109,7 @@ def well_metadata(wells: UPath) -> list[str]:
 def nextflow_command(
     nextflow: str,
     pipeline: str,
-    revision: str | None,
+    revision: str,
     *,
     config: UPath,
     wells: UPath,
@@ -122,8 +122,8 @@ def nextflow_command(
 
     Args:
         nextflow: Path of the ``nextflow`` executable.
-        pipeline: Remote pipeline name or local checkout.
-        revision: Revision to pass with ``-r``, or None to pass none.
+        pipeline: Pipeline name, e.g. ``drevalpy/curate``.
+        revision: Commit to pass with ``-r``; ``-latest`` fetches it if the local clone lacks it.
         config: Executor config passed with ``-c``.
         wells: The well table (``--input``).
         normalize: Whether the pipeline normalizes the wells before fitting (``--normalize``).
@@ -134,14 +134,15 @@ def nextflow_command(
     Returns:
         The argv, ending in ``-resume``.
     """
-    revision_args = ["-r", revision] if revision else []
     normalize_args = ["--normalize"] if normalize else []
     metadata_args = ["--metadata", ",".join(metadata)] if metadata else []
     return [
         nextflow,
         "run",
         pipeline,
-        *revision_args,
+        "-r",
+        revision,
+        "-latest",
         "-c",
         str(config),
         "-ansi-log",
@@ -178,14 +179,14 @@ def fit_dataset(
         normalize: Whether the pipeline normalizes the wells before fitting.
         options: The fit parameters.
         execution: The ``execution`` block of ``config/processing.yaml``.
-        environ: Environment for the overrides and for Nextflow; defaults to ``os.environ``.
+        environ: Environment for the backend override and for Nextflow; defaults to ``os.environ``.
 
     Returns:
         The written curve file, :func:`data_curation.core.layout.curves`.
 
     Raises:
-        CurationError: If ``nextflow`` is not on the ``PATH``, the executor config is missing or
-            the pipeline fails.
+        CurationError: If ``nextflow`` is not on the ``PATH``, the executor config or the revision
+            is missing, or the pipeline fails.
     """
     env = dict(os.environ if environ is None else environ)
     nextflow = shutil.which("nextflow", path=env.get("PATH"))
@@ -197,7 +198,7 @@ def fit_dataset(
     if not config.is_file():
         msg = f"No Nextflow config {config} for execution backend {backend!r}"
         raise CurationError(msg)
-    pipeline, revision = pipeline_source(execution, env)
+    pipeline, revision = pipeline_source(execution)
 
     launch_dir = layout.nextflow_launch_dir(dataset).absolute()
     launch_dir.mkdir(parents=True, exist_ok=True)
@@ -215,7 +216,7 @@ def fit_dataset(
         options=options,
     )
 
-    logger.info("Running %s on %s from %s", pipeline, backend, launch_dir)
+    logger.info("Running %s at %s on %s from %s", pipeline, revision, backend, launch_dir)
     _run(cmd, launch_dir, env)
 
     produced = outdir / "curves.h5ad"

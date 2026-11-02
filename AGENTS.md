@@ -48,8 +48,8 @@ uv run --frozen prek run --all-files         # all of the above plus file hygien
 - The Nextflow executor is a deployment choice (`execution.backend`, env `DATA_CURATION_BACKEND`, selecting
   `config/nextflow/<backend>.config`) and must never become a DVC dep or param; neither may
   `execution.max_curves_per_job`. The pipeline source and revision (`execution.pipeline`, `execution.revision`)
-  are params of `fit_curves`: the revision pins the container and so the fitting libraries. Env
-  `DATA_CURATION_PIPELINE` runs a local checkout of the pipeline instead.
+  are params of `fit_curves`: the revision pins the container and so the fitting libraries. To test a
+  pipeline change, push it to drevalpy/curate and pin its commit; there is no local-checkout override.
 
 ## DVC rules
 
