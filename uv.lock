@@ -913,7 +913,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "anndata" },
-    { name = "drevalpy", extras = ["cpu"], git = "https://github.com/daisybio/drevalpy.git?rev=81437c08be220eb7d1d5282d46be1a07652a3ac9" },
+    { name = "drevalpy", extras = ["cpu"], git = "https://github.com/daisybio/drevalpy.git?rev=a8b969af2ee1de06c08cd85e460e9bcf53c08a74" },
     { name = "dvc-s3", specifier = ">=3.3.0" },
     { name = "joblib" },
     { name = "marimo", specifier = ">=0.24.0" },
@@ -1024,7 +1024,7 @@ wheels = [
 [[package]]
 name = "drevalpy"
 version = "2.0.0"
-source = { git = "https://github.com/daisybio/drevalpy.git?rev=81437c08be220eb7d1d5282d46be1a07652a3ac9#81437c08be220eb7d1d5282d46be1a07652a3ac9" }
+source = { git = "https://github.com/daisybio/drevalpy.git?rev=a8b969af2ee1de06c08cd85e460e9bcf53c08a74#a8b969af2ee1de06c08cd85e460e9bcf53c08a74" }
 dependencies = [
     { name = "anndata" },
     { name = "curve-curator" },

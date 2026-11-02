@@ -64,7 +64,7 @@ markers = [
 exclude-newer = "3 weeks"
 
 [tool.uv.sources]
-drevalpy = { git = "https://github.com/daisybio/drevalpy.git", rev = "81437c08be220eb7d1d5282d46be1a07652a3ac9" }
+drevalpy = { git = "https://github.com/daisybio/drevalpy.git", rev = "a8b969af2ee1de06c08cd85e460e9bcf53c08a74" }
 
 [tool.ruff]
 target-version = "py312"

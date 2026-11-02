@@ -27,7 +27,7 @@ curvecurator:
 execution:
   backend: local
   pipeline: "drevalpy/curate"
-  revision: "2a4ab2e15483473a97ede8bdcd11ae487b789b7c"
+  revision: "74c0089c5e205f8768b40f5e9f26635c733d0854"
   max_curves_per_job: 1000
 
 pubchem:
