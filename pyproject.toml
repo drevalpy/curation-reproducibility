@@ -1,0 +1,105 @@
+[project]
+name = "data-curation"
+version = "0.1.0"
+description = "Dataset curation pipeline for drug response evaluation"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "anndata",
+    "drevalpy[cpu]",
+    "dvc-s3>=3.3.0",
+    "joblib",
+    "marimo>=0.24.0",
+    "mudata",
+    "plotly",
+    "openpyxl",
+    "pooch",
+    "pubchempy",
+    "pyarrow",
+    "pyyaml",
+    "rdkit>=2026.3",
+    "rich",
+    "typer",
+    "universal-pathlib",
+    # The Barretina 2012 CCLE supplement is a legacy .xls, which pandas can only
+    # read through xlrd; openpyxl handles the .xlsx sources.
+    "xlrd",
+    "upsetplot>=0.9.0",
+]
+
+[project.scripts]
+data-curation = "data_curation.cli:app"
+
+[build-system]
+requires = ["uv_build>=0.12.3,<0.13.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "dvc>=3.67.1",
+    "ruff>=0.15.8",
+    "ty",
+    "prek",
+    "complexipy",
+    "commitizen",
+    "pytest>=8",
+]
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+testpaths = ["tests"]
+pythonpath = ["tests"]
+addopts = [
+    "--import-mode=importlib",
+    "--strict-markers",
+    "--strict-config",
+    "-ra",
+]
+xfail_strict = true
+markers = [
+    "slow: runs external tools such as Nextflow and Docker (deselect with -m 'not slow')",
+]
+
+[tool.uv]
+exclude-newer = "3 weeks"
+
+[tool.uv.sources]
+drevalpy = { git = "https://github.com/daisybio/drevalpy.git", rev = "81437c08be220eb7d1d5282d46be1a07652a3ac9" }
+
+[tool.ruff]
+target-version = "py312"
+line-length = 120
+
+[tool.ruff.lint]
+select = [
+    "E", "F", "W",
+    "I",
+    "UP",
+    "B",
+    "S",
+    "D",
+    "N",
+    "C90",
+]
+ignore = []
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S101", "D101", "D102", "D103"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.mccabe]
+max-complexity = 10
+
+[tool.ruff.format]
+docstring-code-format = true
+
+[tool.ty.environment]
+python-version = "3.12"
+
+[tool.complexipy]
+max-complexity-allowed = 15
+
+[tool.commitizen]
+name = "cz_conventional_commits"

@@ -1,0 +1,62 @@
+# Dataset lists for DVC foreach expansion only.
+# Nothing under src/ reads this file. Per-dataset URLs, hashes and
+# processing knobs live in config/sources.yaml and config/processing.yaml;
+# dvc.yaml tracks those via file-scoped params: blocks.
+
+# Datasets whose omics all come from the shared Cell Model Passports downloads
+# (`omics_source: cell_model_passports` in config/sources.yaml) and so have the
+# full omics complement: transcriptomics, mutations, cnv and proteomics.
+cmp_datasets:
+  - CCLE
+  - CTRPv1
+  - CTRPv2
+  - GDSC1
+  - GDSC2
+
+# Datasets with their own transcriptomics download (not Cell Model Passports).
+transcriptomics_datasets:
+  - PDX_Bruna
+  - BeatAML2
+  - PRISM_19Q4
+  - PRISM_20Q2
+
+# Datasets whose only omics modality is transcriptomics. DVC cannot interpolate a
+# whole list into `deps`, so datasets with a different modality set need their
+# own stage group.
+assembly_datasets_rna_only:
+  - PDX_Bruna
+  - BeatAML2
+  - PRISM_19Q4
+  - PRISM_20Q2
+
+# rna-only datasets whose sample metadata (cell lines) comes from the shared CMP table.
+prism_datasets:
+  - PRISM_19Q4
+  - PRISM_20Q2
+
+# Datasets without Cell Model Passports entries; tissue is a per-dataset
+# constant (datasets.<name>.tissue in config/sources.yaml).
+constant_tissue_datasets:
+  - PDX_Bruna
+  - BeatAML2
+
+# Response datasets mapped by `drugs map`; the PRISM releases have their own stages (map_drugs_PRISM_*).
+drug_mapping_datasets:
+  - CCLE
+  - CTRPv1
+  - CTRPv2
+  - GDSC1
+  - GDSC2
+  - PDX_Bruna
+  - BeatAML2
+
+response_datasets:
+  - CCLE
+  - CTRPv1
+  - CTRPv2
+  - GDSC1
+  - GDSC2
+  - PDX_Bruna
+  - BeatAML2
+  - PRISM_19Q4
+  - PRISM_20Q2

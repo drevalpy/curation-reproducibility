@@ -1,0 +1,268 @@
+# Cellosaurus release 56.0 (25-June-2026), 168,970 records, CC BY 4.0.
+# Pinned so the cell-line quality flags and the name-resolution fallback are
+# reproducible: the upstream URL is unversioned and serves the latest release.
+cellosaurus:
+  url: "https://ftp.expasy.org/databases/cellosaurus/cellosaurus.txt"
+  known_hash: "sha256:b225da548b65e8db10597759bc152c78b1b9d23e123494744510d7569cf4ab3b"
+
+# Public drug classification sources used to annotate screened compounds.
+# All URLs are pinned to a specific release so annotations are reproducible.
+#   Probes & Drugs  release 01.2026, CC BY-SA 4.0
+#   ChEBI           release 252,     CC BY 4.0
+#   NCI Thesaurus   release 26.07d,  CC BY 4.0
+drug_ontology:
+  files:
+    - url: "https://www.probes-drugs.org/media/download/compounds/pd_export_01_2026_compounds_standardized.csv"
+      fname: "pd_compounds.csv"
+      known_hash: "sha256:2f2f4f027b04e19558b7ee712695bd950b14d731f2c15301f1e4ee8ae7af14fe"
+    - url: "https://www.probes-drugs.org/media/download/targets/pd_export_01_2026_targets_standardized.csv"
+      fname: "pd_targets.csv"
+      known_hash: "sha256:e1091fc62329b87dab30618742e568a610a13168d0ce9ed735313835daecb0a1"
+    - url: "https://ftp.ebi.ac.uk/pub/databases/chebi/archive/rel252/flat_files/compounds.tsv.gz"
+      fname: "chebi_compounds.tsv.gz"
+      known_hash: "sha256:c857b1519415bfcedfff47dab6dda0a8a63f29fcdf5ab03cce69ffcd696a5660"
+    - url: "https://ftp.ebi.ac.uk/pub/databases/chebi/archive/rel252/flat_files/relation.tsv.gz"
+      fname: "chebi_relation.tsv.gz"
+      known_hash: "sha256:a06c8e84da44fcae42b1dbb727cd2aff351cc4507244fbc4b33dbb9b1387fe97"
+    # The archive keeps the version in the filename; the unversioned
+    # NCI_Thesaurus/Thesaurus.FLAT.zip path always serves the latest release.
+    - url: "https://evs.nci.nih.gov/ftp1/NCI_Thesaurus/archive/26.07d_Release/Thesaurus_26.07d.FLAT.zip"
+      fname: "Thesaurus.FLAT.zip"
+      known_hash: "sha256:589f385e0b463221e909a11c0dc3f444108f8986fa2191826c4937bd21f99e67"
+  # PubChem exposes no versioned URL for its CID -> NCIt links, so the stage
+  # pages through the annotations endpoint and records the retrieval date.
+  ncit_heading: "NCI Thesaurus Code"
+
+# Cell Model Passports (CMP) downloads, declared once. Every CMP-based dataset
+# (those with `omics_source: cell_model_passports` below) reads the same files,
+# so `data-curation omics download-cmp` fetches each of them a single time into
+# data/01_raw/cmp/<kind>/ and the process stages read from there.
+# Each entry: url, known_hash (of the file at `url`, i.e. the archive for a .zip),
+# optional fname (local name) and keep (globs of extracted files the pipeline
+# reads; the rest is pruned).
+cell_model_passports:
+  model_list:
+    url: "https://cog.sanger.ac.uk/cmp/download/model_list_20260811.csv"
+    known_hash: "sha256:f3f5fb866f51d9cf6f89b92da0e9dcb21446b441e5caf8b9220b0031bbc95048"
+    fname: "model_list.csv"
+  rnaseq:
+    url: "https://cog.sanger.ac.uk/cmp/download/rnaseq_merged_20260323.zip"
+    known_hash: "sha256:d2a6acd70647cc4098a990cdedaca564c74411a87385b6f0d33e8081ce27b4c9"
+    keep:
+      - "*rsem_tpm*"
+      - "*expected_count*"
+  mutations:
+    url: "https://cog.sanger.ac.uk/cmp/download/mutations_all_20260724.zip"
+    known_hash: "sha256:66de21ce8e499cc63c98e66485c38671cd99f25bf579adc8a4b10d69e96b9b45"
+    keep:
+      - "*mutations_all*"
+  cnv:
+    url: "https://cog.sanger.ac.uk/cmp/download/cnv_20191101.zip"
+    known_hash: "sha256:d522dd74c0380077d45474e2a5d02cf6b300080d8d828659776b3f7a209e81bd"
+    keep:
+      - "*gistic*"
+  proteomics:
+    # CMP publishes no dated copy of the proteomics matrix (last modified
+    # 2025-02-11), so the URL is the unversioned "latest" one. The hash makes any
+    # upstream replacement fail the download instead of silently changing results.
+    url: "https://cog.sanger.ac.uk/cmp/download/proteomics_latest.csv.gz"
+    known_hash: "sha256:3b8032ed18bebd640b26ff20af8a4969a3963986e419d1a647ed291c0e621cca"
+    keep:
+      - "*proteomics*"
+
+datasets:
+  CCLE:
+    omics_source: cell_model_passports
+    response:
+      # Barretina et al. 2012, Nature 483:603, supplementary table S11 (sheet 11).
+      # The PMC copy (NIHMS361223-supplement-4.xlsx) sits behind a proof-of-work
+      # challenge that pooch cannot solve - every PMC route returns an HTML
+      # interstitial, and the OA package for PMC3320027 is a 404 because the
+      # article is licensed "none". Springer serves the byte-identical workbook
+      # unauthenticated, so that is the pinned source. It is a legacy .xls, hence
+      # the xlrd dependency.
+      format: "ccle"
+      normalize: false
+      files:
+        - url: "https://static-content.springer.com/esm/art%3A10.1038%2Fnature11003/MediaObjects/41586_2012_BFnature11003_MOESM90_ESM.xls"
+          fname: "barretina2012_supplementary_tables.xls"
+          known_hash: "sha256:7236116039204114ae43974fb250448d1321f7233e50014e7bc2c3ea9461c831"
+      keep:
+        - "*supplementary_tables*"
+  CTRPv1:
+    omics_source: cell_model_passports
+    response:
+      url: "https://d1hp0ufb0xxisr.cloudfront.net/CTD2/Broad/CTRPv1.0_2013_pub_Cell_154_1151.zip"
+      known_hash: "sha256:c1cfaa6923b0adb22d03a99548af1a98b19979cfdb04d30d31e43dcc063e76b3"
+      format: "ctrpv1"
+      normalize: false
+      keep:
+        - "*avg_pct_viability_data*"
+        - "*informer_set*"
+  CTRPv2:
+    omics_source: cell_model_passports
+    response:
+      url: "https://d1hp0ufb0xxisr.cloudfront.net/CTD2/Broad/CTRPv2.0_2015_ctd2_ExpandedDataset.zip"
+      known_hash: "sha256:8f62b3b5ed70cfd367cf52ce0a99884dd0a674d1a8c301474b707648689bdee3"
+      format: "ctrpv2"
+      normalize: false
+      keep:
+        - "*data.per_cpd_well*"
+        - "*meta.per_experiment*"
+        - "*meta.per_cell_line*"
+        - "*meta.per_compound*"
+  GDSC1:
+    omics_source: cell_model_passports
+    response:
+      url: "https://cog.sanger.ac.uk/cancerrxgene/GDSC_release8.5/GDSC1_public_raw_data_27Oct23.csv.zip"
+      known_hash: "sha256:8c8d9564096f09971d7fc9ebfe4c87bacf083e52d6352eaf7f53287c6d61939e"
+      compounds_url: "https://cog.sanger.ac.uk/cancerrxgene/GDSC_release8.5/screened_compounds_rel_8.5.csv"
+      compounds_hash: "sha256:d3cbb8b595980b36bf92d54af1da1dd995d2e2ce624c7cc70aacf2a754dce782"
+      fitted_url: "https://cog.sanger.ac.uk/cancerrxgene/GDSC_release8.5/GDSC1_fitted_dose_response_27Oct23.xlsx"
+      fitted_hash: "sha256:837b0686500fde75179e490de08f034abd9f882d8b0253d637bafe83e156dafd"
+      negative_control_tag: "NC-0"
+      positive_control_tag: "B"
+      format: "gdsc"
+      normalize: false
+      keep:
+        - "*public_raw_data*"
+  GDSC2:
+    omics_source: cell_model_passports
+    response:
+      url: "https://cog.sanger.ac.uk/cancerrxgene/GDSC_release8.5/GDSC2_public_raw_data_27Oct23.csv.zip"
+      known_hash: "sha256:7bc484eb0e859d58bfca30f72121cd353b26d35b28d18549464d496f3fc1bfc6"
+      compounds_url: "https://cog.sanger.ac.uk/cancerrxgene/GDSC_release8.5/screened_compounds_rel_8.5.csv"
+      compounds_hash: "sha256:d3cbb8b595980b36bf92d54af1da1dd995d2e2ce624c7cc70aacf2a754dce782"
+      fitted_url: "https://cog.sanger.ac.uk/cancerrxgene/GDSC_release8.5/GDSC2_fitted_dose_response_27Oct23.xlsx"
+      fitted_hash: "sha256:f950a7027be265f8a7a74220a27fd18cbd368485349bd8c2048e88bb1cd07560"
+      negative_control_tag: "NC-1"
+      positive_control_tag: "B"
+      format: "gdsc"
+      normalize: false
+      keep:
+        - "*public_raw_data*"
+  PDX_Bruna:
+    # Bruna et al. 2016, Cell. Breast cancer PDTX encyclopaedia (figshare 2069274, CC BY 4.0).
+    # Every model is a breast cancer PDX, and there is no Cell Model Passports
+    # entry to read a tissue from, so the label is a dataset-level constant.
+    tissue: "Breast"
+    response:
+      format: "bruna"
+      normalize: false
+      files:
+        - url: "https://ndownloader.figshare.com/files/6395832"
+          fname: "RawDataDrugsSingleAgents.txt"
+          known_hash: "sha256:d5f760b5e7354c398a9a0be63c5103ac83fd3f87cc910b14d4dc0f206bace2b9"
+        - url: "https://ndownloader.figshare.com/files/5968476"
+          fname: "DrugResponsesAUCSamples.txt"
+          known_hash: "sha256:1737c0e1dd881c5c0381d0e115ac64b4fd363a4de77c407e70b53be825c98c16"
+    transcriptomics:
+      files:
+        - url: "https://ndownloader.figshare.com/files/5968401"
+          fname: "ExpressionSamples.txt"
+          known_hash: "sha256:8efc25627103053e837739f35e866790e91e4105f2c669861542f1539ce360c1"
+      keep:
+        - "ExpressionSamples*"
+  BeatAML2:
+    # Bottomly et al. 2022, Cancer Cell. BeatAML waves 1-4.
+    # Files stored via Git LFS must be fetched from media.githubusercontent.com;
+    # the plain raw.githubusercontent.com host returns an LFS pointer instead.
+    # All specimens are AML patient samples with no Cell Model Passports entry,
+    # so the tissue label is a dataset-level constant.
+    tissue: "Haematopoietic and Lymphoid"
+    response:
+      format: "beataml"
+      normalize: true
+      files:
+        - url: "https://raw.githubusercontent.com/biodev/beataml2.0_data/main/beataml_wv1to4_raw_inhibitor_v4_dbgap.txt"
+          fname: "beataml_raw_inhibitor.txt"
+          known_hash: "sha256:02b5ee45ff758c7a401747fddb1c5129c9f681c061f0c5c4b14241691b14ae07"
+        - url: "https://media.githubusercontent.com/media/biodev/beataml2.0_data/main/beataml_probit_curve_fits_v4_dbgap.txt"
+          fname: "beataml_probit_curve_fits.txt"
+          known_hash: "sha256:d4bc5f0d91f66314107411e0f2511adc987e29df5b83d9b03df56d3d12928314"
+    transcriptomics:
+      files:
+        - url: "https://media.githubusercontent.com/media/biodev/beataml2.0_data/main/beataml_waves1to4_norm_exp_dbgap.txt"
+          fname: "beataml_norm_exp.txt"
+          known_hash: "sha256:d5745b9dbf46dba866a3c7370bb0ba73b363ecdd21e01cc1d916b4e3021e6f87"
+        - url: "https://media.githubusercontent.com/media/biodev/beataml2.0_data/main/beataml_waves1to4_counts_dbgap.txt"
+          fname: "beataml_counts.txt"
+          known_hash: "sha256:26302116e26138e980a7816303a0886a89a3c951f3ba673051a46c96a658680d"
+        - url: "https://media.githubusercontent.com/media/biodev/beataml2.0_data/main/beataml_waves1to4_sample_mapping.xlsx"
+          fname: "beataml_sample_mapping.xlsx"
+          known_hash: "sha256:5581140cedd3348ec78bed878c27aa12c9538a5fab115324b91ca56aa138f0fc"
+
+      keep:
+        - "*norm_exp*"
+        - "*counts*"
+        - "*sample_mapping*"
+  PRISM_19Q4:
+    # Corsello et al. 2019, Nature Cancer. PRISM Repurposing 19Q4 secondary screen.
+    # Secondary screen: 1,448 compounds × 489 cell lines, 8-point dose-response (10uM down).
+    # Raw replicate-level log2 fold-change values relative to DMSO, batch-corrected with ComBat.
+    # Figshare dataset doi:10.6084/m9.figshare.9393293.v4 (CC BY 4.0).
+    # Gene expression: CCLE_expression.csv from the DepMap 19Q4 Public release
+    # (doi:10.6084/m9.figshare.11384241.v3). Rows = DepMap cell line IDs, columns = genes.
+    # Tissue and other cell-line metadata come from Cell Model Passports.
+    response:
+      format: "prism"
+      normalize: false
+      files:
+        - url: "https://ndownloader.figshare.com/files/20237730"
+          fname: "secondary-screen-logfold-change.csv"
+          known_hash: "md5:75ec978029df82b128f989d25923a693"
+        - url: "https://ndownloader.figshare.com/files/20237760"
+          fname: "secondary-screen-replicate-treatment-info.csv"
+          known_hash: "md5:bd7bd6f2ab7b99abf1f2d4167f40e43a"
+        - url: "https://ndownloader.figshare.com/files/20237769"
+          fname: "secondary-screen-cell-line-info.csv"
+          known_hash: "md5:6737b4aa9fd85404fd2f0cf825b037e4"
+      keep:
+        - "*logfold-change*"
+        - "*replicate-treatment-info*"
+        - "*cell-line-info*"
+    transcriptomics:
+      files:
+        - url: "https://ndownloader.figshare.com/files/20234346"
+          fname: "CCLE_expression.csv"
+          known_hash: "md5:684862866f2b03b5597b0adcbcbad31d"
+      keep:
+        - "CCLE_expression.csv"
+  PRISM_20Q2:
+    # PRISM Repurposing 20Q2 secondary screen.
+    # Figshare dataset doi:10.6084/m9.figshare.20564034 (CC BY 4.0).
+    # Gene expression: CCLE_expression.csv from the DepMap 20Q2 Public release
+    # (doi:10.6084/m9.figshare.12280541).
+    # Tissue and other cell-line metadata come from Cell Model Passports.
+    drug_mapping:
+      # This release lists 12 compounds without name or structure (10 are 19Q4 compounds, e.g. imatinib and
+      # bortezomib; they would otherwise keep a pseudo-ID). They take both from the named release's
+      # treatment info; see drugs/map_prism.py.
+      name_fallback_from: PRISM_19Q4
+    response:
+      format: "prism"
+      normalize: false
+      files:
+        - url: "https://ndownloader.figshare.com/files/36794607"
+          fname: "secondary-screen-logfold-change.csv"
+          known_hash: "md5:51402a49933c652c7ba261db4fd076b6"
+        - url: "https://ndownloader.figshare.com/files/36794622"
+          fname: "secondary-screen-replicate-treatment-info.csv"
+          known_hash: "md5:610fa36ba5b8c12d735917a7d555f65d"
+        - url: "https://ndownloader.figshare.com/files/36794589"
+          fname: "secondary-screen-cell-line-info.csv"
+          known_hash: "md5:4c3a5fbee769e8384064a8fbe4b4ed7d"
+      keep:
+        - "*logfold-change*"
+        - "*replicate-treatment-info*"
+        - "*cell-line-info*"
+    transcriptomics:
+      files:
+        - url: "https://ndownloader.figshare.com/files/22897976"
+          fname: "CCLE_expression.csv"
+          known_hash: "md5:72ec057ef348693313c2c4eaf548a2d7"
+      keep:
+        - "CCLE_expression.csv"
+# Tiny dataset carved out of an assembled one for fast iteration. n_tissues must
+# stay above 5, because drevalpy's leave-tissue-out splitter runs
+# KFold(n_splits=5) over the unique tissues.

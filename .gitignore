@@ -1,0 +1,29 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+# Tool caches
+.pytest_cache/
+.ruff_cache/
+.complexipy_cache/
+
+# DVC outputs: the numbered step directories (see src/data_curation/core/layout.py)
+/data/0*/
+
+# Chunk-level curve fitting cache (content-addressed, auto-populated)
+/data/cache/
+
+# macOS
+.DS_Store
+
+slurm_logs/
+
+# marimo session caches, written next to a notebook whenever it runs
+__marimo__/

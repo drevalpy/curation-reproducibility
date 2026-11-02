@@ -1,0 +1,41 @@
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.15.8
+    hooks:
+      - id: ruff
+        args: [--fix]
+      - id: ruff-format
+  - repo: https://github.com/astral-sh/ty-pre-commit
+    rev: v0.0.64
+    hooks:
+      - id: ty
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-added-large-files
+      - id: check-toml
+      - id: check-yaml
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+        exclude: ^dvc\.lock$ # DVC writes empty values as "key: "
+  - repo: https://github.com/rohaquinlop/complexipy-pre-commit
+    rev: v6.2.0
+    hooks:
+      - id: complexipy
+        types_or: [python, pyi]
+  - repo: https://github.com/commitizen-tools/commitizen
+    rev: v4.17.0
+    hooks:
+      - id: commitizen
+        stages: [commit-msg]
+  - repo: local
+    hooks:
+      # The suite is deliberately data-free: every fixture is built from
+      # literals into tmp_path, so this needs neither `dvc pull` nor the
+      # network and runs in a fraction of a second.
+      - id: pytest
+        name: pytest
+        entry: uv run pytest
+        language: system
+        pass_filenames: false
+        types: [python]

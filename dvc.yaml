@@ -1,0 +1,630 @@
+# Every stage runs through the `data-curation` CLI, which is the only entry point
+# into the pipeline (see src/data_curation/cli/).
+#
+# No CLI module is listed as a dep. That layer parses arguments and configures
+# logging; it cannot change what a stage computes, so listing it would make an
+# unrelated logging tweak invalidate every stage - including the ~9 h fit_curves.
+# The deps below name only the code that actually produces each output: for every
+# stage, the import closure of its command module (core included, CLI excluded).
+# tests/cli/test_dvc_contract.py enforces that, so a new import in a stage's code
+# fails the suite until the module is listed here.
+stages:
+  download_cellosaurus:
+    cmd: uv run data-curation cell-lines download-cellosaurus
+    deps:
+      - src/data_curation/cell_lines/download_cellosaurus.py
+      - src/data_curation/core/config.py
+      - src/data_curation/core/errors.py
+      - src/data_curation/core/layout.py
+    params:
+      - config/sources.yaml:
+          - cellosaurus
+    outs:
+      - data/01_raw/mapping/cellosaurus.parquet
+
+  download_transcriptomics:
+    foreach: ${transcriptomics_datasets}
+    do:
+      cmd: uv run data-curation omics download transcriptomics ${item}
+      deps:
+        - src/data_curation/omics/download.py
+        - src/data_curation/core/config.py
+        - src/data_curation/core/download.py
+        - src/data_curation/core/errors.py
+        - src/data_curation/core/layout.py
+        - src/data_curation/omics/__init__.py
+      params:
+        - config/sources.yaml:
+            - datasets.${item}.transcriptomics
+      outs:
+        - data/01_raw/transcriptomics/${item}/
+
+  # Cell Model Passports files (model list, RNA-seq, mutations, CNV, proteomics)
+  # are identical for every CMP dataset, so they are downloaded once here and
+  # read by every CMP process stage.
+  download_cmp:
+    cmd: uv run data-curation omics download-cmp
+    deps:
+      - src/data_curation/omics/download.py
+      - src/data_curation/core/config.py
+      - src/data_curation/core/download.py
+      - src/data_curation/core/errors.py
+      - src/data_curation/core/layout.py
+      - src/data_curation/omics/__init__.py
+    params:
+      - config/sources.yaml:
+          - cell_model_passports
+    outs:
+      - data/01_raw/cmp/model_list/
+      - data/01_raw/cmp/rnaseq/
+      - data/01_raw/cmp/mutations/
+      - data/01_raw/cmp/cnv/
+      - data/01_raw/cmp/proteomics/
+
+  process_transcriptomics:
+    foreach: ${cmp_datasets}
+    do:
+      cmd: uv run data-curation omics process transcriptomics ${item}
+      deps:
+        - src/data_curation/omics/process_transcriptomics.py
+        - src/data_curation/omics/cmp_matrix.py
+        - src/data_curation/core/paths.py
+        - src/data_curation/cell_lines/sidm_mapping.py
+        - src/data_curation/cell_lines/download_model_list.py
+        - src/data_curation/core/config.py
+        - src/data_curation/core/errors.py
+        - src/data_curation/core/layout.py
+        - src/data_curation/omics/__init__.py
+        - src/data_curation/omics/transcriptomics/beataml.py
+        - src/data_curation/omics/transcriptomics/bruna.py
+        - src/data_curation/omics/transcriptomics/prism.py
+        - data/01_raw/cmp/model_list/
+        - data/01_raw/cmp/rnaseq/
+      params:
+        - config/sources.yaml:
+            - datasets.${item}.omics_source
+      outs:
+        - data/02_omics/transcriptomics/${item}.h5ad
+
+  # Datasets with no Cell Model Passports entry (PDX_Bruna, BeatAML2) use
+  # dataset-specific processors and have no model-list dependency.
+  # PRISM_19Q4 and PRISM_20Q2 use DepMap IDs resolved via the model list.
+  process_transcriptomics_rna_only:
+    foreach: ${assembly_datasets_rna_only}
+    do:
+      cmd: uv run data-curation omics process transcriptomics ${item}
+      deps:
+        - src/data_curation/omics/process_transcriptomics.py
+        - src/data_curation/omics/transcriptomics/bruna.py
+        - src/data_curation/omics/transcriptomics/beataml.py
+        - src/data_curation/omics/transcriptomics/prism.py
+        - src/data_curation/omics/data/PDX_Bruna_expression_sample_map.csv
+        - src/data_curation/core/paths.py
+        - src/data_curation/cell_lines/download_model_list.py
+        - src/data_curation/cell_lines/sidm_mapping.py
+        - src/data_curation/core/config.py
+        - src/data_curation/core/errors.py
+        - src/data_curation/core/layout.py
+        - src/data_curation/omics/__init__.py
+        - src/data_curation/omics/cmp_matrix.py
+        - data/01_raw/cmp/model_list/
+        - data/01_raw/transcriptomics/${item}/
+      params:
+        - config/sources.yaml:
+            - datasets.${item}.transcriptomics
+      outs:
+        - data/02_omics/transcriptomics/${item}.h5ad
+
+  process_mutations:
+    foreach: ${cmp_datasets}
+    do:
+      cmd: uv run data-curation omics process mutations ${item}
+      deps:
+        - src/data_curation/omics/process_mutations.py
+        - src/data_curation/cell_lines/sidm_mapping.py
+        - src/data_curation/cell_lines/download_model_list.py
+        - src/data_curation/core/layout.py
+        - src/data_curation/core/paths.py
+        - src/data_curation/omics/__init__.py
+        - data/01_raw/cmp/model_list/
+        - data/01_raw/cmp/mutations/
+      outs:
+        - data/02_omics/mutations/${item}.h5ad
+
+  process_cnv:
+    foreach: ${cmp_datasets}
+    do:
+      cmd: uv run data-curation omics process cnv ${item}
+      deps:
+        - src/data_curation/omics/process_cnv.py
+        - src/data_curation/omics/cmp_matrix.py
+        - src/data_curation/cell_lines/sidm_mapping.py
+        - src/data_curation/cell_lines/download_model_list.py
+        - src/data_curation/core/layout.py
+        - src/data_curation/core/errors.py
+        - src/data_curation/core/paths.py
+        - src/data_curation/omics/__init__.py
+        - data/01_raw/cmp/model_list/
+        - data/01_raw/cmp/cnv/
+      outs:
+        - data/02_omics/cnv/${item}.h5ad
+
+  process_proteomics:
+    foreach: ${cmp_datasets}
+    do:
+      cmd: uv run data-curation omics process proteomics ${item}
+      deps:
+        - src/data_curation/omics/process_proteomics.py
+        - src/data_curation/cell_lines/sidm_mapping.py
+        - src/data_curation/cell_lines/download_model_list.py
+        - src/data_curation/core/layout.py
+        - src/data_curation/core/errors.py
+        - src/data_curation/core/paths.py
+        - src/data_curation/omics/__init__.py
+        - data/01_raw/cmp/model_list/
+        - data/01_raw/cmp/proteomics/
+      outs:
+        - data/02_omics/proteomics/${item}.h5ad
+
+  # Global sample metadata (sample_id, tissue, cell_line_name, ...) for mdata.obs. Resolved
+  # here rather than inside a process_* stage because mdata.obs is the union of
+  # all modalities: for GDSC2 it holds 1675 cell lines while gene_expression
+  # covers 1584, so any single modality would leave holes. The table depends only
+  # on the CMP model list, so one file serves every CMP dataset, PRISM included.
+  process_sample_meta:
+    cmd: uv run data-curation cell-lines process-cmp-meta
+    deps:
+      - src/data_curation/cell_lines/process_sample_meta.py
+      - src/data_curation/cell_lines/meta.py
+      - src/data_curation/cell_lines/cellosaurus.py
+      - src/data_curation/cell_lines/download_model_list.py
+      - src/data_curation/cell_lines/sidm_mapping.py
+      - src/data_curation/core/config.py
+      - src/data_curation/core/errors.py
+      - src/data_curation/core/layout.py
+      - data/01_raw/mapping/cellosaurus.parquet
+      - data/01_raw/cmp/model_list/
+    outs:
+      - data/06_samples/metadata/cmp.parquet
+
+  # Datasets with no Cell Model Passports entry (PDX_Bruna, BeatAML2) take tissue
+  # from a per-dataset constant and their sample index from the processed
+  # modalities (the table holds sample_id and tissue only). PRISM is covered by Cell Model Passports and uses the stage above.
+  process_sample_meta_rna_only:
+    foreach: ${constant_tissue_datasets}
+    do:
+      cmd: uv run data-curation cell-lines process-meta ${item}
+      deps:
+        - src/data_curation/cell_lines/process_sample_meta.py
+        - src/data_curation/cell_lines/meta.py
+        - src/data_curation/cell_lines/cellosaurus.py
+        - src/data_curation/cell_lines/download_model_list.py
+        - src/data_curation/cell_lines/sidm_mapping.py
+        - src/data_curation/core/config.py
+        - src/data_curation/core/errors.py
+        - src/data_curation/core/layout.py
+        - data/01_raw/mapping/cellosaurus.parquet
+        - data/04_response/harmonized/${item}.h5ad
+        - data/02_omics/transcriptomics/${item}.h5ad
+      params:
+        - config/sources.yaml:
+            - datasets.${item}.tissue
+      outs:
+        - data/06_samples/metadata/${item}.parquet
+
+  assemble_mudata:
+    foreach: ${cmp_datasets}
+    do:
+      cmd: uv run data-curation assembly mudata ${item}
+      deps:
+        - src/data_curation/assembly/assemble_mudata.py
+        - src/data_curation/assembly/write.py
+        - src/data_curation/response/replicate_fits.py
+        - src/data_curation/cell_lines/cellosaurus.py
+        - src/data_curation/cell_lines/meta.py
+        - src/data_curation/cell_lines/sidm_mapping.py
+        - src/data_curation/core/config.py
+        - src/data_curation/core/errors.py
+        - src/data_curation/core/layout.py
+        - data/03_drugs/ontology.parquet
+        - data/06_samples/metadata/cmp.parquet
+        - data/04_response/harmonized/${item}.h5ad
+        - data/02_omics/transcriptomics/${item}.h5ad
+        - data/02_omics/mutations/${item}.h5ad
+        - data/02_omics/cnv/${item}.h5ad
+        - data/02_omics/proteomics/${item}.h5ad
+      outs:
+        - data/07_assembled/${item}.h5mu
+
+  # PRISM has only transcriptomics but Cell Model Passports metadata, so it uses the
+  # shared cmp.parquet; PDX_Bruna and BeatAML2 (below) have their own tables.
+  assemble_mudata_prism:
+    foreach: ${prism_datasets}
+    do:
+      cmd: uv run data-curation assembly mudata ${item}
+      deps:
+        - src/data_curation/assembly/assemble_mudata.py
+        - src/data_curation/assembly/write.py
+        - src/data_curation/response/replicate_fits.py
+        - src/data_curation/cell_lines/cellosaurus.py
+        - src/data_curation/cell_lines/meta.py
+        - src/data_curation/cell_lines/sidm_mapping.py
+        - src/data_curation/core/config.py
+        - src/data_curation/core/errors.py
+        - src/data_curation/core/layout.py
+        - data/03_drugs/ontology.parquet
+        - data/06_samples/metadata/cmp.parquet
+        - data/04_response/harmonized/${item}.h5ad
+        - data/02_omics/transcriptomics/${item}.h5ad
+      outs:
+        - data/07_assembled/${item}.h5mu
+
+  assemble_mudata_rna_only:
+    foreach: ${constant_tissue_datasets}
+    do:
+      cmd: uv run data-curation assembly mudata ${item}
+      deps:
+        - src/data_curation/assembly/assemble_mudata.py
+        - src/data_curation/assembly/write.py
+        - src/data_curation/response/replicate_fits.py
+        - src/data_curation/cell_lines/cellosaurus.py
+        - src/data_curation/cell_lines/meta.py
+        - src/data_curation/cell_lines/sidm_mapping.py
+        - src/data_curation/core/config.py
+        - src/data_curation/core/errors.py
+        - src/data_curation/core/layout.py
+        - data/03_drugs/ontology.parquet
+        - data/06_samples/metadata/${item}.parquet
+        - data/04_response/harmonized/${item}.h5ad
+        - data/02_omics/transcriptomics/${item}.h5ad
+      outs:
+        - data/07_assembled/${item}.h5mu
+
+  # The toy keeps every gene of the gene lists drevalpy ships. The CSVs live in the
+  # installed package, so this stage fingerprints them and subsample_toy depends on the
+  # fingerprint: a drevalpy upgrade that changes a list re-runs the subsample.
+  record_toy_gene_lists:
+    cmd: uv run data-curation assembly record-toy-gene-lists
+    always_changed: true
+    deps:
+      - src/data_curation/assembly/record_toy_gene_lists.py
+      - src/data_curation/core/layout.py
+    outs:
+      - data/07_assembled/toy_gene_lists.json:
+          cache: false
+
+  # Tiny dataset for fast iteration on drevalpy: same modality names, global obs
+  # columns and response layers as the real datasets, but small enough to run
+  # every split mode in seconds.
+  subsample_toy:
+    cmd: uv run data-curation assembly subsample-toy
+    deps:
+      - src/data_curation/assembly/subsample_toy.py
+      - src/data_curation/assembly/write.py
+      - src/data_curation/assembly/toy_selection.py
+      - src/data_curation/assembly/record_toy_gene_lists.py
+      - src/data_curation/response/replicate_fits.py
+      - src/data_curation/core/config.py
+      - src/data_curation/core/errors.py
+      - src/data_curation/core/layout.py
+      - data/07_assembled/CTRPv2.h5mu
+      - data/07_assembled/toy_gene_lists.json
+    params:
+      - config/processing.yaml:
+          - toy
+    outs:
+      - data/07_assembled/TOYv1.h5mu
+
+  download_response:
+    foreach: ${response_datasets}
+    do:
+      cmd: uv run data-curation response download ${item}
+      deps:
+        - src/data_curation/omics/download.py
+        - src/data_curation/core/config.py
+        - src/data_curation/core/download.py
+        - src/data_curation/core/errors.py
+        - src/data_curation/core/layout.py
+        - src/data_curation/omics/__init__.py
+      params:
+        - config/sources.yaml:
+            - datasets.${item}.response
+      outs:
+        - data/01_raw/response/${item}/
+
+  map_drugs:
+    foreach: ${drug_mapping_datasets}
+    do:
+      cmd: uv run data-curation drugs map ${item}
+      deps:
+        - src/data_curation/drugs/map_drugs.py
+        - src/data_curation/drugs/ontology/pubchem.py
+        - src/data_curation/core/config.py
+        - src/data_curation/core/errors.py
+        - src/data_curation/drugs/mapping/combinations.py
+        - src/data_curation/drugs/mapping/overrides.py
+        - src/data_curation/response/gdsc_tags.py
+        - src/data_curation/core/paths.py
+        # CCLE's compound list is a sheet of the response supplement, so the
+        # mapper reads it through the CCLE preparer's workbook accessor.
+        - src/data_curation/response/prepare/ccle.py
+        - src/data_curation/core/layout.py
+        - src/data_curation/response/prepare/wells.py
+        - data/01_raw/response/${item}/
+      params:
+        - config/sources.yaml:
+            - datasets.${item}.response
+        - config/processing.yaml:
+            - pubchem.max_failure_fraction
+      outs:
+        - data/03_drugs/mapping/${item}.parquet
+        - data/03_drugs/mapping/${item}_pubchem_failures.tsv:
+            cache: false
+
+  # PRISM is mapped apart from the other datasets so that the stages above keep their dependencies: the PRISM
+  # mapper imports the structure resolver, and PRISM_20Q2 also reads the PRISM_19Q4 raw files
+  # (datasets.PRISM_20Q2.drug_mapping.name_fallback_from).
+  map_drugs_PRISM_19Q4:
+    cmd: uv run data-curation drugs map-prism PRISM_19Q4
+    deps:
+      - src/data_curation/drugs/map_drugs.py
+      - src/data_curation/drugs/map_prism.py
+      - src/data_curation/drugs/prism_structures.py
+      - src/data_curation/drugs/ontology/pubchem.py
+      - src/data_curation/core/config.py
+      - src/data_curation/core/errors.py
+      - src/data_curation/drugs/mapping/combinations.py
+      - src/data_curation/drugs/mapping/overrides.py
+      - src/data_curation/response/gdsc_tags.py
+      - src/data_curation/core/paths.py
+      # CCLE's compound list is a sheet of the response supplement, so the
+      # mapper reads it through the CCLE preparer's workbook accessor.
+      - src/data_curation/response/prepare/ccle.py
+      - src/data_curation/core/layout.py
+      - src/data_curation/response/prepare/wells.py
+      - data/01_raw/response/PRISM_19Q4/
+    params:
+      - config/sources.yaml:
+          - datasets.PRISM_19Q4.response
+      - config/processing.yaml:
+          - pubchem.max_failure_fraction
+    outs:
+      - data/03_drugs/mapping/PRISM_19Q4.parquet
+      - data/03_drugs/mapping/PRISM_19Q4_pubchem_failures.tsv:
+          cache: false
+
+  map_drugs_PRISM_20Q2:
+    cmd: uv run data-curation drugs map-prism PRISM_20Q2
+    deps:
+      - src/data_curation/drugs/map_drugs.py
+      - src/data_curation/drugs/map_prism.py
+      - src/data_curation/drugs/prism_structures.py
+      - src/data_curation/drugs/ontology/pubchem.py
+      - src/data_curation/core/config.py
+      - src/data_curation/core/errors.py
+      - src/data_curation/drugs/mapping/combinations.py
+      - src/data_curation/drugs/mapping/overrides.py
+      - src/data_curation/response/gdsc_tags.py
+      - src/data_curation/core/paths.py
+      # CCLE's compound list is a sheet of the response supplement, so the
+      # mapper reads it through the CCLE preparer's workbook accessor.
+      - src/data_curation/response/prepare/ccle.py
+      - src/data_curation/core/layout.py
+      - src/data_curation/response/prepare/wells.py
+      - data/01_raw/response/PRISM_20Q2/
+      # Names and structures of compounds this release leaves blank (name_fallback_from).
+      - data/01_raw/response/PRISM_19Q4/
+    params:
+      - config/sources.yaml:
+          - datasets.PRISM_20Q2.response
+          - datasets.PRISM_20Q2.drug_mapping
+      - config/processing.yaml:
+          - pubchem.max_failure_fraction
+    outs:
+      - data/03_drugs/mapping/PRISM_20Q2.parquet
+      - data/03_drugs/mapping/PRISM_20Q2_pubchem_failures.tsv:
+          cache: false
+
+  # One canonical ID and one SMILES per drug across all datasets: PubChem's isomeric SMILES
+  # canonicalized with RDKit, and every CID of one InChIKey remapped onto the lowest. It reads
+  # only the mapping outputs (map_drugs itself is untouched, so PubChem is not re-queried for
+  # the mapping) and caches PubChem's responses in a persistent output, which DVC leaves in
+  # place on re-runs.
+  resolve_drug_structures:
+    cmd: uv run data-curation drugs resolve-structures
+    deps:
+      - src/data_curation/drugs/resolve_structures.py
+      - src/data_curation/drugs/ontology/pubchem.py
+      - src/data_curation/response/harmonize/structures.py
+      - src/data_curation/core/errors.py
+      - src/data_curation/core/layout.py
+      - data/03_drugs/mapping/
+    outs:
+      - data/03_drugs/structures.parquet
+      - data/03_drugs/pubchem_structures_cache.json:
+          persist: true
+
+  prepare_viability:
+    foreach: ${response_datasets}
+    do:
+      cmd: uv run data-curation response prepare-viability ${item}
+      deps:
+        - src/data_curation/response/prepare_viability.py
+        - src/data_curation/response/prepare/wells.py
+        - src/data_curation/response/prepare/gdsc.py
+        - src/data_curation/response/prepare/ctrp.py
+        - src/data_curation/response/prepare/ccle.py
+        - src/data_curation/response/prepare/bruna.py
+        - src/data_curation/response/prepare/beataml.py
+        - src/data_curation/response/gdsc_tags.py
+        - src/data_curation/core/paths.py
+        - src/data_curation/core/config.py
+        - src/data_curation/core/errors.py
+        - src/data_curation/core/layout.py
+        - src/data_curation/response/prepare/prism.py
+        - data/01_raw/response/${item}/
+      params:
+        - config/sources.yaml:
+            - datasets.${item}.response
+      outs:
+        - data/04_response/wells/${item}.parquet
+
+  # The expensive stage: ~9 h for all datasets locally at fit_speed: exhaustive.
+  # The drevalpy/curate Nextflow pipeline fits one pooled curve per pair and every
+  # replicate series on its own (uns["replicate_fits"]). Its dep surface is
+  # deliberately minimal - the well table, the curvecurator and replicates params,
+  # the stage code and the pipeline revision, which pins the container and so the
+  # fitting libraries. Curves are fitted on the datasets' own identifiers, which
+  # CurveCurator treats as opaque labels, so identity resolution lives in
+  # harmonize_response where it cannot trigger a re-fit. The executor
+  # (execution.backend, config/nextflow/*.config) and the chunk size are
+  # deliberately NOT deps: where and in which pieces curves are fitted must not
+  # invalidate them.
+  fit_curves:
+    foreach: ${response_datasets}
+    do:
+      cmd: uv run data-curation response fit-curves ${item}
+      deps:
+        - src/data_curation/response/fit_curves.py
+        - src/data_curation/response/pipeline.py
+        - src/data_curation/response/prepare/wells.py
+        - src/data_curation/core/config.py
+        - src/data_curation/core/errors.py
+        - src/data_curation/core/layout.py
+        - data/04_response/wells/${item}.parquet
+      params:
+        - config/processing.yaml:
+            - curvecurator
+            - replicates
+            - execution.pipeline
+            - execution.revision
+        - config/sources.yaml:
+            - datasets.${item}.response.normalize
+      outs:
+        - data/04_response/curves/${item}.h5ad
+
+  harmonize_response:
+    foreach: ${response_datasets}
+    do:
+      cmd: uv run data-curation response harmonize ${item}
+      deps:
+        - src/data_curation/response/harmonize_response.py
+        - src/data_curation/response/harmonize/identity.py
+        - src/data_curation/response/harmonize/collapse.py
+        - src/data_curation/response/harmonize/published.py
+        - src/data_curation/response/harmonize/structures.py
+        - src/data_curation/response/prepare/ccle.py
+        - src/data_curation/cell_lines/sidm_mapping.py
+        - src/data_curation/cell_lines/cellosaurus.py
+        - src/data_curation/core/paths.py
+        - src/data_curation/cell_lines/download_model_list.py
+        - src/data_curation/core/config.py
+        - src/data_curation/core/errors.py
+        - src/data_curation/core/layout.py
+        - src/data_curation/response/replicate_fits.py
+        - src/data_curation/response/prepare/wells.py
+        - data/01_raw/mapping/cellosaurus.parquet
+        - data/01_raw/cmp/model_list/
+        - data/01_raw/response/${item}/
+        - data/04_response/curves/${item}.h5ad
+        - data/03_drugs/mapping/${item}.parquet
+        - data/03_drugs/structures.parquet
+      params:
+        - config/sources.yaml:
+            - datasets.${item}.response
+      outs:
+        - data/04_response/harmonized/${item}.h5ad
+
+  download_drug_ontology:
+    cmd: uv run data-curation drugs download-ontology
+    deps:
+      - src/data_curation/drugs/download_drug_ontology.py
+      - src/data_curation/drugs/ontology/pubchem.py
+      - src/data_curation/core/download.py
+      - src/data_curation/core/config.py
+      - src/data_curation/core/errors.py
+      - src/data_curation/core/layout.py
+    params:
+      - config/sources.yaml:
+          - drug_ontology
+    outs:
+      - data/01_raw/drug_ontology/
+
+  # Single global stage: the datasets overlap heavily, so every distinct drug is
+  # annotated once into a central dictionary rather than per dataset.
+  annotate_drugs:
+    cmd: uv run data-curation drugs annotate
+    deps:
+      - src/data_curation/drugs/annotate_drugs.py
+      - src/data_curation/drugs/ontology/pubchem.py
+      - src/data_curation/drugs/ontology/chebi.py
+      - src/data_curation/drugs/ontology/ncit.py
+      - src/data_curation/drugs/ontology/targets.py
+      - src/data_curation/drugs/mapping/combinations.py
+      - src/data_curation/drugs/mapping/names.py
+      - src/data_curation/response/harmonize/structures.py
+      - src/data_curation/core/config.py
+      - src/data_curation/core/errors.py
+      - src/data_curation/core/layout.py
+      - data/01_raw/drug_ontology/
+      - data/03_drugs/mapping/
+      - data/03_drugs/structures.parquet
+    params:
+      - config/processing.yaml:
+          - pubchem.max_failure_fraction
+    outs:
+      - data/03_drugs/ontology.parquet
+      - data/03_drugs/pubchem_failures.tsv:
+          cache: false
+
+  # Guards the single-SMILES guarantee on the files that are delivered: reads only
+  # mod/response/var of every assembled dataset.
+  check_drug_structures:
+    cmd: uv run data-curation assembly check-drug-structures
+    deps:
+      - src/data_curation/assembly/check_drug_structures.py
+      - src/data_curation/core/errors.py
+      - src/data_curation/core/layout.py
+      - data/07_assembled/CCLE.h5mu
+      - data/07_assembled/CTRPv1.h5mu
+      - data/07_assembled/CTRPv2.h5mu
+      - data/07_assembled/GDSC1.h5mu
+      - data/07_assembled/GDSC2.h5mu
+      - data/07_assembled/PDX_Bruna.h5mu
+      - data/07_assembled/BeatAML2.h5mu
+      - data/07_assembled/PRISM_19Q4.h5mu
+      - data/07_assembled/PRISM_20Q2.h5mu
+      - data/07_assembled/TOYv1.h5mu
+    outs:
+      - data/08_reports/drug_structures.json:
+          cache: false
+
+  # Final stage: human-readable summary of every assembled dataset, rendered
+  # from a marimo notebook. Only the full datasets are listed; the toy dataset
+  # is skipped by name, so its rebuilds do not re-render the report.
+  report:
+    cmd: uv run data-curation report
+    deps:
+      - src/data_curation/report/reading.py
+      - src/data_curation/report/summary.py
+      - src/data_curation/report/plots.py
+      - src/data_curation/report/notebook.py
+      - src/data_curation/report/render.py
+      - src/data_curation/response/replicate_fits.py
+      - src/data_curation/core/config.py
+      - src/data_curation/core/layout.py
+      - src/data_curation/core/errors.py
+      - data/07_assembled/CCLE.h5mu
+      - data/07_assembled/CTRPv1.h5mu
+      - data/07_assembled/CTRPv2.h5mu
+      - data/07_assembled/GDSC1.h5mu
+      - data/07_assembled/GDSC2.h5mu
+      - data/07_assembled/PDX_Bruna.h5mu
+      - data/07_assembled/BeatAML2.h5mu
+      - data/07_assembled/PRISM_19Q4.h5mu
+      - data/07_assembled/PRISM_20Q2.h5mu
+    params:
+      - config/processing.yaml:
+          - toy.name
+    outs:
+      - data/08_reports/data_summary.html

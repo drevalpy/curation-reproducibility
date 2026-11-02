@@ -1,0 +1,35 @@
+# Tiny dataset carved out of an assembled one for fast iteration. n_tissues must
+# stay above 5, because drevalpy's leave-tissue-out splitter runs
+# KFold(n_splits=5) over the unique tissues.
+toy:
+  name: "TOYv1"
+  source: "CTRPv2"
+  n_tissues: 8
+  samples_per_tissue: 4
+  n_drugs: 12
+  n_features_per_modality: 300
+
+# A replicate is one dose series on one plate: prepare/wells.py names its columns, drevalpy's
+# curation._series numbers them. Series with fewer distinct doses are not fitted: on its own a
+# curve needs at least 4 non-missing values.
+replicates:
+  min_doses: 4
+
+# The drevalpy/curate pipeline fits every curve with OLS; fit_speed is its only fit option.
+curvecurator:
+  fit_speed: "exhaustive"
+
+# fit_curves runs the drevalpy/curate Nextflow pipeline. pipeline and revision are DVC params of
+# fit_curves: the revision pins the pipeline's container and so the drevalpy and curve-curator
+# versions. backend (overridable with DATA_CURATION_BACKEND) only picks the Nextflow executor
+# config config/nextflow/<backend>.config and max_curves_per_job only how curves are cut into
+# tasks; neither changes a fit, so neither is a DVC param. DATA_CURATION_PIPELINE runs a local
+# checkout of the pipeline instead.
+execution:
+  backend: local
+  pipeline: "drevalpy/curate"
+  revision: "2a4ab2e15483473a97ede8bdcd11ae487b789b7c"
+  max_curves_per_job: 1000
+
+pubchem:
+  max_failure_fraction: 0.05
