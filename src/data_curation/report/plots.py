@@ -24,8 +24,13 @@ def upset_figure(indicators: pd.DataFrame, title: str, min_subset_size: int = 10
         min_subset_size: Intersections smaller than this are hidden.
 
     Returns:
-        The rendered figure.
+        The rendered figure; a note instead of a plot when there is only one
+        dataset, which has no overlap to show (upsetplot needs two or more).
     """
+    if indicators.shape[1] < 2:
+        fig = plt.figure(figsize=(6, 1))
+        fig.text(0.5, 0.5, f"{title}: only one dataset, no overlap to show", ha="center", va="center")
+        return fig
     fig = plt.figure(figsize=(14, 7))
     axes = upsetplot.UpSet(
         upsetplot.from_indicators(indicators),

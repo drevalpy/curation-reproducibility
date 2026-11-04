@@ -8156,8 +8156,8 @@ stages:
       size: 7351
     - path: src/data_curation/report/plots.py
       hash: md5
-      md5: 93bc782e4a8106f63ec8decbe229f257
-      size: 1557
+      md5: 09d9f1efdc1ac8244cd55d7a600c766c
+      size: 1877
     - path: src/data_curation/report/reading.py
       hash: md5
       md5: bc1e09ca0d700512bef635e95c1041ed
