@@ -14,6 +14,7 @@ import pandas as pd
 from upath import UPath
 
 from data_curation.cell_lines.sidm_mapping import build_name_to_cellosaurus_map, build_sidm_to_cellosaurus_map
+from data_curation.core import standard
 from data_curation.core.errors import CurationError
 from data_curation.core.paths import find_file
 
@@ -170,6 +171,25 @@ def _resolve_names(names: pd.Series, model_list_path: UPath) -> pd.Series:
     return resolved
 
 
+def _add_standard(adata: ad.AnnData, raw_dir: UPath, _model_list_path: UPath, drug_mapping: pd.DataFrame) -> None:
+    """Add every metric of a standard dataset's ``published.parquet`` as a ``<metric>_published`` layer.
+
+    The samples are already canonical (the standard route is identity-keyed);
+    the native drug identifiers resolve through the drug mapping like the fitted
+    axis did. Values are stored as shipped. See :mod:`data_curation.core.standard`.
+    """
+    fitted = standard.read("published", raw_dir)
+    if fitted is None:
+        logger.info("No %s in %s; skipping published layers", standard.SCHEMAS["published"].file, raw_dir)
+        return
+
+    metrics = [column for column in fitted.columns if column not in ("sample", "drug")]
+    logger.info("Adding published layers for %s from %s", metrics, standard.path("published", raw_dir))
+    fitted["drug"] = fitted["drug"].map(_drug_map(drug_mapping))
+
+    _add_layers(adata, fitted, [(f"{metric}_published", metric) for metric in metrics])
+
+
 # Every adder shares one signature so they can sit in this table; the ones that
 # need no model list name it with a leading underscore.
 PUBLISHED_LAYER_ADDERS: dict[str, Callable[[ad.AnnData, UPath, UPath, pd.DataFrame], None]] = {
@@ -177,6 +197,7 @@ PUBLISHED_LAYER_ADDERS: dict[str, Callable[[ad.AnnData, UPath, UPath, pd.DataFra
     "ccle": _add_ccle,
     "bruna": _add_bruna,
     "beataml": _add_beataml,
+    "standard": _add_standard,
 }
 
 

@@ -7,6 +7,10 @@ Handles dataset-specific processing:
   accessions via the model list.
 - BeatAML2: log2-normalized RNA-seq keyed by patient subject.
 - PDX_Bruna: log2 microarray intensities keyed by PDTC sample.
+- Any dataset with ``transcriptomics.format: standard``: the long
+  ``expression.parquet`` of the standard contract, processed like the CMP
+  RNA-seq (log2(TPM+1) as ``X``, counts as a layer in the configured
+  ``counts_unit``); see ``transcriptomics/standard.py``.
 
 The value semantics differ per source, so each processor records its unit in
 ``adata.uns["expression_unit"]`` and, where layers exist, in
@@ -19,8 +23,8 @@ import anndata as ad
 from upath import UPath
 
 from data_curation.cell_lines.download_model_list import cmp_model_list_path
-from data_curation.core import layout
-from data_curation.core.config import is_cmp_dataset
+from data_curation.core import layout, standard
+from data_curation.core.config import is_cmp_dataset, source_config
 from data_curation.core.errors import CurationError
 from data_curation.core.paths import find_first
 from data_curation.omics import COUNT_LAYER
@@ -28,6 +32,7 @@ from data_curation.omics.cmp_matrix import CmpMatrix, read_cmp_matrix, to_cell_l
 from data_curation.omics.transcriptomics.beataml import process_beataml_transcriptomics
 from data_curation.omics.transcriptomics.bruna import process_bruna_transcriptomics
 from data_curation.omics.transcriptomics.prism import process_prism_transcriptomics
+from data_curation.omics.transcriptomics.standard import process_standard_transcriptomics
 
 # model_id / model_name / data_source / (gene_symbol, ensembl_gene_id, gene_id)
 # precede the per-gene data rows.
@@ -87,6 +92,9 @@ PROCESSORS: dict[str, Callable[..., ad.AnnData]] = {
     "PRISM_20Q2": process_prism_transcriptomics,
 }
 
+#: Unit of the counts layer of a standard dataset without ``counts_unit`` in its config.
+DEFAULT_STANDARD_COUNTS_UNIT = "counts"
+
 # Value semantics of X per dataset, recorded in adata.uns.
 EXPRESSION_UNITS: dict[str, str] = {
     "CCLE": "log2_tpm_plus_1",
@@ -101,11 +109,24 @@ EXPRESSION_UNITS: dict[str, str] = {
 }
 
 
+def _standard_config(dataset: str) -> dict | None:
+    """Return the dataset's transcriptomics block if it selects the standard format, else ``None``."""
+    block = source_config("datasets").get(dataset) or {}
+    config = block.get("transcriptomics") or {}
+    return config if config.get("format") == standard.STANDARD else None
+
+
 def main(dataset: str) -> None:
     """Process transcriptomics for the given dataset into an AnnData .h5ad file."""
     output_path = layout.omics("transcriptomics", dataset)
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
+    config = _standard_config(dataset)
+    if config is not None:
+        counts_unit = str(config.get("counts_unit", DEFAULT_STANDARD_COUNTS_UNIT))
+        adata = process_standard_transcriptomics(layout.raw_dir("transcriptomics", dataset), counts_unit)
+        adata.write_h5ad(str(output_path))
+        return
     if dataset in PROCESSORS:
         adata = PROCESSORS[dataset](layout.raw_dir("transcriptomics", dataset))
     elif dataset in EXPRESSION_UNITS and is_cmp_dataset(dataset):

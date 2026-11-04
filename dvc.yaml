@@ -74,10 +74,12 @@ stages:
         - src/data_curation/core/config.py
         - src/data_curation/core/errors.py
         - src/data_curation/core/layout.py
+        - src/data_curation/core/standard.py
         - src/data_curation/omics/__init__.py
         - src/data_curation/omics/transcriptomics/beataml.py
         - src/data_curation/omics/transcriptomics/bruna.py
         - src/data_curation/omics/transcriptomics/prism.py
+        - src/data_curation/omics/transcriptomics/standard.py
         - data/01_raw/cmp/model_list/
         - data/01_raw/cmp/rnaseq/
       params:
@@ -98,6 +100,7 @@ stages:
         - src/data_curation/omics/transcriptomics/bruna.py
         - src/data_curation/omics/transcriptomics/beataml.py
         - src/data_curation/omics/transcriptomics/prism.py
+        - src/data_curation/omics/transcriptomics/standard.py
         - src/data_curation/omics/data/PDX_Bruna_expression_sample_map.csv
         - src/data_curation/core/paths.py
         - src/data_curation/cell_lines/download_model_list.py
@@ -105,6 +108,7 @@ stages:
         - src/data_curation/core/config.py
         - src/data_curation/core/errors.py
         - src/data_curation/core/layout.py
+        - src/data_curation/core/standard.py
         - src/data_curation/omics/__init__.py
         - src/data_curation/omics/cmp_matrix.py
         - data/01_raw/cmp/model_list/
@@ -182,6 +186,7 @@ stages:
       - src/data_curation/core/config.py
       - src/data_curation/core/errors.py
       - src/data_curation/core/layout.py
+      - src/data_curation/core/standard.py
       - data/01_raw/mapping/cellosaurus.parquet
       - data/01_raw/cmp/model_list/
     outs:
@@ -203,6 +208,7 @@ stages:
         - src/data_curation/core/config.py
         - src/data_curation/core/errors.py
         - src/data_curation/core/layout.py
+        - src/data_curation/core/standard.py
         - data/01_raw/mapping/cellosaurus.parquet
         - data/04_response/harmonized/${item}.h5ad
         - data/02_omics/transcriptomics/${item}.h5ad
@@ -226,6 +232,7 @@ stages:
         - src/data_curation/core/config.py
         - src/data_curation/core/errors.py
         - src/data_curation/core/layout.py
+        - src/data_curation/core/standard.py
         - data/03_drugs/ontology.parquet
         - data/06_samples/metadata/cmp.parquet
         - data/04_response/harmonized/${item}.h5ad
@@ -252,6 +259,7 @@ stages:
         - src/data_curation/core/config.py
         - src/data_curation/core/errors.py
         - src/data_curation/core/layout.py
+        - src/data_curation/core/standard.py
         - data/03_drugs/ontology.parquet
         - data/06_samples/metadata/cmp.parquet
         - data/04_response/harmonized/${item}.h5ad
@@ -273,6 +281,7 @@ stages:
         - src/data_curation/core/config.py
         - src/data_curation/core/errors.py
         - src/data_curation/core/layout.py
+        - src/data_curation/core/standard.py
         - data/03_drugs/ontology.parquet
         - data/06_samples/metadata/${item}.parquet
         - data/04_response/harmonized/${item}.h5ad
@@ -349,6 +358,7 @@ stages:
         # mapper reads it through the CCLE preparer's workbook accessor.
         - src/data_curation/response/prepare/ccle.py
         - src/data_curation/core/layout.py
+        - src/data_curation/core/standard.py
         - src/data_curation/response/prepare/wells.py
         - data/01_raw/response/${item}/
       params:
@@ -381,6 +391,7 @@ stages:
       # mapper reads it through the CCLE preparer's workbook accessor.
       - src/data_curation/response/prepare/ccle.py
       - src/data_curation/core/layout.py
+      - src/data_curation/core/standard.py
       - src/data_curation/response/prepare/wells.py
       - data/01_raw/response/PRISM_19Q4/
     params:
@@ -410,6 +421,7 @@ stages:
       # mapper reads it through the CCLE preparer's workbook accessor.
       - src/data_curation/response/prepare/ccle.py
       - src/data_curation/core/layout.py
+      - src/data_curation/core/standard.py
       - src/data_curation/response/prepare/wells.py
       - data/01_raw/response/PRISM_20Q2/
       # Names and structures of compounds this release leaves blank (name_fallback_from).
@@ -461,7 +473,9 @@ stages:
         - src/data_curation/core/config.py
         - src/data_curation/core/errors.py
         - src/data_curation/core/layout.py
+        - src/data_curation/core/standard.py
         - src/data_curation/response/prepare/prism.py
+        - src/data_curation/response/prepare/standard.py
         - data/01_raw/response/${item}/
       params:
         - config/sources.yaml:
@@ -521,6 +535,7 @@ stages:
         - src/data_curation/core/config.py
         - src/data_curation/core/errors.py
         - src/data_curation/core/layout.py
+        - src/data_curation/core/standard.py
         - src/data_curation/response/replicate_fits.py
         - src/data_curation/response/prepare/wells.py
         - data/01_raw/mapping/cellosaurus.parquet

@@ -217,6 +217,42 @@ Probes & Drugs is licensed CC BY-SA 4.0, so `ontology.parquet` and the `var`
 columns derived from it are share-alike. Keep this section when you redistribute
 those files.
 
+## Curate your own dataset
+
+A dataset whose raw data cannot be public can still be curated with this
+pipeline. Your own code writes five Parquet files, and a separate repository
+runs the public stages on them through the `data-curation` commands. The
+contract is defined and checked in `src/data_curation/core/standard.py`; call
+`standard.validate(kind, frame)` before you write each file.
+
+| File | Directory | One row per | Columns |
+| --- | --- | --- | --- |
+| `wells.parquet` | `data/01_raw/response/<dataset>/` | well | `sample`, `drug`, `concentration` (µM), `intensity` (viability relative to the untreated control), optional `experiment` (biological replicate), `replicate` (technical replicate), `position`, and any metadata |
+| `published.parquet` (optional) | same | published fit | `sample`, `drug` and numeric metrics, each becoming the response layer `<metric>_published` |
+| `drugs.parquet` | same | drug | `drug`, `drug_name` for the PubChem lookup, optional `pubchem_id` and `smiles` |
+| `samples.parquet` | same | sample | `sample_id`, `tissue` and further metadata |
+| `expression.parquet` | `data/01_raw/transcriptomics/<dataset>/` | sample and gene | `sample_id`, `gene_symbol`, `tpm`, optional `counts` |
+
+The dataset's block in `config/sources.yaml` selects these routes:
+
+```yaml
+datasets:
+  MyScreen:
+    sample_metadata: standard
+    response:
+      format: standard
+      normalize: false # true if intensity is not yet relative to the controls
+    drug_mapping:
+      cid_overrides: {} # name -> PubChem CID, used when the lookup finds nothing
+      no_lookup: [] # names that are never sent to PubChem, alone or in a combination
+    transcriptomics:
+      format: standard
+      counts_unit: counts
+```
+
+Samples keep their own identifiers as `sample_id`. Expression is processed like
+the public datasets: `X` is log2(TPM+1), and genes missing in any sample are dropped.
+
 ## Publish a dataset generation
 
 `scripts/publish_datasets_wizard.sh` walks a maintainer through publishing the

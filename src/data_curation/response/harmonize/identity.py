@@ -14,6 +14,8 @@ Samples take one of three routes, by format:
   rescues 50 of CTRPv2's 52 otherwise-dropped lines, and 6 of CCLE's.
 * **PDX_Bruna and BeatAML2** are PDTCs and primary patient specimens with no
   accession at all, so the native identifier *is* the canonical sample ID.
+* **standard** datasets (see :mod:`data_curation.core.standard`) are reshaped
+  elsewhere and carry their own sample IDs, which are kept as canonical too.
 
 Drugs always resolve through ``drug_mapping/<ds>.parquet``, whose ``DRUG_ID`` column
 holds whatever native key the corresponding preparer emitted.
@@ -39,7 +41,7 @@ logger = logging.getLogger(__name__)
 NAME_KEYED_FORMATS = frozenset({"ctrpv1", "ctrpv2", "ccle"})
 
 #: Formats whose samples are not cell lines, so there is no reference: the native ID is canonical.
-IDENTITY_KEYED_FORMATS = frozenset({"bruna", "beataml"})
+IDENTITY_KEYED_FORMATS = frozenset({"bruna", "beataml", "standard"})
 
 #: Formats whose native cell-line identifier is a DepMap ACH-* ID resolved via
 #: the ``BROAD_ID`` column in the Cell Model Passports model list.
@@ -71,7 +73,7 @@ def resolve_samples(natives: pd.Index, fmt: str, model_list_path: UPath | None =
         fmt: The dataset's response format.
         model_list_path: Cell Model Passports model list for CMP-based resolution.
             Required for ``gdsc`` and name-keyed formats; unused for
-            identity-keyed formats (``bruna``, ``beataml``).
+            identity-keyed formats (``bruna``, ``beataml``, ``standard``).
 
     Returns:
         The sample ID per native identifier (missing where unresolved) and, for

@@ -10,16 +10,19 @@ annotations to live (see ``meta.sample_meta_path``).
   ``cellosaurus_id`` and ``cell_line_name``. It does not depend on the dataset, so
   it runs once for every dataset with CMP metadata (including PRISM).
 * ``main`` writes ``data/06_samples/metadata/<dataset>.parquet`` for a dataset
-  with an explicit ``datasets.<dataset>.tissue`` constant in
-  ``config/sources.yaml``, the route for datasets without CMP metadata. Its
-  samples are not cell lines, so the table holds only ``sample_id`` and ``tissue``.
+  without CMP metadata. With ``datasets.<dataset>.sample_metadata: standard`` in
+  ``config/sources.yaml`` it is the dataset's validated ``samples.parquet`` from
+  its response raw directory, extra metadata columns included (see
+  :mod:`data_curation.core.standard`). With an explicit
+  ``datasets.<dataset>.tissue`` constant instead, its samples are not cell lines,
+  so the table holds only ``sample_id`` and ``tissue``.
 """
 
 from upath import UPath
 
 from data_curation.cell_lines.download_model_list import cmp_model_list_path
 from data_curation.cell_lines.meta import build_cmp_meta, build_constant_tissue_meta
-from data_curation.core import layout
+from data_curation.core import layout, standard
 from data_curation.core.config import dataset_config
 from data_curation.core.errors import CurationError
 
@@ -47,18 +50,30 @@ def main_cmp() -> None:
 
 
 def main(dataset: str) -> None:
-    """Write the sample metadata table of a dataset with a constant tissue.
+    """Write the sample metadata table of a standard or constant-tissue dataset.
+
+    Args:
+        dataset: Dataset name, e.g. ``"PDX_Bruna"``.
 
     Raises:
-        CurationError: If the dataset has no ``tissue`` constant; its metadata is the
-            shared table written by :func:`main_cmp`.
+        CurationError: If the dataset has neither ``sample_metadata: standard`` nor a
+            ``tissue`` constant (its metadata is the shared table written by
+            :func:`main_cmp`), or if its standard ``samples.parquet`` is missing or
+            breaks the contract.
     """
-    tissue = dataset_config(dataset).get("tissue")
-    if not tissue:
-        msg = f"{dataset} has no constant tissue in config/sources.yaml; its metadata is the shared CMP table"
+    config = dataset_config(dataset)
+    if config.get("sample_metadata") == standard.STANDARD:
+        meta = standard.read("samples", layout.raw_dir("response", dataset))
+        assert meta is not None  # noqa: S101 - only the optional "published" kind can be absent
+    elif config.get("tissue"):
+        meta = build_constant_tissue_meta(_constant_tissue_sources(dataset), str(config["tissue"]))
+    else:
+        msg = (
+            f"{dataset} has neither 'sample_metadata: {standard.STANDARD}' nor a constant tissue in "
+            "config/sources.yaml; its metadata is the shared CMP table"
+        )
         raise CurationError(msg)
 
     output_path = layout.sample_meta(dataset)
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    meta = build_constant_tissue_meta(_constant_tissue_sources(dataset), str(tissue))
     meta.to_parquet(str(output_path), index=False)

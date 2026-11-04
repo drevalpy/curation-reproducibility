@@ -28,6 +28,7 @@ from data_curation.response.prepare.ccle import prepare_ccle
 from data_curation.response.prepare.ctrp import prepare_ctrpv1, prepare_ctrpv2
 from data_curation.response.prepare.gdsc import prepare_gdsc
 from data_curation.response.prepare.prism import prepare_prism
+from data_curation.response.prepare.standard import prepare_standard
 from data_curation.response.prepare.wells import Wells, metadata_columns, to_wells
 
 logger = logging.getLogger(__name__)
@@ -40,6 +41,7 @@ PREPARERS: dict[str, Callable[[UPath, dict], Wells]] = {
     "bruna": prepare_bruna,
     "beataml": prepare_beataml,
     "prism": prepare_prism,
+    "standard": prepare_standard,
 }
 
 

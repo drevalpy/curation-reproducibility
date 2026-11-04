@@ -114,3 +114,91 @@ class TestMain:
         assert list(table.columns) == ["sample_id", "tissue"]
         assert list(table["sample_id"]) == ["HCI001-X4C"]
         assert list(table["tissue"]) == ["Breast"]
+
+
+MINIMAL_SOURCES = """\
+datasets:
+  Inhouse:
+    sample_metadata: standard
+  Specimens:
+    tissue: Blood
+  Screen: {}
+"""
+
+
+@pytest.fixture
+def minimal_workdir(monkeypatch, tmp_path) -> UPath:
+    """A scratch repository root whose sources config holds one dataset per metadata route."""
+    (tmp_path / "config").mkdir()
+    (tmp_path / "config" / "sources.yaml").write_text(MINIMAL_SOURCES)
+    monkeypatch.chdir(tmp_path)
+    return UPath(tmp_path)
+
+
+def _write_samples(frame: pd.DataFrame) -> None:
+    raw_dir = layout.raw_dir("response", "Inhouse")
+    raw_dir.mkdir(parents=True)
+    frame.to_parquet(str(raw_dir / "samples.parquet"), index=False)
+
+
+class TestStandardSampleMetadata:
+    def test_a_standard_dataset_keeps_its_own_table(self, minimal_workdir) -> None:
+        assert sample_meta_path("Inhouse") == layout.sample_meta("Inhouse")
+
+    def test_a_dataset_with_neither_route_reads_the_shared_table(self, minimal_workdir) -> None:
+        assert sample_meta_path("Screen") == layout.cmp_sample_meta()
+
+    def test_the_standard_table_is_written_with_its_extra_columns(self, minimal_workdir) -> None:
+        _write_samples(
+            pd.DataFrame(
+                {
+                    "sample_id": ["S1", "S2"],
+                    "tissue": ["Blood", "Bone Marrow"],
+                    "patient_id": [7.0, None],
+                    "sex": ["F", "M"],
+                }
+            )
+        )
+
+        process_sample_meta.main("Inhouse")
+
+        table = pd.read_parquet(str(layout.sample_meta("Inhouse")))
+        assert list(table.columns) == ["sample_id", "tissue", "patient_id", "sex"]
+        assert table.to_dict("list") == {
+            "sample_id": ["S1", "S2"],
+            "tissue": ["Blood", "Bone Marrow"],
+            "patient_id": ["7", ""],
+            "sex": ["F", "M"],
+        }
+
+    def test_a_missing_samples_file_is_refused(self, minimal_workdir) -> None:
+        with pytest.raises(CurationError, match=r"samples\.parquet is missing"):
+            process_sample_meta.main("Inhouse")
+
+        assert not layout.sample_meta("Inhouse").exists()
+
+    def test_a_broken_samples_file_is_refused(self, minimal_workdir) -> None:
+        _write_samples(pd.DataFrame({"sample_id": ["S1", "S1"], "tissue": ["Blood", "Blood"]}))
+
+        with pytest.raises(CurationError, match="repeat"):
+            process_sample_meta.main("Inhouse")
+
+    def test_the_constant_tissue_route_is_unchanged(self, minimal_workdir) -> None:
+        response = layout.modality("response", "Specimens")
+        response.parent.mkdir(parents=True)
+        ad.AnnData(
+            X=np.zeros((2, 1), dtype=np.float32),
+            obs=pd.DataFrame(index=pd.Index(["P1", "P2"])),
+        ).write_h5ad(str(response))
+
+        process_sample_meta.main("Specimens")
+
+        table = pd.read_parquet(str(layout.sample_meta("Specimens")))
+        assert table.to_dict("list") == {"sample_id": ["P1", "P2"], "tissue": ["Blood", "Blood"]}
+
+    def test_a_dataset_with_neither_route_is_refused_naming_both(self, minimal_workdir) -> None:
+        with pytest.raises(CurationError, match="sample_metadata: standard") as raised:
+            process_sample_meta.main("Screen")
+
+        assert "constant tissue" in str(raised.value)
+        assert not layout.sample_meta("Screen").exists()

@@ -14,6 +14,7 @@ from upath import UPath
 
 from data_curation.core import layout
 from data_curation.core.errors import CurationError
+from data_curation.response.harmonize.identity import resolve_samples
 from data_curation.response.harmonize.structures import apply_structures
 from data_curation.response.harmonize_response import (
     RESPONSE_X_COLUMN,
@@ -172,7 +173,7 @@ class TestDrugCollapse:
 
 
 class TestIdentityKeyedFormats:
-    @pytest.mark.parametrize("fmt", ["bruna", "beataml"])
+    @pytest.mark.parametrize("fmt", ["bruna", "beataml", "standard"])
     def test_specimen_identifiers_pass_through_unchanged(self, raw_dir: UPath, fmt: str) -> None:
         mapping = pd.DataFrame(
             {
@@ -196,6 +197,12 @@ class TestIdentityKeyedFormats:
             drug_mapping=mapping,
         )
         assert "cell_line_name" not in result.obs.columns
+
+    def test_standard_samples_keep_their_native_ids(self) -> None:
+        """A standard dataset carries its own sample IDs, so no model list is needed."""
+        identity = resolve_samples(pd.Index(["PDO-7", "PDO-8"]), "standard")
+        assert identity.canonical.to_dict() == {"PDO-7": "PDO-7", "PDO-8": "PDO-8"}
+        assert identity.cell_line_names == {}
 
 
 class TestRemappedCids:

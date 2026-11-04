@@ -11,7 +11,7 @@ from data_curation.response.prepare_viability import PREPARERS, prepare
 
 class TestPreparerRegistry:
     def test_every_configured_format_has_a_preparer(self) -> None:
-        assert set(PREPARERS) == {"gdsc", "ctrpv1", "ctrpv2", "ccle", "bruna", "beataml", "prism"}
+        assert set(PREPARERS) == {"gdsc", "ctrpv1", "ctrpv2", "ccle", "bruna", "beataml", "prism", "standard"}
 
 
 class TestPrepare:

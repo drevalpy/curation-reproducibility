@@ -8,7 +8,8 @@ pipeline and its data; this file is what you need to change the code safely. Run
 
 ```text
 src/data_curation/
-  core/          bottom layer: config.py, layout.py (all data paths), paths.py, download.py, errors.py
+  core/          bottom layer: config.py, layout.py (all data paths), paths.py, download.py, errors.py,
+                 standard.py (file contract of `format: standard` datasets curated from private repositories)
   cell_lines/ omics/ response/ drugs/ assembly/ report/   domain packages; one module per DVC stage;
                  response/pipeline.py runs the drevalpy/curate Nextflow pipeline for fit_curves
   cli/           the whole `data-curation` command tree, one module per group

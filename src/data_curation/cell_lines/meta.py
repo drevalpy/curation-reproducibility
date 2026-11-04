@@ -15,15 +15,19 @@ the cell lines these datasets actually screen. ``patient_id`` is the load-bearin
 one: 1931 distinct patients across 2266 models means some cell lines share a
 donor, which is a leakage channel the splitters could not previously see.
 
-Two sources are supported:
+Three sources are supported:
 
 * Cell Model Passports ``model_list.csv``, which carries the annotations and the
   Cellosaurus accession in ``RRID``. The sample ID is that accession, and the
   table also carries ``cellosaurus_id`` and ``cell_line_name``.
 * Datasets with no CMP entry at all (patient specimens, PDX models), where tissue
-  is a dataset-level constant supplied through ``params.yaml`` and the table
-  holds nothing but ``sample_id`` and ``tissue``: they have no Cellosaurus
-  accession or cell line name, so none is written.
+  is a dataset-level constant supplied as ``datasets.<dataset>.tissue`` in
+  ``config/sources.yaml`` and the table holds nothing but ``sample_id`` and
+  ``tissue``: they have no Cellosaurus accession or cell line name, so none is
+  written.
+* Datasets in the ``standard`` input format (``sample_metadata: standard``), which
+  ship their own ``samples.parquet`` (see :mod:`data_curation.core.standard`) with
+  ``sample_id``, ``tissue`` and any further metadata columns.
 
 Cellosaurus contributes only what CMP lacks - the contamination and
 misidentification flags - and never overrides it.
@@ -36,7 +40,7 @@ import pandas as pd
 from upath import UPath
 
 from data_curation.cell_lines.cellosaurus import QUALITY_COLUMNS, quality_flags
-from data_curation.core import layout
+from data_curation.core import layout, standard
 from data_curation.core.config import dataset_config
 from data_curation.core.errors import CurationError
 
@@ -84,18 +88,19 @@ CMP_META_COLUMNS = [
 def sample_meta_path(dataset: str) -> UPath:
     """Return the metadata table that holds a dataset's samples.
 
-    A dataset with a constant ``tissue`` in ``config/sources.yaml`` has no Cell
-    Model Passports entry and its own table; every other dataset reads the table
-    shared by all of them.
+    A dataset with a constant ``tissue`` or with ``sample_metadata: standard`` in
+    ``config/sources.yaml`` has no Cell Model Passports entry and its own table;
+    every other dataset reads the table shared by all of them.
 
     Args:
         dataset: Dataset name, e.g. ``"GDSC2"``.
 
     Returns:
-        ``data/06_samples/metadata/<dataset>.parquet`` for a constant-tissue
-        dataset, otherwise ``data/06_samples/metadata/cmp.parquet``.
+        ``data/06_samples/metadata/<dataset>.parquet`` for a constant-tissue or
+        standard dataset, otherwise ``data/06_samples/metadata/cmp.parquet``.
     """
-    if dataset_config(dataset).get("tissue"):
+    config = dataset_config(dataset)
+    if config.get("tissue") or config.get("sample_metadata") == standard.STANDARD:
         return layout.sample_meta(dataset)
     return layout.cmp_sample_meta()
 

@@ -1,8 +1,9 @@
 """Map drug identifiers to PubChem CIDs via the PubChem REST API.
 
 Supports GDSC (name-based lookup), CTRP (bundled CIDs for v1, SMILES-based
-lookup for v2), and PDX_Bruna / BeatAML2 (name-based lookup with curated
-overrides). Drugs that cannot be resolved get a dataset-prefixed pseudo-ID so
+lookup for v2), PDX_Bruna / BeatAML2 (name-based lookup with curated
+overrides) and the ``standard`` input format (given CIDs, then name lookup with
+the dataset's configured overrides). Drugs that cannot be resolved get a dataset-prefixed pseudo-ID so
 no measurements are silently dropped. PRISM is mapped by ``map_prism``, which
 builds on this module's lookups.
 
@@ -11,6 +12,7 @@ pseudo-IDs, with their components recorded separately; see
 ``_drug_combinations``.
 """
 
+import functools
 import logging
 import time
 import urllib.error
@@ -21,7 +23,7 @@ import pubchempy as pcp
 from upath import UPath
 
 from data_curation.cli._progress import track
-from data_curation.core import layout
+from data_curation.core import layout, standard
 from data_curation.core.config import dataset_config, processing_config
 from data_curation.core.errors import CurationError
 from data_curation.core.paths import find_file
@@ -269,14 +271,20 @@ def _map_by_names(
     """
     results = []
     for drug_name in track(drug_names, f"Mapping {prefix} drugs"):
-        cid, smiles = _resolve_by_name(drug_name, "")
-        if cid is None and drug_name in overrides:
-            cid = overrides[drug_name]
-            _, smiles = _lookup_pubchem(str(cid), namespace="cid")
-            logger.debug("Mapped '%s' -> CID %s (curated override)", drug_name, cid)
+        cid, smiles = _resolve_with_override(drug_name, overrides)
         results.append(_record(drug_name, drug_name, cid, smiles, prefix))
 
     return pd.DataFrame(results)
+
+
+def _resolve_with_override(drug_name: str, overrides: dict[str, int]) -> tuple[int | None, str | None]:
+    """Resolve a drug by name, falling back to a curated CID when PubChem finds nothing."""
+    cid, smiles = _resolve_by_name(drug_name, "")
+    if cid is None and drug_name in overrides:
+        cid = overrides[drug_name]
+        _, smiles = _lookup_pubchem(str(cid), namespace="cid")
+        logger.debug("Mapped '%s' -> CID %s (curated override)", drug_name, cid)
+    return cid, smiles
 
 
 def _map_ccle(raw_dir: UPath) -> pd.DataFrame:
@@ -304,6 +312,84 @@ def _map_beataml(raw_dir: UPath) -> pd.DataFrame:
     raw = pd.read_csv(str(find_file(raw_dir, "*raw_inhibitor*")), sep="\t", low_memory=False)
     drug_names = sorted(raw["inhibitor"].dropna().astype(str).unique())
     return _map_by_names(drug_names, "BeatAML2", BEATAML2_CID_OVERRIDES)
+
+
+def _normalise_name(name: str) -> str:
+    return name.strip().lower()
+
+
+def _drug_mapping_config(dataset: str) -> tuple[dict[str, int], frozenset[str]]:
+    """Read a standard dataset's ``drug_mapping`` block: CID overrides and the names never sent to PubChem.
+
+    Raises:
+        CurationError: If an override is not an integer CID.
+    """
+    block = dataset_config(dataset).get("drug_mapping") or {}
+    overrides: dict[str, int] = {}
+    for name, cid in (block.get("cid_overrides") or {}).items():
+        try:
+            overrides[str(name)] = int(cid)
+        except (TypeError, ValueError) as exc:
+            msg = f"{dataset}: drug_mapping.cid_overrides['{name}'] is not an integer CID: {cid!r}"
+            raise CurationError(msg) from exc
+    no_lookup = frozenset(_normalise_name(str(name)) for name in block.get("no_lookup") or [])
+    return overrides, no_lookup
+
+
+def _given_cid(value: object) -> int | None:
+    """Turn a ``pubchem_id`` cell of the drugs file into a CID; missing or non-positive is unknown."""
+    cid = pd.to_numeric(pd.Series([value]), errors="coerce").iloc[0]
+    if pd.isna(cid) or cid <= 0:
+        return None
+    return int(cid)
+
+
+def _map_standard(raw_dir: UPath, dataset: str) -> pd.DataFrame:
+    """Map the drugs of a ``standard`` dataset from its ``drugs.parquet``.
+
+    A given ``pubchem_id`` is used as is. Otherwise ``drug_name`` is looked up,
+    with ``drug_mapping.cid_overrides`` as the fallback, except for names listed
+    in ``drug_mapping.no_lookup``: those (in-house codes) are never sent to
+    PubChem and keep a pseudo-ID. ``DRUG_ID`` is the native ``drug`` value the
+    wells join on; pseudo-IDs are ``<dataset>_<drug>``.
+
+    Raises:
+        CurationError: If ``drugs.parquet`` is missing or breaks the contract.
+    """
+    drugs = standard.read("drugs", raw_dir)
+    if drugs is None:  # drugs is not an optional kind; read raises instead
+        msg = f"{dataset}: drugs.parquet is missing"
+        raise CurationError(msg)
+    overrides, no_lookup = _drug_mapping_config(dataset)
+    has_cid = "pubchem_id" in drugs.columns
+    has_smiles = "smiles" in drugs.columns
+
+    results = []
+    for _, row in track(list(drugs.iterrows()), f"Mapping {dataset} drugs", total=len(drugs)):
+        drug, name = str(row["drug"]), str(row["drug_name"])
+        file_smiles = str(row["smiles"]) if has_smiles else None
+        cid = _given_cid(row["pubchem_id"]) if has_cid else None
+        smiles: str | None = None
+        if cid is not None:
+            if not file_smiles:
+                _, smiles = _lookup_pubchem(str(cid), namespace="cid")
+        elif _normalise_name(name) not in no_lookup:
+            cid, smiles = _resolve_with_override(name, overrides)
+        results.append(_record(drug, name, cid, file_smiles or smiles, dataset))
+
+    return pd.DataFrame(results, columns=pd.Index(["DRUG_ID", "DRUG_NAME", "pubchem_id", "canonical_smiles"]))
+
+
+def _component_lookup_skipping(no_lookup: frozenset[str]) -> Callable[[str], int | None]:
+    """Return a component resolver that answers the ``no_lookup`` names without asking PubChem."""
+
+    def lookup(component_name: str) -> int | None:
+        if _normalise_name(component_name) in no_lookup:
+            logger.debug("Combination component '%s' is marked no_lookup, not querying PubChem", component_name)
+            return None
+        return _lookup_component(component_name)
+
+    return lookup
 
 
 MAPPERS = {
@@ -354,18 +440,32 @@ def main(dataset: str) -> None:
     if fmt == "prism":
         msg = f"{dataset} is mapped by 'data-curation drugs map-prism', not 'drugs map'"
         raise CurationError(msg)
+    if fmt == standard.STANDARD:
+        _, no_lookup = _drug_mapping_config(dataset)
+        write_mapping(
+            dataset,
+            functools.partial(_map_standard, dataset=dataset),
+            component_lookup=_component_lookup_skipping(no_lookup),
+        )
+        return
     if fmt not in MAPPERS:
         msg = f"Unknown response format '{fmt}' for dataset {dataset}"
         raise CurationError(msg)
     write_mapping(dataset, MAPPERS[fmt])
 
 
-def write_mapping(dataset: str, mapper: Callable[[UPath], pd.DataFrame]) -> None:
+def write_mapping(
+    dataset: str,
+    mapper: Callable[[UPath], pd.DataFrame],
+    component_lookup: Callable[[str], int | None] | None = None,
+) -> None:
     """Run a mapper over a dataset's raw directory and write the checked mapping table.
 
     Args:
         dataset: Dataset name.
         mapper: Builds the DRUG_ID / DRUG_NAME / pubchem_id / canonical_smiles frame from the raw directory.
+        component_lookup: Resolves a combination component that is not screened as a single agent to a CID;
+            defaults to a plain PubChem name lookup.
 
     Raises:
         CurationError: If a CID absorbs unrelated drugs or too many PubChem lookups fail.
@@ -376,7 +476,7 @@ def write_mapping(dataset: str, mapper: Callable[[UPath], pd.DataFrame]) -> None
 
     _LOOKUPS.reset()
     mapping_df = mapper(raw_dir)
-    mapping_df = annotate_combinations(mapping_df, _lookup_component)
+    mapping_df = annotate_combinations(mapping_df, component_lookup or _lookup_component)
     enforce_failure_budget(
         _LOOKUPS.failures,
         _LOOKUPS.total,
