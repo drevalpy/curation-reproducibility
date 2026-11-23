@@ -10,10 +10,10 @@ wider than any single one - GDSC2 has 1675 cell lines against gene expression's
 table; the others get their own.
 
 Cell Model Passports is the primary source for cell lines. Of its 98 columns the
-pipeline used 3; the ones added here are the ones measured at full coverage over
-the cell lines these datasets actually screen. ``patient_id`` is the load-bearing
-one: 1931 distinct patients across 2266 models means some cell lines share a
-donor, which is a leakage channel the splitters could not previously see.
+pipeline keeps the ones with full coverage over the cell lines these datasets
+screen. ``patient_id`` is the load-bearing one: 1931 distinct patients across 2266
+models means some cell lines share a donor, a leakage channel the splitters need
+to see.
 
 Three sources are supported:
 

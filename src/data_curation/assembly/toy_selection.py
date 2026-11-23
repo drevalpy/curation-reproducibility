@@ -1,8 +1,7 @@
 """Selection logic for the subsampled toy dataset.
 
-Full-dataset runs are too slow to iterate on, so ``subsample_toy`` carves a tiny
-but structurally complete dataset out of an assembled MuData file. "Structurally
-complete" is the point: every split mode drevalpy offers has to work on it, so
+``subsample_toy`` carves a tiny dataset out of an assembled MuData file. It has to be
+structurally complete: every split mode drevalpy offers has to work on it, so
 
 * samples are drawn only from sample IDs present in *every* modality and
   carrying a known tissue, so leave-sample-out and leave-tissue-out both have
@@ -106,7 +105,7 @@ def select_samples(
         per_tissue: Number of samples to keep per tissue.
 
     Returns:
-        Selected sample IDs, grouped by tissue in ranked order.
+        Selected sample IDs, grouped by tissue in alphabetical order.
 
     Raises:
         CurationError: If fewer than ``n_tissues`` tissues have ``per_tissue``
@@ -175,11 +174,11 @@ def top_variance_features(adata: ad.AnnData, n_features: int) -> list[str]:
     Returns:
         Feature names, in the source ``var`` order.
     """
-    values = np.asarray(adata.X, dtype=np.float64)
     names = pd.Index(adata.var_names)
     if len(names) <= n_features:
         return [str(v) for v in names]
 
+    values = np.asarray(adata.X, dtype=np.float64)
     finite = np.isfinite(values)
     complete = finite.all(axis=0)
 

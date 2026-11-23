@@ -65,7 +65,6 @@ def _(px, snapshots, summary):
         y="samples",
         color="tissue",
         title="Response samples per dataset, by tissue",
-        labels={"samples": "samples"},
         height=550,
     )
     return
@@ -92,7 +91,6 @@ def _(membership, mo, px, snapshots, summary):
                 x="datasets",
                 y="samples",
                 title="Number of datasets each sample appears in",
-                labels={"datasets": "datasets", "samples": "samples"},
             ),
         ]
     )

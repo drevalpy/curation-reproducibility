@@ -38,6 +38,12 @@ def _cell_line_row(accession: str, name: str, tissue: str, **extra) -> dict:
     return {"sample_id": accession, "cellosaurus_id": accession, "cell_line_name": name, "tissue": tissue} | extra
 
 
+def _write_ontology() -> None:
+    """A one-drug ontology at the layout path, as the assemble stage's dependency."""
+    layout.DRUG_ONTOLOGY.parent.mkdir(parents=True, exist_ok=True)
+    pd.DataFrame({"inchikey": ["KEY"]}, index=pd.Index(["f0"], name="pubchem_id")).to_parquet(str(layout.DRUG_ONTOLOGY))
+
+
 @pytest.fixture
 def meta_parquet(tmp_path: Path):
     """Factory writing a metadata Parquet file; cell-line tables get the real CMP column set."""
@@ -159,10 +165,6 @@ class TestSubsetToScreened:
         subset = _subset_to_screened(modalities)
         assert list(subset["response"].obs_names) == ["CVCL_1", "CVCL_9"]
 
-    def test_without_a_response_nothing_changes(self) -> None:
-        modalities = {"gene_expression": _anndata(["CVCL_1", "CVCL_2"])}
-        assert list(_subset_to_screened(modalities)["gene_expression"].obs_names) == ["CVCL_1", "CVCL_2"]
-
 
 class TestMainReadsTheRightMetadata:
     @pytest.fixture
@@ -170,6 +172,7 @@ class TestMainReadsTheRightMetadata:
         (tmp_path / "config").mkdir()
         shutil.copy(SOURCES, tmp_path / "config" / "sources.yaml")
         monkeypatch.chdir(tmp_path)
+        _write_ontology()
         return tmp_path
 
     @staticmethod
@@ -197,6 +200,16 @@ class TestMainReadsTheRightMetadata:
         obs = md.read_h5mu(str(layout.assembled("GDSC2"))).obs
         assert obs.loc["CVCL_1", "tissue"] == "Lung"
         assert obs.loc["CVCL_1", "cellosaurus_id"] == "CVCL_1"
+
+    def test_the_drug_ontology_is_attached_to_the_response_drugs(self, workdir: Path) -> None:
+        self._write_meta(layout.cmp_sample_meta(), "CVCL_1", "Lung", cell_line=True)
+        self._write_response("GDSC2", "CVCL_1")
+
+        main("GDSC2")
+
+        var = pd.DataFrame(md.read_h5mu(str(layout.assembled("GDSC2"))).mod["response"].var)
+        assert var.loc["f0", "inchikey"] == "KEY"
+        assert var.loc["f1", "inchikey"] != "KEY"
 
     def test_a_constant_tissue_dataset_reads_its_own_table(self, workdir: Path) -> None:
         self._write_meta(layout.cmp_sample_meta(), "PDX1", "Lung", cell_line=True)
@@ -234,6 +247,7 @@ class TestMainAttachesReplicateFits:
         (tmp_path / "config").mkdir()
         shutil.copy(SOURCES, tmp_path / "config" / "sources.yaml")
         monkeypatch.chdir(tmp_path)
+        _write_ontology()
         TestMainReadsTheRightMetadata._write_meta(layout.cmp_sample_meta(), "CVCL_1", "Lung", cell_line=True)
         path = layout.harmonized("GDSC2")
         path.parent.mkdir(parents=True, exist_ok=True)

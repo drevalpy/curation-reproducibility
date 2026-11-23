@@ -144,6 +144,8 @@ def _run_pipeline() -> md.MuData:
     harmonize_response.main(DATASET)
     process_transcriptomics.main(DATASET)
     process_sample_meta.main(DATASET)
+    layout.DRUG_ONTOLOGY.parent.mkdir(parents=True, exist_ok=True)
+    pd.DataFrame(index=pd.Index([], name="pubchem_id")).to_parquet(str(layout.DRUG_ONTOLOGY))
     assemble_mudata.main(DATASET)
     check_drug_structures.main()
     return md.read_h5mu(str(layout.assembled(DATASET)))
