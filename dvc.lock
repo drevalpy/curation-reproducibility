@@ -5,12 +5,12 @@ stages:
     deps:
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/download.py
       hash: md5
-      md5: 886464ce798e60e7f004bb8ddebf226d
-      size: 4949
+      md5: 69589e573d7935b01ab1552d869085c8
+      size: 4546
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -21,12 +21,12 @@ stages:
       size: 6652
     - path: src/data_curation/omics/__init__.py
       hash: md5
-      md5: 9be4d14c3420172b1cbd6be3dbc66960
-      size: 840
+      md5: 615005d2acfebe508b869778d825dbc5
+      size: 903
     - path: src/data_curation/omics/download.py
       hash: md5
-      md5: bf01ad0abf77ca01fc1fac6edaadfd3a
-      size: 3574
+      md5: 31e4e6bc15c95a77f5cc12a8a11f54ef
+      size: 3471
     params:
       config/sources.yaml:
         datasets.GDSC2.response:
@@ -59,12 +59,12 @@ stages:
     deps:
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/download.py
       hash: md5
-      md5: 886464ce798e60e7f004bb8ddebf226d
-      size: 4949
+      md5: 69589e573d7935b01ab1552d869085c8
+      size: 4546
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -75,12 +75,12 @@ stages:
       size: 6652
     - path: src/data_curation/omics/__init__.py
       hash: md5
-      md5: 9be4d14c3420172b1cbd6be3dbc66960
-      size: 840
+      md5: 615005d2acfebe508b869778d825dbc5
+      size: 903
     - path: src/data_curation/omics/download.py
       hash: md5
-      md5: bf01ad0abf77ca01fc1fac6edaadfd3a
-      size: 3574
+      md5: 31e4e6bc15c95a77f5cc12a8a11f54ef
+      size: 3471
     params:
       config/sources.yaml:
         datasets.GDSC1.response:
@@ -118,8 +118,8 @@ stages:
       nfiles: 3
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -130,36 +130,36 @@ stages:
       size: 6652
     - path: src/data_curation/core/paths.py
       hash: md5
-      md5: a18e342f77d5c50fa30092f01bb76a95
-      size: 2344
+      md5: ff83d0975f3b62656328adcd454d39e3
+      size: 2050
     - path: src/data_curation/core/standard.py
       hash: md5
       md5: 1fb72009dcea35b32ce0508e296022c9
       size: 9925
     - path: src/data_curation/drugs/map_drugs.py
       hash: md5
-      md5: e0fadb8e7ce91ac9feb1b3e8080c1f5e
-      size: 20664
+      md5: 1ed5df72d6a25174c1585694bb538d89
+      size: 20628
     - path: src/data_curation/drugs/mapping/combinations.py
       hash: md5
       md5: cbb4115dbfd3f41558c4670702cb2ff0
       size: 6099
     - path: src/data_curation/drugs/mapping/overrides.py
       hash: md5
-      md5: d225c9274b0b752e7338237eab4e0ba8
-      size: 2386
+      md5: 0b111415074f4750dc8ec89f7969608b
+      size: 2262
     - path: src/data_curation/drugs/ontology/pubchem.py
       hash: md5
-      md5: c55c2da4e6d7f7e49efd2ce2c5b78f37
-      size: 10561
+      md5: b07693f06099292dbe65c31902881f90
+      size: 9077
     - path: src/data_curation/response/gdsc_tags.py
       hash: md5
-      md5: b1cf86ffa92e24ff52132d920f03d28d
-      size: 1558
+      md5: c55e5d04c14a2ada0abf1cb31c996005
+      size: 1522
     - path: src/data_curation/response/prepare/ccle.py
       hash: md5
-      md5: 1a2102c2195375c63248cb94f8ff9345
-      size: 4561
+      md5: 6fcd8f50e20a57dcc94c1130d3d9718a
+      size: 4373
     - path: src/data_curation/response/prepare/wells.py
       hash: md5
       md5: 53c031853b2691a8e82a57b692f26e61
@@ -206,8 +206,8 @@ stages:
       nfiles: 3
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -218,36 +218,36 @@ stages:
       size: 6652
     - path: src/data_curation/core/paths.py
       hash: md5
-      md5: a18e342f77d5c50fa30092f01bb76a95
-      size: 2344
+      md5: ff83d0975f3b62656328adcd454d39e3
+      size: 2050
     - path: src/data_curation/core/standard.py
       hash: md5
       md5: 1fb72009dcea35b32ce0508e296022c9
       size: 9925
     - path: src/data_curation/drugs/map_drugs.py
       hash: md5
-      md5: e0fadb8e7ce91ac9feb1b3e8080c1f5e
-      size: 20664
+      md5: 1ed5df72d6a25174c1585694bb538d89
+      size: 20628
     - path: src/data_curation/drugs/mapping/combinations.py
       hash: md5
       md5: cbb4115dbfd3f41558c4670702cb2ff0
       size: 6099
     - path: src/data_curation/drugs/mapping/overrides.py
       hash: md5
-      md5: d225c9274b0b752e7338237eab4e0ba8
-      size: 2386
+      md5: 0b111415074f4750dc8ec89f7969608b
+      size: 2262
     - path: src/data_curation/drugs/ontology/pubchem.py
       hash: md5
-      md5: c55c2da4e6d7f7e49efd2ce2c5b78f37
-      size: 10561
+      md5: b07693f06099292dbe65c31902881f90
+      size: 9077
     - path: src/data_curation/response/gdsc_tags.py
       hash: md5
-      md5: b1cf86ffa92e24ff52132d920f03d28d
-      size: 1558
+      md5: c55e5d04c14a2ada0abf1cb31c996005
+      size: 1522
     - path: src/data_curation/response/prepare/ccle.py
       hash: md5
-      md5: 1a2102c2195375c63248cb94f8ff9345
-      size: 4561
+      md5: 6fcd8f50e20a57dcc94c1130d3d9718a
+      size: 4373
     - path: src/data_curation/response/prepare/wells.py
       hash: md5
       md5: 53c031853b2691a8e82a57b692f26e61
@@ -303,8 +303,8 @@ stages:
       size: 814
     - path: src/data_curation/cell_lines/sidm_mapping.py
       hash: md5
-      md5: 4aea4b7a55bb4448e90ffee53fd48bb6
-      size: 3932
+      md5: 83881acd36cd37534f049474d2e8a86a
+      size: 4714
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -315,16 +315,20 @@ stages:
       size: 6652
     - path: src/data_curation/core/paths.py
       hash: md5
-      md5: a18e342f77d5c50fa30092f01bb76a95
-      size: 2344
+      md5: ff83d0975f3b62656328adcd454d39e3
+      size: 2050
     - path: src/data_curation/omics/__init__.py
       hash: md5
-      md5: 9be4d14c3420172b1cbd6be3dbc66960
-      size: 840
+      md5: 615005d2acfebe508b869778d825dbc5
+      size: 903
     - path: src/data_curation/omics/process_proteomics.py
       hash: md5
-      md5: 70ce4c4f115a9e544aa0a70e54c1ec59
-      size: 3385
+      md5: ff2bdb59067ff6da95649c14f0844855
+      size: 2806
+    - path: src/data_curation/omics/samples.py
+      hash: md5
+      md5: 92d6c2407338acfcb925811e69c253af
+      size: 3054
     outs:
     - path: data/02_omics/proteomics/GDSC1.h5ad
       hash: md5
@@ -426,24 +430,28 @@ stages:
       size: 814
     - path: src/data_curation/cell_lines/sidm_mapping.py
       hash: md5
-      md5: 4aea4b7a55bb4448e90ffee53fd48bb6
-      size: 3932
+      md5: 83881acd36cd37534f049474d2e8a86a
+      size: 4714
     - path: src/data_curation/core/layout.py
       hash: md5
       md5: b1daf5a5658c5970574e23ec1f2e71ca
       size: 6652
     - path: src/data_curation/core/paths.py
       hash: md5
-      md5: a18e342f77d5c50fa30092f01bb76a95
-      size: 2344
+      md5: ff83d0975f3b62656328adcd454d39e3
+      size: 2050
     - path: src/data_curation/omics/__init__.py
       hash: md5
-      md5: 9be4d14c3420172b1cbd6be3dbc66960
-      size: 840
+      md5: 615005d2acfebe508b869778d825dbc5
+      size: 903
     - path: src/data_curation/omics/process_mutations.py
       hash: md5
-      md5: b75822573286da41740e07b707249e54
-      size: 2781
+      md5: f62791d8a7c8c19bdcc1bfc23b760e3d
+      size: 2251
+    - path: src/data_curation/omics/samples.py
+      hash: md5
+      md5: 92d6c2407338acfcb925811e69c253af
+      size: 3054
     outs:
     - path: data/02_omics/mutations/GDSC1.h5ad
       hash: md5
@@ -468,32 +476,28 @@ stages:
       size: 814
     - path: src/data_curation/cell_lines/sidm_mapping.py
       hash: md5
-      md5: 4aea4b7a55bb4448e90ffee53fd48bb6
-      size: 3932
-    - path: src/data_curation/core/errors.py
-      hash: md5
-      md5: b5116cda92f509f1dcde5e3ab998a053
-      size: 442
+      md5: 83881acd36cd37534f049474d2e8a86a
+      size: 4714
     - path: src/data_curation/core/layout.py
       hash: md5
       md5: b1daf5a5658c5970574e23ec1f2e71ca
       size: 6652
     - path: src/data_curation/core/paths.py
       hash: md5
-      md5: a18e342f77d5c50fa30092f01bb76a95
-      size: 2344
+      md5: ff83d0975f3b62656328adcd454d39e3
+      size: 2050
     - path: src/data_curation/omics/__init__.py
       hash: md5
-      md5: 9be4d14c3420172b1cbd6be3dbc66960
-      size: 840
-    - path: src/data_curation/omics/cmp_matrix.py
-      hash: md5
-      md5: 7edb627b000d9edc61b634ec95b54ee8
-      size: 5812
+      md5: 615005d2acfebe508b869778d825dbc5
+      size: 903
     - path: src/data_curation/omics/process_cnv.py
       hash: md5
-      md5: b0212f3af762537c00c3c324be67ad54
-      size: 1953
+      md5: d02dbc64cb7f52576e6614d817d452c7
+      size: 2116
+    - path: src/data_curation/omics/samples.py
+      hash: md5
+      md5: 92d6c2407338acfcb925811e69c253af
+      size: 3054
     outs:
     - path: data/02_omics/cnv/GDSC1.h5ad
       hash: md5
@@ -536,8 +540,8 @@ stages:
       size: 153907
     - path: src/data_curation/assembly/assemble_mudata.py
       hash: md5
-      md5: 544e755cced2a13fdf2231a71824de68
-      size: 9169
+      md5: fda5725a83abe6f94eabd707aace3ef5
+      size: 8854
     - path: src/data_curation/assembly/write.py
       hash: md5
       md5: 7ef54f55e6c60e79986b4df644c148b2
@@ -548,16 +552,16 @@ stages:
       size: 5226
     - path: src/data_curation/cell_lines/meta.py
       hash: md5
-      md5: e9b042aa587ba09ba7bb22cdc0fc1eed
-      size: 9258
+      md5: 57f2a9d4969a4935cc250a5bf59a3a01
+      size: 9194
     - path: src/data_curation/cell_lines/sidm_mapping.py
       hash: md5
-      md5: 4aea4b7a55bb4448e90ffee53fd48bb6
-      size: 3932
+      md5: 83881acd36cd37534f049474d2e8a86a
+      size: 4714
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -598,32 +602,28 @@ stages:
       size: 814
     - path: src/data_curation/cell_lines/sidm_mapping.py
       hash: md5
-      md5: 4aea4b7a55bb4448e90ffee53fd48bb6
-      size: 3932
-    - path: src/data_curation/core/errors.py
-      hash: md5
-      md5: b5116cda92f509f1dcde5e3ab998a053
-      size: 442
+      md5: 83881acd36cd37534f049474d2e8a86a
+      size: 4714
     - path: src/data_curation/core/layout.py
       hash: md5
       md5: b1daf5a5658c5970574e23ec1f2e71ca
       size: 6652
     - path: src/data_curation/core/paths.py
       hash: md5
-      md5: a18e342f77d5c50fa30092f01bb76a95
-      size: 2344
+      md5: ff83d0975f3b62656328adcd454d39e3
+      size: 2050
     - path: src/data_curation/omics/__init__.py
       hash: md5
-      md5: 9be4d14c3420172b1cbd6be3dbc66960
-      size: 840
-    - path: src/data_curation/omics/cmp_matrix.py
-      hash: md5
-      md5: 7edb627b000d9edc61b634ec95b54ee8
-      size: 5812
+      md5: 615005d2acfebe508b869778d825dbc5
+      size: 903
     - path: src/data_curation/omics/process_cnv.py
       hash: md5
-      md5: b0212f3af762537c00c3c324be67ad54
-      size: 1953
+      md5: d02dbc64cb7f52576e6614d817d452c7
+      size: 2116
+    - path: src/data_curation/omics/samples.py
+      hash: md5
+      md5: 92d6c2407338acfcb925811e69c253af
+      size: 3054
     outs:
     - path: data/02_omics/cnv/GDSC2.h5ad
       hash: md5
@@ -648,24 +648,28 @@ stages:
       size: 814
     - path: src/data_curation/cell_lines/sidm_mapping.py
       hash: md5
-      md5: 4aea4b7a55bb4448e90ffee53fd48bb6
-      size: 3932
+      md5: 83881acd36cd37534f049474d2e8a86a
+      size: 4714
     - path: src/data_curation/core/layout.py
       hash: md5
       md5: b1daf5a5658c5970574e23ec1f2e71ca
       size: 6652
     - path: src/data_curation/core/paths.py
       hash: md5
-      md5: a18e342f77d5c50fa30092f01bb76a95
-      size: 2344
+      md5: ff83d0975f3b62656328adcd454d39e3
+      size: 2050
     - path: src/data_curation/omics/__init__.py
       hash: md5
-      md5: 9be4d14c3420172b1cbd6be3dbc66960
-      size: 840
+      md5: 615005d2acfebe508b869778d825dbc5
+      size: 903
     - path: src/data_curation/omics/process_mutations.py
       hash: md5
-      md5: b75822573286da41740e07b707249e54
-      size: 2781
+      md5: f62791d8a7c8c19bdcc1bfc23b760e3d
+      size: 2251
+    - path: src/data_curation/omics/samples.py
+      hash: md5
+      md5: 92d6c2407338acfcb925811e69c253af
+      size: 3054
     outs:
     - path: data/02_omics/mutations/GDSC2.h5ad
       hash: md5
@@ -690,8 +694,8 @@ stages:
       size: 814
     - path: src/data_curation/cell_lines/sidm_mapping.py
       hash: md5
-      md5: 4aea4b7a55bb4448e90ffee53fd48bb6
-      size: 3932
+      md5: 83881acd36cd37534f049474d2e8a86a
+      size: 4714
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -702,16 +706,20 @@ stages:
       size: 6652
     - path: src/data_curation/core/paths.py
       hash: md5
-      md5: a18e342f77d5c50fa30092f01bb76a95
-      size: 2344
+      md5: ff83d0975f3b62656328adcd454d39e3
+      size: 2050
     - path: src/data_curation/omics/__init__.py
       hash: md5
-      md5: 9be4d14c3420172b1cbd6be3dbc66960
-      size: 840
+      md5: 615005d2acfebe508b869778d825dbc5
+      size: 903
     - path: src/data_curation/omics/process_proteomics.py
       hash: md5
-      md5: 70ce4c4f115a9e544aa0a70e54c1ec59
-      size: 3385
+      md5: ff2bdb59067ff6da95649c14f0844855
+      size: 2806
+    - path: src/data_curation/omics/samples.py
+      hash: md5
+      md5: 92d6c2407338acfcb925811e69c253af
+      size: 3054
     outs:
     - path: data/02_omics/proteomics/GDSC2.h5ad
       hash: md5
@@ -831,8 +839,8 @@ stages:
       size: 153907
     - path: src/data_curation/assembly/assemble_mudata.py
       hash: md5
-      md5: 544e755cced2a13fdf2231a71824de68
-      size: 9169
+      md5: fda5725a83abe6f94eabd707aace3ef5
+      size: 8854
     - path: src/data_curation/assembly/write.py
       hash: md5
       md5: 7ef54f55e6c60e79986b4df644c148b2
@@ -843,16 +851,16 @@ stages:
       size: 5226
     - path: src/data_curation/cell_lines/meta.py
       hash: md5
-      md5: e9b042aa587ba09ba7bb22cdc0fc1eed
-      size: 9258
+      md5: 57f2a9d4969a4935cc250a5bf59a3a01
+      size: 9194
     - path: src/data_curation/cell_lines/sidm_mapping.py
       hash: md5
-      md5: 4aea4b7a55bb4448e90ffee53fd48bb6
-      size: 3932
+      md5: 83881acd36cd37534f049474d2e8a86a
+      size: 4714
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -879,12 +887,12 @@ stages:
     deps:
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/download.py
       hash: md5
-      md5: 886464ce798e60e7f004bb8ddebf226d
-      size: 4949
+      md5: 69589e573d7935b01ab1552d869085c8
+      size: 4546
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -895,12 +903,12 @@ stages:
       size: 6652
     - path: src/data_curation/omics/__init__.py
       hash: md5
-      md5: 9be4d14c3420172b1cbd6be3dbc66960
-      size: 840
+      md5: 615005d2acfebe508b869778d825dbc5
+      size: 903
     - path: src/data_curation/omics/download.py
       hash: md5
-      md5: bf01ad0abf77ca01fc1fac6edaadfd3a
-      size: 3574
+      md5: 31e4e6bc15c95a77f5cc12a8a11f54ef
+      size: 3471
     params:
       config/sources.yaml:
         datasets.CTRPv1.response:
@@ -924,12 +932,12 @@ stages:
     deps:
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/download.py
       hash: md5
-      md5: 886464ce798e60e7f004bb8ddebf226d
-      size: 4949
+      md5: 69589e573d7935b01ab1552d869085c8
+      size: 4546
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -940,12 +948,12 @@ stages:
       size: 6652
     - path: src/data_curation/omics/__init__.py
       hash: md5
-      md5: 9be4d14c3420172b1cbd6be3dbc66960
-      size: 840
+      md5: 615005d2acfebe508b869778d825dbc5
+      size: 903
     - path: src/data_curation/omics/download.py
       hash: md5
-      md5: bf01ad0abf77ca01fc1fac6edaadfd3a
-      size: 3574
+      md5: 31e4e6bc15c95a77f5cc12a8a11f54ef
+      size: 3471
     params:
       config/sources.yaml:
         datasets.CTRPv2.response:
@@ -976,8 +984,8 @@ stages:
       nfiles: 2
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -988,36 +996,36 @@ stages:
       size: 6652
     - path: src/data_curation/core/paths.py
       hash: md5
-      md5: a18e342f77d5c50fa30092f01bb76a95
-      size: 2344
+      md5: ff83d0975f3b62656328adcd454d39e3
+      size: 2050
     - path: src/data_curation/core/standard.py
       hash: md5
       md5: 1fb72009dcea35b32ce0508e296022c9
       size: 9925
     - path: src/data_curation/drugs/map_drugs.py
       hash: md5
-      md5: e0fadb8e7ce91ac9feb1b3e8080c1f5e
-      size: 20664
+      md5: 1ed5df72d6a25174c1585694bb538d89
+      size: 20628
     - path: src/data_curation/drugs/mapping/combinations.py
       hash: md5
       md5: cbb4115dbfd3f41558c4670702cb2ff0
       size: 6099
     - path: src/data_curation/drugs/mapping/overrides.py
       hash: md5
-      md5: d225c9274b0b752e7338237eab4e0ba8
-      size: 2386
+      md5: 0b111415074f4750dc8ec89f7969608b
+      size: 2262
     - path: src/data_curation/drugs/ontology/pubchem.py
       hash: md5
-      md5: c55c2da4e6d7f7e49efd2ce2c5b78f37
-      size: 10561
+      md5: b07693f06099292dbe65c31902881f90
+      size: 9077
     - path: src/data_curation/response/gdsc_tags.py
       hash: md5
-      md5: b1cf86ffa92e24ff52132d920f03d28d
-      size: 1558
+      md5: c55e5d04c14a2ada0abf1cb31c996005
+      size: 1522
     - path: src/data_curation/response/prepare/ccle.py
       hash: md5
-      md5: 1a2102c2195375c63248cb94f8ff9345
-      size: 4561
+      md5: 6fcd8f50e20a57dcc94c1130d3d9718a
+      size: 4373
     - path: src/data_curation/response/prepare/wells.py
       hash: md5
       md5: 53c031853b2691a8e82a57b692f26e61
@@ -1055,8 +1063,8 @@ stages:
       nfiles: 4
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -1067,36 +1075,36 @@ stages:
       size: 6652
     - path: src/data_curation/core/paths.py
       hash: md5
-      md5: a18e342f77d5c50fa30092f01bb76a95
-      size: 2344
+      md5: ff83d0975f3b62656328adcd454d39e3
+      size: 2050
     - path: src/data_curation/core/standard.py
       hash: md5
       md5: 1fb72009dcea35b32ce0508e296022c9
       size: 9925
     - path: src/data_curation/drugs/map_drugs.py
       hash: md5
-      md5: e0fadb8e7ce91ac9feb1b3e8080c1f5e
-      size: 20664
+      md5: 1ed5df72d6a25174c1585694bb538d89
+      size: 20628
     - path: src/data_curation/drugs/mapping/combinations.py
       hash: md5
       md5: cbb4115dbfd3f41558c4670702cb2ff0
       size: 6099
     - path: src/data_curation/drugs/mapping/overrides.py
       hash: md5
-      md5: d225c9274b0b752e7338237eab4e0ba8
-      size: 2386
+      md5: 0b111415074f4750dc8ec89f7969608b
+      size: 2262
     - path: src/data_curation/drugs/ontology/pubchem.py
       hash: md5
-      md5: c55c2da4e6d7f7e49efd2ce2c5b78f37
-      size: 10561
+      md5: b07693f06099292dbe65c31902881f90
+      size: 9077
     - path: src/data_curation/response/gdsc_tags.py
       hash: md5
-      md5: b1cf86ffa92e24ff52132d920f03d28d
-      size: 1558
+      md5: c55e5d04c14a2ada0abf1cb31c996005
+      size: 1522
     - path: src/data_curation/response/prepare/ccle.py
       hash: md5
-      md5: 1a2102c2195375c63248cb94f8ff9345
-      size: 4561
+      md5: 6fcd8f50e20a57dcc94c1130d3d9718a
+      size: 4373
     - path: src/data_curation/response/prepare/wells.py
       hash: md5
       md5: 53c031853b2691a8e82a57b692f26e61
@@ -1222,24 +1230,28 @@ stages:
       size: 814
     - path: src/data_curation/cell_lines/sidm_mapping.py
       hash: md5
-      md5: 4aea4b7a55bb4448e90ffee53fd48bb6
-      size: 3932
+      md5: 83881acd36cd37534f049474d2e8a86a
+      size: 4714
     - path: src/data_curation/core/layout.py
       hash: md5
       md5: b1daf5a5658c5970574e23ec1f2e71ca
       size: 6652
     - path: src/data_curation/core/paths.py
       hash: md5
-      md5: a18e342f77d5c50fa30092f01bb76a95
-      size: 2344
+      md5: ff83d0975f3b62656328adcd454d39e3
+      size: 2050
     - path: src/data_curation/omics/__init__.py
       hash: md5
-      md5: 9be4d14c3420172b1cbd6be3dbc66960
-      size: 840
+      md5: 615005d2acfebe508b869778d825dbc5
+      size: 903
     - path: src/data_curation/omics/process_mutations.py
       hash: md5
-      md5: b75822573286da41740e07b707249e54
-      size: 2781
+      md5: f62791d8a7c8c19bdcc1bfc23b760e3d
+      size: 2251
+    - path: src/data_curation/omics/samples.py
+      hash: md5
+      md5: 92d6c2407338acfcb925811e69c253af
+      size: 3054
     outs:
     - path: data/02_omics/mutations/CTRPv1.h5ad
       hash: md5
@@ -1264,32 +1276,28 @@ stages:
       size: 814
     - path: src/data_curation/cell_lines/sidm_mapping.py
       hash: md5
-      md5: 4aea4b7a55bb4448e90ffee53fd48bb6
-      size: 3932
-    - path: src/data_curation/core/errors.py
-      hash: md5
-      md5: b5116cda92f509f1dcde5e3ab998a053
-      size: 442
+      md5: 83881acd36cd37534f049474d2e8a86a
+      size: 4714
     - path: src/data_curation/core/layout.py
       hash: md5
       md5: b1daf5a5658c5970574e23ec1f2e71ca
       size: 6652
     - path: src/data_curation/core/paths.py
       hash: md5
-      md5: a18e342f77d5c50fa30092f01bb76a95
-      size: 2344
+      md5: ff83d0975f3b62656328adcd454d39e3
+      size: 2050
     - path: src/data_curation/omics/__init__.py
       hash: md5
-      md5: 9be4d14c3420172b1cbd6be3dbc66960
-      size: 840
-    - path: src/data_curation/omics/cmp_matrix.py
-      hash: md5
-      md5: 7edb627b000d9edc61b634ec95b54ee8
-      size: 5812
+      md5: 615005d2acfebe508b869778d825dbc5
+      size: 903
     - path: src/data_curation/omics/process_cnv.py
       hash: md5
-      md5: b0212f3af762537c00c3c324be67ad54
-      size: 1953
+      md5: d02dbc64cb7f52576e6614d817d452c7
+      size: 2116
+    - path: src/data_curation/omics/samples.py
+      hash: md5
+      md5: 92d6c2407338acfcb925811e69c253af
+      size: 3054
     outs:
     - path: data/02_omics/cnv/CTRPv1.h5ad
       hash: md5
@@ -1314,8 +1322,8 @@ stages:
       size: 814
     - path: src/data_curation/cell_lines/sidm_mapping.py
       hash: md5
-      md5: 4aea4b7a55bb4448e90ffee53fd48bb6
-      size: 3932
+      md5: 83881acd36cd37534f049474d2e8a86a
+      size: 4714
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -1326,16 +1334,20 @@ stages:
       size: 6652
     - path: src/data_curation/core/paths.py
       hash: md5
-      md5: a18e342f77d5c50fa30092f01bb76a95
-      size: 2344
+      md5: ff83d0975f3b62656328adcd454d39e3
+      size: 2050
     - path: src/data_curation/omics/__init__.py
       hash: md5
-      md5: 9be4d14c3420172b1cbd6be3dbc66960
-      size: 840
+      md5: 615005d2acfebe508b869778d825dbc5
+      size: 903
     - path: src/data_curation/omics/process_proteomics.py
       hash: md5
-      md5: 70ce4c4f115a9e544aa0a70e54c1ec59
-      size: 3385
+      md5: ff2bdb59067ff6da95649c14f0844855
+      size: 2806
+    - path: src/data_curation/omics/samples.py
+      hash: md5
+      md5: 92d6c2407338acfcb925811e69c253af
+      size: 3054
     outs:
     - path: data/02_omics/proteomics/CTRPv1.h5ad
       hash: md5
@@ -1378,8 +1390,8 @@ stages:
       size: 153907
     - path: src/data_curation/assembly/assemble_mudata.py
       hash: md5
-      md5: 544e755cced2a13fdf2231a71824de68
-      size: 9169
+      md5: fda5725a83abe6f94eabd707aace3ef5
+      size: 8854
     - path: src/data_curation/assembly/write.py
       hash: md5
       md5: 7ef54f55e6c60e79986b4df644c148b2
@@ -1390,16 +1402,16 @@ stages:
       size: 5226
     - path: src/data_curation/cell_lines/meta.py
       hash: md5
-      md5: e9b042aa587ba09ba7bb22cdc0fc1eed
-      size: 9258
+      md5: 57f2a9d4969a4935cc250a5bf59a3a01
+      size: 9194
     - path: src/data_curation/cell_lines/sidm_mapping.py
       hash: md5
-      md5: 4aea4b7a55bb4448e90ffee53fd48bb6
-      size: 3932
+      md5: 83881acd36cd37534f049474d2e8a86a
+      size: 4714
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -1517,24 +1529,28 @@ stages:
       size: 814
     - path: src/data_curation/cell_lines/sidm_mapping.py
       hash: md5
-      md5: 4aea4b7a55bb4448e90ffee53fd48bb6
-      size: 3932
+      md5: 83881acd36cd37534f049474d2e8a86a
+      size: 4714
     - path: src/data_curation/core/layout.py
       hash: md5
       md5: b1daf5a5658c5970574e23ec1f2e71ca
       size: 6652
     - path: src/data_curation/core/paths.py
       hash: md5
-      md5: a18e342f77d5c50fa30092f01bb76a95
-      size: 2344
+      md5: ff83d0975f3b62656328adcd454d39e3
+      size: 2050
     - path: src/data_curation/omics/__init__.py
       hash: md5
-      md5: 9be4d14c3420172b1cbd6be3dbc66960
-      size: 840
+      md5: 615005d2acfebe508b869778d825dbc5
+      size: 903
     - path: src/data_curation/omics/process_mutations.py
       hash: md5
-      md5: b75822573286da41740e07b707249e54
-      size: 2781
+      md5: f62791d8a7c8c19bdcc1bfc23b760e3d
+      size: 2251
+    - path: src/data_curation/omics/samples.py
+      hash: md5
+      md5: 92d6c2407338acfcb925811e69c253af
+      size: 3054
     outs:
     - path: data/02_omics/mutations/CTRPv2.h5ad
       hash: md5
@@ -1559,32 +1575,28 @@ stages:
       size: 814
     - path: src/data_curation/cell_lines/sidm_mapping.py
       hash: md5
-      md5: 4aea4b7a55bb4448e90ffee53fd48bb6
-      size: 3932
-    - path: src/data_curation/core/errors.py
-      hash: md5
-      md5: b5116cda92f509f1dcde5e3ab998a053
-      size: 442
+      md5: 83881acd36cd37534f049474d2e8a86a
+      size: 4714
     - path: src/data_curation/core/layout.py
       hash: md5
       md5: b1daf5a5658c5970574e23ec1f2e71ca
       size: 6652
     - path: src/data_curation/core/paths.py
       hash: md5
-      md5: a18e342f77d5c50fa30092f01bb76a95
-      size: 2344
+      md5: ff83d0975f3b62656328adcd454d39e3
+      size: 2050
     - path: src/data_curation/omics/__init__.py
       hash: md5
-      md5: 9be4d14c3420172b1cbd6be3dbc66960
-      size: 840
-    - path: src/data_curation/omics/cmp_matrix.py
-      hash: md5
-      md5: 7edb627b000d9edc61b634ec95b54ee8
-      size: 5812
+      md5: 615005d2acfebe508b869778d825dbc5
+      size: 903
     - path: src/data_curation/omics/process_cnv.py
       hash: md5
-      md5: b0212f3af762537c00c3c324be67ad54
-      size: 1953
+      md5: d02dbc64cb7f52576e6614d817d452c7
+      size: 2116
+    - path: src/data_curation/omics/samples.py
+      hash: md5
+      md5: 92d6c2407338acfcb925811e69c253af
+      size: 3054
     outs:
     - path: data/02_omics/cnv/CTRPv2.h5ad
       hash: md5
@@ -1609,8 +1621,8 @@ stages:
       size: 814
     - path: src/data_curation/cell_lines/sidm_mapping.py
       hash: md5
-      md5: 4aea4b7a55bb4448e90ffee53fd48bb6
-      size: 3932
+      md5: 83881acd36cd37534f049474d2e8a86a
+      size: 4714
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -1621,16 +1633,20 @@ stages:
       size: 6652
     - path: src/data_curation/core/paths.py
       hash: md5
-      md5: a18e342f77d5c50fa30092f01bb76a95
-      size: 2344
+      md5: ff83d0975f3b62656328adcd454d39e3
+      size: 2050
     - path: src/data_curation/omics/__init__.py
       hash: md5
-      md5: 9be4d14c3420172b1cbd6be3dbc66960
-      size: 840
+      md5: 615005d2acfebe508b869778d825dbc5
+      size: 903
     - path: src/data_curation/omics/process_proteomics.py
       hash: md5
-      md5: 70ce4c4f115a9e544aa0a70e54c1ec59
-      size: 3385
+      md5: ff2bdb59067ff6da95649c14f0844855
+      size: 2806
+    - path: src/data_curation/omics/samples.py
+      hash: md5
+      md5: 92d6c2407338acfcb925811e69c253af
+      size: 3054
     outs:
     - path: data/02_omics/proteomics/CTRPv2.h5ad
       hash: md5
@@ -1673,8 +1689,8 @@ stages:
       size: 153907
     - path: src/data_curation/assembly/assemble_mudata.py
       hash: md5
-      md5: 544e755cced2a13fdf2231a71824de68
-      size: 9169
+      md5: fda5725a83abe6f94eabd707aace3ef5
+      size: 8854
     - path: src/data_curation/assembly/write.py
       hash: md5
       md5: 7ef54f55e6c60e79986b4df644c148b2
@@ -1685,16 +1701,16 @@ stages:
       size: 5226
     - path: src/data_curation/cell_lines/meta.py
       hash: md5
-      md5: e9b042aa587ba09ba7bb22cdc0fc1eed
-      size: 9258
+      md5: 57f2a9d4969a4935cc250a5bf59a3a01
+      size: 9194
     - path: src/data_curation/cell_lines/sidm_mapping.py
       hash: md5
-      md5: 4aea4b7a55bb4448e90ffee53fd48bb6
-      size: 3932
+      md5: 83881acd36cd37534f049474d2e8a86a
+      size: 4714
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -1725,8 +1741,8 @@ stages:
       size: 6149
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -1751,12 +1767,12 @@ stages:
     deps:
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/download.py
       hash: md5
-      md5: 886464ce798e60e7f004bb8ddebf226d
-      size: 4949
+      md5: 69589e573d7935b01ab1552d869085c8
+      size: 4546
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -1767,12 +1783,12 @@ stages:
       size: 6652
     - path: src/data_curation/omics/__init__.py
       hash: md5
-      md5: 9be4d14c3420172b1cbd6be3dbc66960
-      size: 840
+      md5: 615005d2acfebe508b869778d825dbc5
+      size: 903
     - path: src/data_curation/omics/download.py
       hash: md5
-      md5: bf01ad0abf77ca01fc1fac6edaadfd3a
-      size: 3574
+      md5: 31e4e6bc15c95a77f5cc12a8a11f54ef
+      size: 3471
     params:
       config/sources.yaml:
         datasets.PDX_Bruna.transcriptomics:
@@ -1794,12 +1810,12 @@ stages:
     deps:
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/download.py
       hash: md5
-      md5: 886464ce798e60e7f004bb8ddebf226d
-      size: 4949
+      md5: 69589e573d7935b01ab1552d869085c8
+      size: 4546
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -1810,12 +1826,12 @@ stages:
       size: 6652
     - path: src/data_curation/omics/__init__.py
       hash: md5
-      md5: 9be4d14c3420172b1cbd6be3dbc66960
-      size: 840
+      md5: 615005d2acfebe508b869778d825dbc5
+      size: 903
     - path: src/data_curation/omics/download.py
       hash: md5
-      md5: bf01ad0abf77ca01fc1fac6edaadfd3a
-      size: 3574
+      md5: 31e4e6bc15c95a77f5cc12a8a11f54ef
+      size: 3471
     params:
       config/sources.yaml:
         datasets.PDX_Bruna.response:
@@ -1841,12 +1857,12 @@ stages:
     deps:
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/download.py
       hash: md5
-      md5: 886464ce798e60e7f004bb8ddebf226d
-      size: 4949
+      md5: 69589e573d7935b01ab1552d869085c8
+      size: 4546
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -1857,12 +1873,12 @@ stages:
       size: 6652
     - path: src/data_curation/omics/__init__.py
       hash: md5
-      md5: 9be4d14c3420172b1cbd6be3dbc66960
-      size: 840
+      md5: 615005d2acfebe508b869778d825dbc5
+      size: 903
     - path: src/data_curation/omics/download.py
       hash: md5
-      md5: bf01ad0abf77ca01fc1fac6edaadfd3a
-      size: 3574
+      md5: 31e4e6bc15c95a77f5cc12a8a11f54ef
+      size: 3471
     params:
       config/sources.yaml:
         datasets.BeatAML2.response:
@@ -1890,12 +1906,12 @@ stages:
     deps:
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/download.py
       hash: md5
-      md5: 886464ce798e60e7f004bb8ddebf226d
-      size: 4949
+      md5: 69589e573d7935b01ab1552d869085c8
+      size: 4546
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -1906,12 +1922,12 @@ stages:
       size: 6652
     - path: src/data_curation/omics/__init__.py
       hash: md5
-      md5: 9be4d14c3420172b1cbd6be3dbc66960
-      size: 840
+      md5: 615005d2acfebe508b869778d825dbc5
+      size: 903
     - path: src/data_curation/omics/download.py
       hash: md5
-      md5: bf01ad0abf77ca01fc1fac6edaadfd3a
-      size: 3574
+      md5: 31e4e6bc15c95a77f5cc12a8a11f54ef
+      size: 3471
     params:
       config/sources.yaml:
         datasets.BeatAML2.transcriptomics:
@@ -1951,8 +1967,8 @@ stages:
       nfiles: 2
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -1963,36 +1979,36 @@ stages:
       size: 6652
     - path: src/data_curation/core/paths.py
       hash: md5
-      md5: a18e342f77d5c50fa30092f01bb76a95
-      size: 2344
+      md5: ff83d0975f3b62656328adcd454d39e3
+      size: 2050
     - path: src/data_curation/core/standard.py
       hash: md5
       md5: 1fb72009dcea35b32ce0508e296022c9
       size: 9925
     - path: src/data_curation/drugs/map_drugs.py
       hash: md5
-      md5: e0fadb8e7ce91ac9feb1b3e8080c1f5e
-      size: 20664
+      md5: 1ed5df72d6a25174c1585694bb538d89
+      size: 20628
     - path: src/data_curation/drugs/mapping/combinations.py
       hash: md5
       md5: cbb4115dbfd3f41558c4670702cb2ff0
       size: 6099
     - path: src/data_curation/drugs/mapping/overrides.py
       hash: md5
-      md5: d225c9274b0b752e7338237eab4e0ba8
-      size: 2386
+      md5: 0b111415074f4750dc8ec89f7969608b
+      size: 2262
     - path: src/data_curation/drugs/ontology/pubchem.py
       hash: md5
-      md5: c55c2da4e6d7f7e49efd2ce2c5b78f37
-      size: 10561
+      md5: b07693f06099292dbe65c31902881f90
+      size: 9077
     - path: src/data_curation/response/gdsc_tags.py
       hash: md5
-      md5: b1cf86ffa92e24ff52132d920f03d28d
-      size: 1558
+      md5: c55e5d04c14a2ada0abf1cb31c996005
+      size: 1522
     - path: src/data_curation/response/prepare/ccle.py
       hash: md5
-      md5: 1a2102c2195375c63248cb94f8ff9345
-      size: 4561
+      md5: 6fcd8f50e20a57dcc94c1130d3d9718a
+      size: 4373
     - path: src/data_curation/response/prepare/wells.py
       hash: md5
       md5: 53c031853b2691a8e82a57b692f26e61
@@ -2032,8 +2048,8 @@ stages:
       nfiles: 2
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -2044,36 +2060,36 @@ stages:
       size: 6652
     - path: src/data_curation/core/paths.py
       hash: md5
-      md5: a18e342f77d5c50fa30092f01bb76a95
-      size: 2344
+      md5: ff83d0975f3b62656328adcd454d39e3
+      size: 2050
     - path: src/data_curation/core/standard.py
       hash: md5
       md5: 1fb72009dcea35b32ce0508e296022c9
       size: 9925
     - path: src/data_curation/drugs/map_drugs.py
       hash: md5
-      md5: e0fadb8e7ce91ac9feb1b3e8080c1f5e
-      size: 20664
+      md5: 1ed5df72d6a25174c1585694bb538d89
+      size: 20628
     - path: src/data_curation/drugs/mapping/combinations.py
       hash: md5
       md5: cbb4115dbfd3f41558c4670702cb2ff0
       size: 6099
     - path: src/data_curation/drugs/mapping/overrides.py
       hash: md5
-      md5: d225c9274b0b752e7338237eab4e0ba8
-      size: 2386
+      md5: 0b111415074f4750dc8ec89f7969608b
+      size: 2262
     - path: src/data_curation/drugs/ontology/pubchem.py
       hash: md5
-      md5: c55c2da4e6d7f7e49efd2ce2c5b78f37
-      size: 10561
+      md5: b07693f06099292dbe65c31902881f90
+      size: 9077
     - path: src/data_curation/response/gdsc_tags.py
       hash: md5
-      md5: b1cf86ffa92e24ff52132d920f03d28d
-      size: 1558
+      md5: c55e5d04c14a2ada0abf1cb31c996005
+      size: 1522
     - path: src/data_curation/response/prepare/ccle.py
       hash: md5
-      md5: 1a2102c2195375c63248cb94f8ff9345
-      size: 4561
+      md5: 6fcd8f50e20a57dcc94c1130d3d9718a
+      size: 4373
     - path: src/data_curation/response/prepare/wells.py
       hash: md5
       md5: 53c031853b2691a8e82a57b692f26e61
@@ -2126,8 +2142,8 @@ stages:
       size: 5573
     - path: src/data_curation/assembly/assemble_mudata.py
       hash: md5
-      md5: 544e755cced2a13fdf2231a71824de68
-      size: 9169
+      md5: fda5725a83abe6f94eabd707aace3ef5
+      size: 8854
     - path: src/data_curation/assembly/write.py
       hash: md5
       md5: 7ef54f55e6c60e79986b4df644c148b2
@@ -2138,16 +2154,16 @@ stages:
       size: 5226
     - path: src/data_curation/cell_lines/meta.py
       hash: md5
-      md5: e9b042aa587ba09ba7bb22cdc0fc1eed
-      size: 9258
+      md5: 57f2a9d4969a4935cc250a5bf59a3a01
+      size: 9194
     - path: src/data_curation/cell_lines/sidm_mapping.py
       hash: md5
-      md5: 4aea4b7a55bb4448e90ffee53fd48bb6
-      size: 3932
+      md5: 83881acd36cd37534f049474d2e8a86a
+      size: 4714
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -2190,8 +2206,8 @@ stages:
       size: 2001
     - path: src/data_curation/assembly/assemble_mudata.py
       hash: md5
-      md5: 544e755cced2a13fdf2231a71824de68
-      size: 9169
+      md5: fda5725a83abe6f94eabd707aace3ef5
+      size: 8854
     - path: src/data_curation/assembly/write.py
       hash: md5
       md5: 7ef54f55e6c60e79986b4df644c148b2
@@ -2202,16 +2218,16 @@ stages:
       size: 5226
     - path: src/data_curation/cell_lines/meta.py
       hash: md5
-      md5: e9b042aa587ba09ba7bb22cdc0fc1eed
-      size: 9258
+      md5: 57f2a9d4969a4935cc250a5bf59a3a01
+      size: 9194
     - path: src/data_curation/cell_lines/sidm_mapping.py
       hash: md5
-      md5: 4aea4b7a55bb4448e90ffee53fd48bb6
-      size: 3932
+      md5: 83881acd36cd37534f049474d2e8a86a
+      size: 4714
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -2238,12 +2254,12 @@ stages:
     deps:
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/download.py
       hash: md5
-      md5: 886464ce798e60e7f004bb8ddebf226d
-      size: 4949
+      md5: 69589e573d7935b01ab1552d869085c8
+      size: 4546
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -2254,12 +2270,12 @@ stages:
       size: 6652
     - path: src/data_curation/drugs/download_drug_ontology.py
       hash: md5
-      md5: a4353e2e9257b2ae8a42134eeb5b09a4
-      size: 1811
+      md5: a931cdd9b8eb2db6ac86d06203926325
+      size: 1803
     - path: src/data_curation/drugs/ontology/pubchem.py
       hash: md5
-      md5: c55c2da4e6d7f7e49efd2ce2c5b78f37
-      size: 10561
+      md5: b07693f06099292dbe65c31902881f90
+      size: 9077
     params:
       config/sources.yaml:
         drug_ontology:
@@ -2315,8 +2331,8 @@ stages:
       size: 156726
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -2327,16 +2343,16 @@ stages:
       size: 6652
     - path: src/data_curation/drugs/annotate_drugs.py
       hash: md5
-      md5: efc0ba5f8bc14c49387489f0c8843a12
-      size: 11894
+      md5: 644be80756d7e111f41393f0667a575c
+      size: 11581
     - path: src/data_curation/drugs/mapping/combinations.py
       hash: md5
       md5: cbb4115dbfd3f41558c4670702cb2ff0
       size: 6099
     - path: src/data_curation/drugs/mapping/names.py
       hash: md5
-      md5: 4919627b63701602a73f1ed32bca7f8b
-      size: 3308
+      md5: 176fcb656a4021c632c44f7c569c3b80
+      size: 2878
     - path: src/data_curation/drugs/ontology/chebi.py
       hash: md5
       md5: ecc6061fac96d29eef1efe213c94f953
@@ -2347,8 +2363,8 @@ stages:
       size: 3750
     - path: src/data_curation/drugs/ontology/pubchem.py
       hash: md5
-      md5: c55c2da4e6d7f7e49efd2ce2c5b78f37
-      size: 10561
+      md5: b07693f06099292dbe65c31902881f90
+      size: 9077
     - path: src/data_curation/drugs/ontology/targets.py
       hash: md5
       md5: 3417215733adc9e5821de8b2be9e85b6
@@ -2386,20 +2402,20 @@ stages:
       size: 2086
     - path: src/data_curation/assembly/subsample_toy.py
       hash: md5
-      md5: d98bb58dddac0a047cf27ddef6312110
-      size: 7073
+      md5: 2078ee695c911db6b6514ca04e1f3ca1
+      size: 6407
     - path: src/data_curation/assembly/toy_selection.py
       hash: md5
-      md5: f38cd56f54a3cf47c4053fe2861e1bd1
-      size: 10375
+      md5: 2c66f5e64b520526e89a865714248312
+      size: 10304
     - path: src/data_curation/assembly/write.py
       hash: md5
       md5: 7ef54f55e6c60e79986b4df644c148b2
       size: 749
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -2546,8 +2562,8 @@ stages:
       nfiles: 2
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -2558,52 +2574,52 @@ stages:
       size: 6652
     - path: src/data_curation/core/paths.py
       hash: md5
-      md5: a18e342f77d5c50fa30092f01bb76a95
-      size: 2344
+      md5: ff83d0975f3b62656328adcd454d39e3
+      size: 2050
     - path: src/data_curation/core/standard.py
       hash: md5
       md5: 1fb72009dcea35b32ce0508e296022c9
       size: 9925
     - path: src/data_curation/response/gdsc_tags.py
       hash: md5
-      md5: b1cf86ffa92e24ff52132d920f03d28d
-      size: 1558
+      md5: c55e5d04c14a2ada0abf1cb31c996005
+      size: 1522
     - path: src/data_curation/response/prepare/beataml.py
       hash: md5
-      md5: f2980d001aac40d1075c33327ea9c897
-      size: 2506
+      md5: c2c47b280e98b15e2a48a170d1d6a51c
+      size: 2404
     - path: src/data_curation/response/prepare/bruna.py
       hash: md5
-      md5: ebc3c8e2d2726d5f67a6dd2c53b5ea00
-      size: 2532
+      md5: 2bcc49ba5dfafebd988db804e74778ed
+      size: 2430
     - path: src/data_curation/response/prepare/ccle.py
       hash: md5
-      md5: 1a2102c2195375c63248cb94f8ff9345
-      size: 4561
+      md5: 6fcd8f50e20a57dcc94c1130d3d9718a
+      size: 4373
     - path: src/data_curation/response/prepare/ctrp.py
       hash: md5
-      md5: d918d5a940c5f5da3b7360644377327d
-      size: 5544
+      md5: 9649cca7a285f865131288bcb8cd2472
+      size: 5340
     - path: src/data_curation/response/prepare/gdsc.py
       hash: md5
-      md5: c609908d6c6ee5b56d50a517771248fe
-      size: 5431
+      md5: a3cb2223c083bd0073dd79737d1267ef
+      size: 5483
     - path: src/data_curation/response/prepare/prism.py
       hash: md5
-      md5: ed7e82c55f69ce2853f2530a00504e0d
-      size: 7899
+      md5: 3074d4afc1ed402fcac5b43432a2dfb6
+      size: 7797
     - path: src/data_curation/response/prepare/standard.py
       hash: md5
-      md5: c10de56866e0b7d01c8b0e0d652fdb76
-      size: 2159
+      md5: fc769e15db5746f2ac5497ab5a4267c3
+      size: 2057
     - path: src/data_curation/response/prepare/wells.py
       hash: md5
       md5: 53c031853b2691a8e82a57b692f26e61
       size: 6756
     - path: src/data_curation/response/prepare_viability.py
       hash: md5
-      md5: 84f3d3b016551602d308a81dbb23b7e5
-      size: 3531
+      md5: bdec0a65a2325e9c63d2e8a01bb44837
+      size: 3648
     params:
       config/sources.yaml:
         datasets.PDX_Bruna.response:
@@ -2632,8 +2648,8 @@ stages:
       size: 357482
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -2708,12 +2724,12 @@ stages:
       size: 814
     - path: src/data_curation/cell_lines/sidm_mapping.py
       hash: md5
-      md5: 4aea4b7a55bb4448e90ffee53fd48bb6
-      size: 3932
+      md5: 83881acd36cd37534f049474d2e8a86a
+      size: 4714
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -2724,36 +2740,36 @@ stages:
       size: 6652
     - path: src/data_curation/core/paths.py
       hash: md5
-      md5: a18e342f77d5c50fa30092f01bb76a95
-      size: 2344
+      md5: ff83d0975f3b62656328adcd454d39e3
+      size: 2050
     - path: src/data_curation/core/standard.py
       hash: md5
       md5: 1fb72009dcea35b32ce0508e296022c9
       size: 9925
     - path: src/data_curation/response/harmonize/collapse.py
       hash: md5
-      md5: 364ae3841aa729e60ffff88846618a0b
-      size: 8864
+      md5: cb91b0eed8013d70dcddded68bb40ddf
+      size: 8723
     - path: src/data_curation/response/harmonize/identity.py
       hash: md5
-      md5: 5d1444e413037fc8aaf2851947f80c0f
-      size: 8846
+      md5: 0ebfaf17a6c676602617449a6bf61b7e
+      size: 7617
     - path: src/data_curation/response/harmonize/published.py
       hash: md5
-      md5: a22f4e00ffe9d4224a20a416dc1aed47
-      size: 9221
+      md5: fd6c1d8c985a932aa5f139534a030b4e
+      size: 9229
     - path: src/data_curation/response/harmonize/structures.py
       hash: md5
       md5: 460630f7b1e12d12363e8ae8ee41606f
       size: 3845
     - path: src/data_curation/response/harmonize_response.py
       hash: md5
-      md5: c1801bb1971c93b0f5461e9bd2fc3830
-      size: 8782
+      md5: 1473b48b05b146766d527d03925e6057
+      size: 8399
     - path: src/data_curation/response/prepare/ccle.py
       hash: md5
-      md5: 1a2102c2195375c63248cb94f8ff9345
-      size: 4561
+      md5: 6fcd8f50e20a57dcc94c1130d3d9718a
+      size: 4373
     - path: src/data_curation/response/prepare/wells.py
       hash: md5
       md5: 53c031853b2691a8e82a57b692f26e61
@@ -2786,12 +2802,12 @@ stages:
     deps:
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/download.py
       hash: md5
-      md5: 886464ce798e60e7f004bb8ddebf226d
-      size: 4949
+      md5: 69589e573d7935b01ab1552d869085c8
+      size: 4546
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -2802,12 +2818,12 @@ stages:
       size: 6652
     - path: src/data_curation/omics/__init__.py
       hash: md5
-      md5: 9be4d14c3420172b1cbd6be3dbc66960
-      size: 840
+      md5: 615005d2acfebe508b869778d825dbc5
+      size: 903
     - path: src/data_curation/omics/download.py
       hash: md5
-      md5: bf01ad0abf77ca01fc1fac6edaadfd3a
-      size: 3574
+      md5: 31e4e6bc15c95a77f5cc12a8a11f54ef
+      size: 3471
     params:
       config/sources.yaml:
         datasets.CCLE.response:
@@ -2837,8 +2853,8 @@ stages:
       nfiles: 1
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -2849,36 +2865,36 @@ stages:
       size: 6652
     - path: src/data_curation/core/paths.py
       hash: md5
-      md5: a18e342f77d5c50fa30092f01bb76a95
-      size: 2344
+      md5: ff83d0975f3b62656328adcd454d39e3
+      size: 2050
     - path: src/data_curation/core/standard.py
       hash: md5
       md5: 1fb72009dcea35b32ce0508e296022c9
       size: 9925
     - path: src/data_curation/drugs/map_drugs.py
       hash: md5
-      md5: e0fadb8e7ce91ac9feb1b3e8080c1f5e
-      size: 20664
+      md5: 1ed5df72d6a25174c1585694bb538d89
+      size: 20628
     - path: src/data_curation/drugs/mapping/combinations.py
       hash: md5
       md5: cbb4115dbfd3f41558c4670702cb2ff0
       size: 6099
     - path: src/data_curation/drugs/mapping/overrides.py
       hash: md5
-      md5: d225c9274b0b752e7338237eab4e0ba8
-      size: 2386
+      md5: 0b111415074f4750dc8ec89f7969608b
+      size: 2262
     - path: src/data_curation/drugs/ontology/pubchem.py
       hash: md5
-      md5: c55c2da4e6d7f7e49efd2ce2c5b78f37
-      size: 10561
+      md5: b07693f06099292dbe65c31902881f90
+      size: 9077
     - path: src/data_curation/response/gdsc_tags.py
       hash: md5
-      md5: b1cf86ffa92e24ff52132d920f03d28d
-      size: 1558
+      md5: c55e5d04c14a2ada0abf1cb31c996005
+      size: 1522
     - path: src/data_curation/response/prepare/ccle.py
       hash: md5
-      md5: 1a2102c2195375c63248cb94f8ff9345
-      size: 4561
+      md5: 6fcd8f50e20a57dcc94c1130d3d9718a
+      size: 4373
     - path: src/data_curation/response/prepare/wells.py
       hash: md5
       md5: 53c031853b2691a8e82a57b692f26e61
@@ -3007,16 +3023,16 @@ stages:
       size: 814
     - path: src/data_curation/cell_lines/native_ids.py
       hash: md5
-      md5: a2e73753ff08e01e0a06265ceadef48c
-      size: 5433
+      md5: 9aa6a5d707496a63213026a67ca0fd53
+      size: 3942
     - path: src/data_curation/cell_lines/sidm_mapping.py
       hash: md5
-      md5: 4aea4b7a55bb4448e90ffee53fd48bb6
-      size: 3932
+      md5: 83881acd36cd37534f049474d2e8a86a
+      size: 4714
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -3027,16 +3043,16 @@ stages:
       size: 6652
     - path: src/data_curation/core/paths.py
       hash: md5
-      md5: a18e342f77d5c50fa30092f01bb76a95
-      size: 2344
+      md5: ff83d0975f3b62656328adcd454d39e3
+      size: 2050
     - path: src/data_curation/core/standard.py
       hash: md5
       md5: 1fb72009dcea35b32ce0508e296022c9
       size: 9925
     - path: src/data_curation/omics/__init__.py
       hash: md5
-      md5: 9be4d14c3420172b1cbd6be3dbc66960
-      size: 840
+      md5: 615005d2acfebe508b869778d825dbc5
+      size: 903
     - path: src/data_curation/omics/data/PDX_Bruna_expression_sample_map.csv
       hash: md5
       md5: dc17ce986c1126ec147ac8b5cb594d68
@@ -3047,32 +3063,32 @@ stages:
       size: 3892
     - path: src/data_curation/omics/process_transcriptomics.py
       hash: md5
-      md5: fb4d7d66af39abfc0e7c99b35bca9ae5
-      size: 4552
+      md5: 1326ca04fee8ef6fbdae9a8b1b2f7385
+      size: 4022
     - path: src/data_curation/omics/samples.py
       hash: md5
-      md5: 47338e6804244d7f5ae158a128418f42
-      size: 3093
+      md5: 92d6c2407338acfcb925811e69c253af
+      size: 3054
     - path: src/data_curation/omics/transcriptomics/beataml.py
       hash: md5
-      md5: 1ba6adb669b4d086554106d4746c4a77
-      size: 3642
+      md5: d7edb572fce0f7eeb1391c576e1fdc2a
+      size: 3781
     - path: src/data_curation/omics/transcriptomics/bruna.py
       hash: md5
-      md5: 428158a1c5316aa152096059e330b0dd
-      size: 2557
+      md5: 53aaa6d725f2aeb4758c78d71db18744
+      size: 2703
     - path: src/data_curation/omics/transcriptomics/ccle.py
       hash: md5
-      md5: e248e8144b773eef8692c5d6e2cf9d43
-      size: 7563
+      md5: 72d6012497b2160beff9a35a5f1f2c3f
+      size: 7709
     - path: src/data_curation/omics/transcriptomics/gdsc.py
       hash: md5
-      md5: 88e97cff875b2bb5035e71d55c648ec4
-      size: 4956
+      md5: 92feed12d14289cf69cf00005b6d3795
+      size: 5095
     - path: src/data_curation/omics/transcriptomics/prism.py
       hash: md5
-      md5: 8cee6d9d42af9367e54a25ed09b456c0
-      size: 4735
+      md5: 79cd8a09dbe4351d8ae6f7abb7902029
+      size: 2742
     - path: src/data_curation/omics/transcriptomics/standard.py
       hash: md5
       md5: d2d3e7f89d3751c846a7fa69dfd3531c
@@ -3115,16 +3131,16 @@ stages:
       size: 814
     - path: src/data_curation/cell_lines/native_ids.py
       hash: md5
-      md5: a2e73753ff08e01e0a06265ceadef48c
-      size: 5433
+      md5: 9aa6a5d707496a63213026a67ca0fd53
+      size: 3942
     - path: src/data_curation/cell_lines/sidm_mapping.py
       hash: md5
-      md5: 4aea4b7a55bb4448e90ffee53fd48bb6
-      size: 3932
+      md5: 83881acd36cd37534f049474d2e8a86a
+      size: 4714
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -3135,16 +3151,16 @@ stages:
       size: 6652
     - path: src/data_curation/core/paths.py
       hash: md5
-      md5: a18e342f77d5c50fa30092f01bb76a95
-      size: 2344
+      md5: ff83d0975f3b62656328adcd454d39e3
+      size: 2050
     - path: src/data_curation/core/standard.py
       hash: md5
       md5: 1fb72009dcea35b32ce0508e296022c9
       size: 9925
     - path: src/data_curation/omics/__init__.py
       hash: md5
-      md5: 9be4d14c3420172b1cbd6be3dbc66960
-      size: 840
+      md5: 615005d2acfebe508b869778d825dbc5
+      size: 903
     - path: src/data_curation/omics/data/PDX_Bruna_expression_sample_map.csv
       hash: md5
       md5: dc17ce986c1126ec147ac8b5cb594d68
@@ -3155,32 +3171,32 @@ stages:
       size: 3892
     - path: src/data_curation/omics/process_transcriptomics.py
       hash: md5
-      md5: fb4d7d66af39abfc0e7c99b35bca9ae5
-      size: 4552
+      md5: 1326ca04fee8ef6fbdae9a8b1b2f7385
+      size: 4022
     - path: src/data_curation/omics/samples.py
       hash: md5
-      md5: 47338e6804244d7f5ae158a128418f42
-      size: 3093
+      md5: 92d6c2407338acfcb925811e69c253af
+      size: 3054
     - path: src/data_curation/omics/transcriptomics/beataml.py
       hash: md5
-      md5: 1ba6adb669b4d086554106d4746c4a77
-      size: 3642
+      md5: d7edb572fce0f7eeb1391c576e1fdc2a
+      size: 3781
     - path: src/data_curation/omics/transcriptomics/bruna.py
       hash: md5
-      md5: 428158a1c5316aa152096059e330b0dd
-      size: 2557
+      md5: 53aaa6d725f2aeb4758c78d71db18744
+      size: 2703
     - path: src/data_curation/omics/transcriptomics/ccle.py
       hash: md5
-      md5: e248e8144b773eef8692c5d6e2cf9d43
-      size: 7563
+      md5: 72d6012497b2160beff9a35a5f1f2c3f
+      size: 7709
     - path: src/data_curation/omics/transcriptomics/gdsc.py
       hash: md5
-      md5: 88e97cff875b2bb5035e71d55c648ec4
-      size: 4956
+      md5: 92feed12d14289cf69cf00005b6d3795
+      size: 5095
     - path: src/data_curation/omics/transcriptomics/prism.py
       hash: md5
-      md5: 8cee6d9d42af9367e54a25ed09b456c0
-      size: 4735
+      md5: 79cd8a09dbe4351d8ae6f7abb7902029
+      size: 2742
     - path: src/data_curation/omics/transcriptomics/standard.py
       hash: md5
       md5: d2d3e7f89d3751c846a7fa69dfd3531c
@@ -3232,24 +3248,28 @@ stages:
       size: 814
     - path: src/data_curation/cell_lines/sidm_mapping.py
       hash: md5
-      md5: 4aea4b7a55bb4448e90ffee53fd48bb6
-      size: 3932
+      md5: 83881acd36cd37534f049474d2e8a86a
+      size: 4714
     - path: src/data_curation/core/layout.py
       hash: md5
       md5: b1daf5a5658c5970574e23ec1f2e71ca
       size: 6652
     - path: src/data_curation/core/paths.py
       hash: md5
-      md5: a18e342f77d5c50fa30092f01bb76a95
-      size: 2344
+      md5: ff83d0975f3b62656328adcd454d39e3
+      size: 2050
     - path: src/data_curation/omics/__init__.py
       hash: md5
-      md5: 9be4d14c3420172b1cbd6be3dbc66960
-      size: 840
+      md5: 615005d2acfebe508b869778d825dbc5
+      size: 903
     - path: src/data_curation/omics/process_mutations.py
       hash: md5
-      md5: b75822573286da41740e07b707249e54
-      size: 2781
+      md5: f62791d8a7c8c19bdcc1bfc23b760e3d
+      size: 2251
+    - path: src/data_curation/omics/samples.py
+      hash: md5
+      md5: 92d6c2407338acfcb925811e69c253af
+      size: 3054
     outs:
     - path: data/02_omics/mutations/CCLE.h5ad
       hash: md5
@@ -3274,32 +3294,28 @@ stages:
       size: 814
     - path: src/data_curation/cell_lines/sidm_mapping.py
       hash: md5
-      md5: 4aea4b7a55bb4448e90ffee53fd48bb6
-      size: 3932
-    - path: src/data_curation/core/errors.py
-      hash: md5
-      md5: b5116cda92f509f1dcde5e3ab998a053
-      size: 442
+      md5: 83881acd36cd37534f049474d2e8a86a
+      size: 4714
     - path: src/data_curation/core/layout.py
       hash: md5
       md5: b1daf5a5658c5970574e23ec1f2e71ca
       size: 6652
     - path: src/data_curation/core/paths.py
       hash: md5
-      md5: a18e342f77d5c50fa30092f01bb76a95
-      size: 2344
+      md5: ff83d0975f3b62656328adcd454d39e3
+      size: 2050
     - path: src/data_curation/omics/__init__.py
       hash: md5
-      md5: 9be4d14c3420172b1cbd6be3dbc66960
-      size: 840
-    - path: src/data_curation/omics/cmp_matrix.py
-      hash: md5
-      md5: 7edb627b000d9edc61b634ec95b54ee8
-      size: 5812
+      md5: 615005d2acfebe508b869778d825dbc5
+      size: 903
     - path: src/data_curation/omics/process_cnv.py
       hash: md5
-      md5: b0212f3af762537c00c3c324be67ad54
-      size: 1953
+      md5: d02dbc64cb7f52576e6614d817d452c7
+      size: 2116
+    - path: src/data_curation/omics/samples.py
+      hash: md5
+      md5: 92d6c2407338acfcb925811e69c253af
+      size: 3054
     outs:
     - path: data/02_omics/cnv/CCLE.h5ad
       hash: md5
@@ -3324,8 +3340,8 @@ stages:
       size: 814
     - path: src/data_curation/cell_lines/sidm_mapping.py
       hash: md5
-      md5: 4aea4b7a55bb4448e90ffee53fd48bb6
-      size: 3932
+      md5: 83881acd36cd37534f049474d2e8a86a
+      size: 4714
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -3336,16 +3352,20 @@ stages:
       size: 6652
     - path: src/data_curation/core/paths.py
       hash: md5
-      md5: a18e342f77d5c50fa30092f01bb76a95
-      size: 2344
+      md5: ff83d0975f3b62656328adcd454d39e3
+      size: 2050
     - path: src/data_curation/omics/__init__.py
       hash: md5
-      md5: 9be4d14c3420172b1cbd6be3dbc66960
-      size: 840
+      md5: 615005d2acfebe508b869778d825dbc5
+      size: 903
     - path: src/data_curation/omics/process_proteomics.py
       hash: md5
-      md5: 70ce4c4f115a9e544aa0a70e54c1ec59
-      size: 3385
+      md5: ff2bdb59067ff6da95649c14f0844855
+      size: 2806
+    - path: src/data_curation/omics/samples.py
+      hash: md5
+      md5: 92d6c2407338acfcb925811e69c253af
+      size: 3054
     outs:
     - path: data/02_omics/proteomics/CCLE.h5ad
       hash: md5
@@ -3361,8 +3381,8 @@ stages:
       nfiles: 3
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -3373,52 +3393,52 @@ stages:
       size: 6652
     - path: src/data_curation/core/paths.py
       hash: md5
-      md5: a18e342f77d5c50fa30092f01bb76a95
-      size: 2344
+      md5: ff83d0975f3b62656328adcd454d39e3
+      size: 2050
     - path: src/data_curation/core/standard.py
       hash: md5
       md5: 1fb72009dcea35b32ce0508e296022c9
       size: 9925
     - path: src/data_curation/response/gdsc_tags.py
       hash: md5
-      md5: b1cf86ffa92e24ff52132d920f03d28d
-      size: 1558
+      md5: c55e5d04c14a2ada0abf1cb31c996005
+      size: 1522
     - path: src/data_curation/response/prepare/beataml.py
       hash: md5
-      md5: f2980d001aac40d1075c33327ea9c897
-      size: 2506
+      md5: c2c47b280e98b15e2a48a170d1d6a51c
+      size: 2404
     - path: src/data_curation/response/prepare/bruna.py
       hash: md5
-      md5: ebc3c8e2d2726d5f67a6dd2c53b5ea00
-      size: 2532
+      md5: 2bcc49ba5dfafebd988db804e74778ed
+      size: 2430
     - path: src/data_curation/response/prepare/ccle.py
       hash: md5
-      md5: 1a2102c2195375c63248cb94f8ff9345
-      size: 4561
+      md5: 6fcd8f50e20a57dcc94c1130d3d9718a
+      size: 4373
     - path: src/data_curation/response/prepare/ctrp.py
       hash: md5
-      md5: d918d5a940c5f5da3b7360644377327d
-      size: 5544
+      md5: 9649cca7a285f865131288bcb8cd2472
+      size: 5340
     - path: src/data_curation/response/prepare/gdsc.py
       hash: md5
-      md5: c609908d6c6ee5b56d50a517771248fe
-      size: 5431
+      md5: a3cb2223c083bd0073dd79737d1267ef
+      size: 5483
     - path: src/data_curation/response/prepare/prism.py
       hash: md5
-      md5: ed7e82c55f69ce2853f2530a00504e0d
-      size: 7899
+      md5: 3074d4afc1ed402fcac5b43432a2dfb6
+      size: 7797
     - path: src/data_curation/response/prepare/standard.py
       hash: md5
-      md5: c10de56866e0b7d01c8b0e0d652fdb76
-      size: 2159
+      md5: fc769e15db5746f2ac5497ab5a4267c3
+      size: 2057
     - path: src/data_curation/response/prepare/wells.py
       hash: md5
       md5: 53c031853b2691a8e82a57b692f26e61
       size: 6756
     - path: src/data_curation/response/prepare_viability.py
       hash: md5
-      md5: 84f3d3b016551602d308a81dbb23b7e5
-      size: 3531
+      md5: bdec0a65a2325e9c63d2e8a01bb44837
+      size: 3648
     params:
       config/sources.yaml:
         datasets.GDSC1.response:
@@ -3455,8 +3475,8 @@ stages:
       nfiles: 4
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -3467,52 +3487,52 @@ stages:
       size: 6652
     - path: src/data_curation/core/paths.py
       hash: md5
-      md5: a18e342f77d5c50fa30092f01bb76a95
-      size: 2344
+      md5: ff83d0975f3b62656328adcd454d39e3
+      size: 2050
     - path: src/data_curation/core/standard.py
       hash: md5
       md5: 1fb72009dcea35b32ce0508e296022c9
       size: 9925
     - path: src/data_curation/response/gdsc_tags.py
       hash: md5
-      md5: b1cf86ffa92e24ff52132d920f03d28d
-      size: 1558
+      md5: c55e5d04c14a2ada0abf1cb31c996005
+      size: 1522
     - path: src/data_curation/response/prepare/beataml.py
       hash: md5
-      md5: f2980d001aac40d1075c33327ea9c897
-      size: 2506
+      md5: c2c47b280e98b15e2a48a170d1d6a51c
+      size: 2404
     - path: src/data_curation/response/prepare/bruna.py
       hash: md5
-      md5: ebc3c8e2d2726d5f67a6dd2c53b5ea00
-      size: 2532
+      md5: 2bcc49ba5dfafebd988db804e74778ed
+      size: 2430
     - path: src/data_curation/response/prepare/ccle.py
       hash: md5
-      md5: 1a2102c2195375c63248cb94f8ff9345
-      size: 4561
+      md5: 6fcd8f50e20a57dcc94c1130d3d9718a
+      size: 4373
     - path: src/data_curation/response/prepare/ctrp.py
       hash: md5
-      md5: d918d5a940c5f5da3b7360644377327d
-      size: 5544
+      md5: 9649cca7a285f865131288bcb8cd2472
+      size: 5340
     - path: src/data_curation/response/prepare/gdsc.py
       hash: md5
-      md5: c609908d6c6ee5b56d50a517771248fe
-      size: 5431
+      md5: a3cb2223c083bd0073dd79737d1267ef
+      size: 5483
     - path: src/data_curation/response/prepare/prism.py
       hash: md5
-      md5: ed7e82c55f69ce2853f2530a00504e0d
-      size: 7899
+      md5: 3074d4afc1ed402fcac5b43432a2dfb6
+      size: 7797
     - path: src/data_curation/response/prepare/standard.py
       hash: md5
-      md5: c10de56866e0b7d01c8b0e0d652fdb76
-      size: 2159
+      md5: fc769e15db5746f2ac5497ab5a4267c3
+      size: 2057
     - path: src/data_curation/response/prepare/wells.py
       hash: md5
       md5: 53c031853b2691a8e82a57b692f26e61
       size: 6756
     - path: src/data_curation/response/prepare_viability.py
       hash: md5
-      md5: 84f3d3b016551602d308a81dbb23b7e5
-      size: 3531
+      md5: bdec0a65a2325e9c63d2e8a01bb44837
+      size: 3648
     params:
       config/sources.yaml:
         datasets.CTRPv2.response:
@@ -3542,8 +3562,8 @@ stages:
       nfiles: 3
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -3554,52 +3574,52 @@ stages:
       size: 6652
     - path: src/data_curation/core/paths.py
       hash: md5
-      md5: a18e342f77d5c50fa30092f01bb76a95
-      size: 2344
+      md5: ff83d0975f3b62656328adcd454d39e3
+      size: 2050
     - path: src/data_curation/core/standard.py
       hash: md5
       md5: 1fb72009dcea35b32ce0508e296022c9
       size: 9925
     - path: src/data_curation/response/gdsc_tags.py
       hash: md5
-      md5: b1cf86ffa92e24ff52132d920f03d28d
-      size: 1558
+      md5: c55e5d04c14a2ada0abf1cb31c996005
+      size: 1522
     - path: src/data_curation/response/prepare/beataml.py
       hash: md5
-      md5: f2980d001aac40d1075c33327ea9c897
-      size: 2506
+      md5: c2c47b280e98b15e2a48a170d1d6a51c
+      size: 2404
     - path: src/data_curation/response/prepare/bruna.py
       hash: md5
-      md5: ebc3c8e2d2726d5f67a6dd2c53b5ea00
-      size: 2532
+      md5: 2bcc49ba5dfafebd988db804e74778ed
+      size: 2430
     - path: src/data_curation/response/prepare/ccle.py
       hash: md5
-      md5: 1a2102c2195375c63248cb94f8ff9345
-      size: 4561
+      md5: 6fcd8f50e20a57dcc94c1130d3d9718a
+      size: 4373
     - path: src/data_curation/response/prepare/ctrp.py
       hash: md5
-      md5: d918d5a940c5f5da3b7360644377327d
-      size: 5544
+      md5: 9649cca7a285f865131288bcb8cd2472
+      size: 5340
     - path: src/data_curation/response/prepare/gdsc.py
       hash: md5
-      md5: c609908d6c6ee5b56d50a517771248fe
-      size: 5431
+      md5: a3cb2223c083bd0073dd79737d1267ef
+      size: 5483
     - path: src/data_curation/response/prepare/prism.py
       hash: md5
-      md5: ed7e82c55f69ce2853f2530a00504e0d
-      size: 7899
+      md5: 3074d4afc1ed402fcac5b43432a2dfb6
+      size: 7797
     - path: src/data_curation/response/prepare/standard.py
       hash: md5
-      md5: c10de56866e0b7d01c8b0e0d652fdb76
-      size: 2159
+      md5: fc769e15db5746f2ac5497ab5a4267c3
+      size: 2057
     - path: src/data_curation/response/prepare/wells.py
       hash: md5
       md5: 53c031853b2691a8e82a57b692f26e61
       size: 6756
     - path: src/data_curation/response/prepare_viability.py
       hash: md5
-      md5: 84f3d3b016551602d308a81dbb23b7e5
-      size: 3531
+      md5: bdec0a65a2325e9c63d2e8a01bb44837
+      size: 3648
     params:
       config/sources.yaml:
         datasets.GDSC2.response:
@@ -3636,8 +3656,8 @@ stages:
       nfiles: 2
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -3648,52 +3668,52 @@ stages:
       size: 6652
     - path: src/data_curation/core/paths.py
       hash: md5
-      md5: a18e342f77d5c50fa30092f01bb76a95
-      size: 2344
+      md5: ff83d0975f3b62656328adcd454d39e3
+      size: 2050
     - path: src/data_curation/core/standard.py
       hash: md5
       md5: 1fb72009dcea35b32ce0508e296022c9
       size: 9925
     - path: src/data_curation/response/gdsc_tags.py
       hash: md5
-      md5: b1cf86ffa92e24ff52132d920f03d28d
-      size: 1558
+      md5: c55e5d04c14a2ada0abf1cb31c996005
+      size: 1522
     - path: src/data_curation/response/prepare/beataml.py
       hash: md5
-      md5: f2980d001aac40d1075c33327ea9c897
-      size: 2506
+      md5: c2c47b280e98b15e2a48a170d1d6a51c
+      size: 2404
     - path: src/data_curation/response/prepare/bruna.py
       hash: md5
-      md5: ebc3c8e2d2726d5f67a6dd2c53b5ea00
-      size: 2532
+      md5: 2bcc49ba5dfafebd988db804e74778ed
+      size: 2430
     - path: src/data_curation/response/prepare/ccle.py
       hash: md5
-      md5: 1a2102c2195375c63248cb94f8ff9345
-      size: 4561
+      md5: 6fcd8f50e20a57dcc94c1130d3d9718a
+      size: 4373
     - path: src/data_curation/response/prepare/ctrp.py
       hash: md5
-      md5: d918d5a940c5f5da3b7360644377327d
-      size: 5544
+      md5: 9649cca7a285f865131288bcb8cd2472
+      size: 5340
     - path: src/data_curation/response/prepare/gdsc.py
       hash: md5
-      md5: c609908d6c6ee5b56d50a517771248fe
-      size: 5431
+      md5: a3cb2223c083bd0073dd79737d1267ef
+      size: 5483
     - path: src/data_curation/response/prepare/prism.py
       hash: md5
-      md5: ed7e82c55f69ce2853f2530a00504e0d
-      size: 7899
+      md5: 3074d4afc1ed402fcac5b43432a2dfb6
+      size: 7797
     - path: src/data_curation/response/prepare/standard.py
       hash: md5
-      md5: c10de56866e0b7d01c8b0e0d652fdb76
-      size: 2159
+      md5: fc769e15db5746f2ac5497ab5a4267c3
+      size: 2057
     - path: src/data_curation/response/prepare/wells.py
       hash: md5
       md5: 53c031853b2691a8e82a57b692f26e61
       size: 6756
     - path: src/data_curation/response/prepare_viability.py
       hash: md5
-      md5: 84f3d3b016551602d308a81dbb23b7e5
-      size: 3531
+      md5: bdec0a65a2325e9c63d2e8a01bb44837
+      size: 3648
     params:
       config/sources.yaml:
         datasets.BeatAML2.response:
@@ -3725,8 +3745,8 @@ stages:
       nfiles: 2
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -3737,52 +3757,52 @@ stages:
       size: 6652
     - path: src/data_curation/core/paths.py
       hash: md5
-      md5: a18e342f77d5c50fa30092f01bb76a95
-      size: 2344
+      md5: ff83d0975f3b62656328adcd454d39e3
+      size: 2050
     - path: src/data_curation/core/standard.py
       hash: md5
       md5: 1fb72009dcea35b32ce0508e296022c9
       size: 9925
     - path: src/data_curation/response/gdsc_tags.py
       hash: md5
-      md5: b1cf86ffa92e24ff52132d920f03d28d
-      size: 1558
+      md5: c55e5d04c14a2ada0abf1cb31c996005
+      size: 1522
     - path: src/data_curation/response/prepare/beataml.py
       hash: md5
-      md5: f2980d001aac40d1075c33327ea9c897
-      size: 2506
+      md5: c2c47b280e98b15e2a48a170d1d6a51c
+      size: 2404
     - path: src/data_curation/response/prepare/bruna.py
       hash: md5
-      md5: ebc3c8e2d2726d5f67a6dd2c53b5ea00
-      size: 2532
+      md5: 2bcc49ba5dfafebd988db804e74778ed
+      size: 2430
     - path: src/data_curation/response/prepare/ccle.py
       hash: md5
-      md5: 1a2102c2195375c63248cb94f8ff9345
-      size: 4561
+      md5: 6fcd8f50e20a57dcc94c1130d3d9718a
+      size: 4373
     - path: src/data_curation/response/prepare/ctrp.py
       hash: md5
-      md5: d918d5a940c5f5da3b7360644377327d
-      size: 5544
+      md5: 9649cca7a285f865131288bcb8cd2472
+      size: 5340
     - path: src/data_curation/response/prepare/gdsc.py
       hash: md5
-      md5: c609908d6c6ee5b56d50a517771248fe
-      size: 5431
+      md5: a3cb2223c083bd0073dd79737d1267ef
+      size: 5483
     - path: src/data_curation/response/prepare/prism.py
       hash: md5
-      md5: ed7e82c55f69ce2853f2530a00504e0d
-      size: 7899
+      md5: 3074d4afc1ed402fcac5b43432a2dfb6
+      size: 7797
     - path: src/data_curation/response/prepare/standard.py
       hash: md5
-      md5: c10de56866e0b7d01c8b0e0d652fdb76
-      size: 2159
+      md5: fc769e15db5746f2ac5497ab5a4267c3
+      size: 2057
     - path: src/data_curation/response/prepare/wells.py
       hash: md5
       md5: 53c031853b2691a8e82a57b692f26e61
       size: 6756
     - path: src/data_curation/response/prepare_viability.py
       hash: md5
-      md5: 84f3d3b016551602d308a81dbb23b7e5
-      size: 3531
+      md5: bdec0a65a2325e9c63d2e8a01bb44837
+      size: 3648
     params:
       config/sources.yaml:
         datasets.CTRPv1.response:
@@ -3810,8 +3830,8 @@ stages:
       nfiles: 1
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -3822,52 +3842,52 @@ stages:
       size: 6652
     - path: src/data_curation/core/paths.py
       hash: md5
-      md5: a18e342f77d5c50fa30092f01bb76a95
-      size: 2344
+      md5: ff83d0975f3b62656328adcd454d39e3
+      size: 2050
     - path: src/data_curation/core/standard.py
       hash: md5
       md5: 1fb72009dcea35b32ce0508e296022c9
       size: 9925
     - path: src/data_curation/response/gdsc_tags.py
       hash: md5
-      md5: b1cf86ffa92e24ff52132d920f03d28d
-      size: 1558
+      md5: c55e5d04c14a2ada0abf1cb31c996005
+      size: 1522
     - path: src/data_curation/response/prepare/beataml.py
       hash: md5
-      md5: f2980d001aac40d1075c33327ea9c897
-      size: 2506
+      md5: c2c47b280e98b15e2a48a170d1d6a51c
+      size: 2404
     - path: src/data_curation/response/prepare/bruna.py
       hash: md5
-      md5: ebc3c8e2d2726d5f67a6dd2c53b5ea00
-      size: 2532
+      md5: 2bcc49ba5dfafebd988db804e74778ed
+      size: 2430
     - path: src/data_curation/response/prepare/ccle.py
       hash: md5
-      md5: 1a2102c2195375c63248cb94f8ff9345
-      size: 4561
+      md5: 6fcd8f50e20a57dcc94c1130d3d9718a
+      size: 4373
     - path: src/data_curation/response/prepare/ctrp.py
       hash: md5
-      md5: d918d5a940c5f5da3b7360644377327d
-      size: 5544
+      md5: 9649cca7a285f865131288bcb8cd2472
+      size: 5340
     - path: src/data_curation/response/prepare/gdsc.py
       hash: md5
-      md5: c609908d6c6ee5b56d50a517771248fe
-      size: 5431
+      md5: a3cb2223c083bd0073dd79737d1267ef
+      size: 5483
     - path: src/data_curation/response/prepare/prism.py
       hash: md5
-      md5: ed7e82c55f69ce2853f2530a00504e0d
-      size: 7899
+      md5: 3074d4afc1ed402fcac5b43432a2dfb6
+      size: 7797
     - path: src/data_curation/response/prepare/standard.py
       hash: md5
-      md5: c10de56866e0b7d01c8b0e0d652fdb76
-      size: 2159
+      md5: fc769e15db5746f2ac5497ab5a4267c3
+      size: 2057
     - path: src/data_curation/response/prepare/wells.py
       hash: md5
       md5: 53c031853b2691a8e82a57b692f26e61
       size: 6756
     - path: src/data_curation/response/prepare_viability.py
       hash: md5
-      md5: 84f3d3b016551602d308a81dbb23b7e5
-      size: 3531
+      md5: bdec0a65a2325e9c63d2e8a01bb44837
+      size: 3648
     params:
       config/sources.yaml:
         datasets.CCLE.response:
@@ -3895,8 +3915,8 @@ stages:
       size: 198537
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -3941,8 +3961,8 @@ stages:
       size: 3959486
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -3987,8 +4007,8 @@ stages:
       size: 4573174
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -4033,8 +4053,8 @@ stages:
       size: 92473036
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -4079,8 +4099,8 @@ stages:
       size: 39023526
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -4155,12 +4175,12 @@ stages:
       size: 814
     - path: src/data_curation/cell_lines/sidm_mapping.py
       hash: md5
-      md5: 4aea4b7a55bb4448e90ffee53fd48bb6
-      size: 3932
+      md5: 83881acd36cd37534f049474d2e8a86a
+      size: 4714
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -4171,36 +4191,36 @@ stages:
       size: 6652
     - path: src/data_curation/core/paths.py
       hash: md5
-      md5: a18e342f77d5c50fa30092f01bb76a95
-      size: 2344
+      md5: ff83d0975f3b62656328adcd454d39e3
+      size: 2050
     - path: src/data_curation/core/standard.py
       hash: md5
       md5: 1fb72009dcea35b32ce0508e296022c9
       size: 9925
     - path: src/data_curation/response/harmonize/collapse.py
       hash: md5
-      md5: 364ae3841aa729e60ffff88846618a0b
-      size: 8864
+      md5: cb91b0eed8013d70dcddded68bb40ddf
+      size: 8723
     - path: src/data_curation/response/harmonize/identity.py
       hash: md5
-      md5: 5d1444e413037fc8aaf2851947f80c0f
-      size: 8846
+      md5: 0ebfaf17a6c676602617449a6bf61b7e
+      size: 7617
     - path: src/data_curation/response/harmonize/published.py
       hash: md5
-      md5: a22f4e00ffe9d4224a20a416dc1aed47
-      size: 9221
+      md5: fd6c1d8c985a932aa5f139534a030b4e
+      size: 9229
     - path: src/data_curation/response/harmonize/structures.py
       hash: md5
       md5: 460630f7b1e12d12363e8ae8ee41606f
       size: 3845
     - path: src/data_curation/response/harmonize_response.py
       hash: md5
-      md5: c1801bb1971c93b0f5461e9bd2fc3830
-      size: 8782
+      md5: 1473b48b05b146766d527d03925e6057
+      size: 8399
     - path: src/data_curation/response/prepare/ccle.py
       hash: md5
-      md5: 1a2102c2195375c63248cb94f8ff9345
-      size: 4561
+      md5: 6fcd8f50e20a57dcc94c1130d3d9718a
+      size: 4373
     - path: src/data_curation/response/prepare/wells.py
       hash: md5
       md5: 53c031853b2691a8e82a57b692f26e61
@@ -4269,12 +4289,12 @@ stages:
       size: 814
     - path: src/data_curation/cell_lines/sidm_mapping.py
       hash: md5
-      md5: 4aea4b7a55bb4448e90ffee53fd48bb6
-      size: 3932
+      md5: 83881acd36cd37534f049474d2e8a86a
+      size: 4714
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -4285,36 +4305,36 @@ stages:
       size: 6652
     - path: src/data_curation/core/paths.py
       hash: md5
-      md5: a18e342f77d5c50fa30092f01bb76a95
-      size: 2344
+      md5: ff83d0975f3b62656328adcd454d39e3
+      size: 2050
     - path: src/data_curation/core/standard.py
       hash: md5
       md5: 1fb72009dcea35b32ce0508e296022c9
       size: 9925
     - path: src/data_curation/response/harmonize/collapse.py
       hash: md5
-      md5: 364ae3841aa729e60ffff88846618a0b
-      size: 8864
+      md5: cb91b0eed8013d70dcddded68bb40ddf
+      size: 8723
     - path: src/data_curation/response/harmonize/identity.py
       hash: md5
-      md5: 5d1444e413037fc8aaf2851947f80c0f
-      size: 8846
+      md5: 0ebfaf17a6c676602617449a6bf61b7e
+      size: 7617
     - path: src/data_curation/response/harmonize/published.py
       hash: md5
-      md5: a22f4e00ffe9d4224a20a416dc1aed47
-      size: 9221
+      md5: fd6c1d8c985a932aa5f139534a030b4e
+      size: 9229
     - path: src/data_curation/response/harmonize/structures.py
       hash: md5
       md5: 460630f7b1e12d12363e8ae8ee41606f
       size: 3845
     - path: src/data_curation/response/harmonize_response.py
       hash: md5
-      md5: c1801bb1971c93b0f5461e9bd2fc3830
-      size: 8782
+      md5: 1473b48b05b146766d527d03925e6057
+      size: 8399
     - path: src/data_curation/response/prepare/ccle.py
       hash: md5
-      md5: 1a2102c2195375c63248cb94f8ff9345
-      size: 4561
+      md5: 6fcd8f50e20a57dcc94c1130d3d9718a
+      size: 4373
     - path: src/data_curation/response/prepare/wells.py
       hash: md5
       md5: 53c031853b2691a8e82a57b692f26e61
@@ -4378,8 +4398,8 @@ stages:
       size: 153907
     - path: src/data_curation/assembly/assemble_mudata.py
       hash: md5
-      md5: 544e755cced2a13fdf2231a71824de68
-      size: 9169
+      md5: fda5725a83abe6f94eabd707aace3ef5
+      size: 8854
     - path: src/data_curation/assembly/write.py
       hash: md5
       md5: 7ef54f55e6c60e79986b4df644c148b2
@@ -4390,16 +4410,16 @@ stages:
       size: 5226
     - path: src/data_curation/cell_lines/meta.py
       hash: md5
-      md5: e9b042aa587ba09ba7bb22cdc0fc1eed
-      size: 9258
+      md5: 57f2a9d4969a4935cc250a5bf59a3a01
+      size: 9194
     - path: src/data_curation/cell_lines/sidm_mapping.py
       hash: md5
-      md5: 4aea4b7a55bb4448e90ffee53fd48bb6
-      size: 3932
+      md5: 83881acd36cd37534f049474d2e8a86a
+      size: 4714
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -4460,12 +4480,12 @@ stages:
       size: 814
     - path: src/data_curation/cell_lines/sidm_mapping.py
       hash: md5
-      md5: 4aea4b7a55bb4448e90ffee53fd48bb6
-      size: 3932
+      md5: 83881acd36cd37534f049474d2e8a86a
+      size: 4714
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -4476,36 +4496,36 @@ stages:
       size: 6652
     - path: src/data_curation/core/paths.py
       hash: md5
-      md5: a18e342f77d5c50fa30092f01bb76a95
-      size: 2344
+      md5: ff83d0975f3b62656328adcd454d39e3
+      size: 2050
     - path: src/data_curation/core/standard.py
       hash: md5
       md5: 1fb72009dcea35b32ce0508e296022c9
       size: 9925
     - path: src/data_curation/response/harmonize/collapse.py
       hash: md5
-      md5: 364ae3841aa729e60ffff88846618a0b
-      size: 8864
+      md5: cb91b0eed8013d70dcddded68bb40ddf
+      size: 8723
     - path: src/data_curation/response/harmonize/identity.py
       hash: md5
-      md5: 5d1444e413037fc8aaf2851947f80c0f
-      size: 8846
+      md5: 0ebfaf17a6c676602617449a6bf61b7e
+      size: 7617
     - path: src/data_curation/response/harmonize/published.py
       hash: md5
-      md5: a22f4e00ffe9d4224a20a416dc1aed47
-      size: 9221
+      md5: fd6c1d8c985a932aa5f139534a030b4e
+      size: 9229
     - path: src/data_curation/response/harmonize/structures.py
       hash: md5
       md5: 460630f7b1e12d12363e8ae8ee41606f
       size: 3845
     - path: src/data_curation/response/harmonize_response.py
       hash: md5
-      md5: c1801bb1971c93b0f5461e9bd2fc3830
-      size: 8782
+      md5: 1473b48b05b146766d527d03925e6057
+      size: 8399
     - path: src/data_curation/response/prepare/ccle.py
       hash: md5
-      md5: 1a2102c2195375c63248cb94f8ff9345
-      size: 4561
+      md5: 6fcd8f50e20a57dcc94c1130d3d9718a
+      size: 4373
     - path: src/data_curation/response/prepare/wells.py
       hash: md5
       md5: 53c031853b2691a8e82a57b692f26e61
@@ -4570,12 +4590,12 @@ stages:
       size: 814
     - path: src/data_curation/cell_lines/sidm_mapping.py
       hash: md5
-      md5: 4aea4b7a55bb4448e90ffee53fd48bb6
-      size: 3932
+      md5: 83881acd36cd37534f049474d2e8a86a
+      size: 4714
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -4586,36 +4606,36 @@ stages:
       size: 6652
     - path: src/data_curation/core/paths.py
       hash: md5
-      md5: a18e342f77d5c50fa30092f01bb76a95
-      size: 2344
+      md5: ff83d0975f3b62656328adcd454d39e3
+      size: 2050
     - path: src/data_curation/core/standard.py
       hash: md5
       md5: 1fb72009dcea35b32ce0508e296022c9
       size: 9925
     - path: src/data_curation/response/harmonize/collapse.py
       hash: md5
-      md5: 364ae3841aa729e60ffff88846618a0b
-      size: 8864
+      md5: cb91b0eed8013d70dcddded68bb40ddf
+      size: 8723
     - path: src/data_curation/response/harmonize/identity.py
       hash: md5
-      md5: 5d1444e413037fc8aaf2851947f80c0f
-      size: 8846
+      md5: 0ebfaf17a6c676602617449a6bf61b7e
+      size: 7617
     - path: src/data_curation/response/harmonize/published.py
       hash: md5
-      md5: a22f4e00ffe9d4224a20a416dc1aed47
-      size: 9221
+      md5: fd6c1d8c985a932aa5f139534a030b4e
+      size: 9229
     - path: src/data_curation/response/harmonize/structures.py
       hash: md5
       md5: 460630f7b1e12d12363e8ae8ee41606f
       size: 3845
     - path: src/data_curation/response/harmonize_response.py
       hash: md5
-      md5: c1801bb1971c93b0f5461e9bd2fc3830
-      size: 8782
+      md5: 1473b48b05b146766d527d03925e6057
+      size: 8399
     - path: src/data_curation/response/prepare/ccle.py
       hash: md5
-      md5: 1a2102c2195375c63248cb94f8ff9345
-      size: 4561
+      md5: 6fcd8f50e20a57dcc94c1130d3d9718a
+      size: 4373
     - path: src/data_curation/response/prepare/wells.py
       hash: md5
       md5: 53c031853b2691a8e82a57b692f26e61
@@ -4682,12 +4702,12 @@ stages:
       size: 814
     - path: src/data_curation/cell_lines/sidm_mapping.py
       hash: md5
-      md5: 4aea4b7a55bb4448e90ffee53fd48bb6
-      size: 3932
+      md5: 83881acd36cd37534f049474d2e8a86a
+      size: 4714
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -4698,36 +4718,36 @@ stages:
       size: 6652
     - path: src/data_curation/core/paths.py
       hash: md5
-      md5: a18e342f77d5c50fa30092f01bb76a95
-      size: 2344
+      md5: ff83d0975f3b62656328adcd454d39e3
+      size: 2050
     - path: src/data_curation/core/standard.py
       hash: md5
       md5: 1fb72009dcea35b32ce0508e296022c9
       size: 9925
     - path: src/data_curation/response/harmonize/collapse.py
       hash: md5
-      md5: 364ae3841aa729e60ffff88846618a0b
-      size: 8864
+      md5: cb91b0eed8013d70dcddded68bb40ddf
+      size: 8723
     - path: src/data_curation/response/harmonize/identity.py
       hash: md5
-      md5: 5d1444e413037fc8aaf2851947f80c0f
-      size: 8846
+      md5: 0ebfaf17a6c676602617449a6bf61b7e
+      size: 7617
     - path: src/data_curation/response/harmonize/published.py
       hash: md5
-      md5: a22f4e00ffe9d4224a20a416dc1aed47
-      size: 9221
+      md5: fd6c1d8c985a932aa5f139534a030b4e
+      size: 9229
     - path: src/data_curation/response/harmonize/structures.py
       hash: md5
       md5: 460630f7b1e12d12363e8ae8ee41606f
       size: 3845
     - path: src/data_curation/response/harmonize_response.py
       hash: md5
-      md5: c1801bb1971c93b0f5461e9bd2fc3830
-      size: 8782
+      md5: 1473b48b05b146766d527d03925e6057
+      size: 8399
     - path: src/data_curation/response/prepare/ccle.py
       hash: md5
-      md5: 1a2102c2195375c63248cb94f8ff9345
-      size: 4561
+      md5: 6fcd8f50e20a57dcc94c1130d3d9718a
+      size: 4373
     - path: src/data_curation/response/prepare/wells.py
       hash: md5
       md5: 53c031853b2691a8e82a57b692f26e61
@@ -4771,8 +4791,8 @@ stages:
       size: 35799314
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -4847,12 +4867,12 @@ stages:
       size: 814
     - path: src/data_curation/cell_lines/sidm_mapping.py
       hash: md5
-      md5: 4aea4b7a55bb4448e90ffee53fd48bb6
-      size: 3932
+      md5: 83881acd36cd37534f049474d2e8a86a
+      size: 4714
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -4863,36 +4883,36 @@ stages:
       size: 6652
     - path: src/data_curation/core/paths.py
       hash: md5
-      md5: a18e342f77d5c50fa30092f01bb76a95
-      size: 2344
+      md5: ff83d0975f3b62656328adcd454d39e3
+      size: 2050
     - path: src/data_curation/core/standard.py
       hash: md5
       md5: 1fb72009dcea35b32ce0508e296022c9
       size: 9925
     - path: src/data_curation/response/harmonize/collapse.py
       hash: md5
-      md5: 364ae3841aa729e60ffff88846618a0b
-      size: 8864
+      md5: cb91b0eed8013d70dcddded68bb40ddf
+      size: 8723
     - path: src/data_curation/response/harmonize/identity.py
       hash: md5
-      md5: 5d1444e413037fc8aaf2851947f80c0f
-      size: 8846
+      md5: 0ebfaf17a6c676602617449a6bf61b7e
+      size: 7617
     - path: src/data_curation/response/harmonize/published.py
       hash: md5
-      md5: a22f4e00ffe9d4224a20a416dc1aed47
-      size: 9221
+      md5: fd6c1d8c985a932aa5f139534a030b4e
+      size: 9229
     - path: src/data_curation/response/harmonize/structures.py
       hash: md5
       md5: 460630f7b1e12d12363e8ae8ee41606f
       size: 3845
     - path: src/data_curation/response/harmonize_response.py
       hash: md5
-      md5: c1801bb1971c93b0f5461e9bd2fc3830
-      size: 8782
+      md5: 1473b48b05b146766d527d03925e6057
+      size: 8399
     - path: src/data_curation/response/prepare/ccle.py
       hash: md5
-      md5: 1a2102c2195375c63248cb94f8ff9345
-      size: 4561
+      md5: 6fcd8f50e20a57dcc94c1130d3d9718a
+      size: 4373
     - path: src/data_curation/response/prepare/wells.py
       hash: md5
       md5: 53c031853b2691a8e82a57b692f26e61
@@ -4932,12 +4952,12 @@ stages:
     deps:
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/download.py
       hash: md5
-      md5: 886464ce798e60e7f004bb8ddebf226d
-      size: 4949
+      md5: 69589e573d7935b01ab1552d869085c8
+      size: 4546
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -4948,12 +4968,12 @@ stages:
       size: 6652
     - path: src/data_curation/omics/__init__.py
       hash: md5
-      md5: 9be4d14c3420172b1cbd6be3dbc66960
-      size: 840
+      md5: 615005d2acfebe508b869778d825dbc5
+      size: 903
     - path: src/data_curation/omics/download.py
       hash: md5
-      md5: bf01ad0abf77ca01fc1fac6edaadfd3a
-      size: 3574
+      md5: 31e4e6bc15c95a77f5cc12a8a11f54ef
+      size: 3471
     params:
       config/sources.yaml:
         datasets.PRISM_19Q4.transcriptomics:
@@ -4974,12 +4994,12 @@ stages:
     deps:
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/download.py
       hash: md5
-      md5: 886464ce798e60e7f004bb8ddebf226d
-      size: 4949
+      md5: 69589e573d7935b01ab1552d869085c8
+      size: 4546
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -4990,12 +5010,12 @@ stages:
       size: 6652
     - path: src/data_curation/omics/__init__.py
       hash: md5
-      md5: 9be4d14c3420172b1cbd6be3dbc66960
-      size: 840
+      md5: 615005d2acfebe508b869778d825dbc5
+      size: 903
     - path: src/data_curation/omics/download.py
       hash: md5
-      md5: bf01ad0abf77ca01fc1fac6edaadfd3a
-      size: 3574
+      md5: 31e4e6bc15c95a77f5cc12a8a11f54ef
+      size: 3471
     params:
       config/sources.yaml:
         datasets.PRISM_20Q2.transcriptomics:
@@ -5034,16 +5054,16 @@ stages:
       size: 814
     - path: src/data_curation/cell_lines/native_ids.py
       hash: md5
-      md5: a2e73753ff08e01e0a06265ceadef48c
-      size: 5433
+      md5: 9aa6a5d707496a63213026a67ca0fd53
+      size: 3942
     - path: src/data_curation/cell_lines/sidm_mapping.py
       hash: md5
-      md5: 4aea4b7a55bb4448e90ffee53fd48bb6
-      size: 3932
+      md5: 83881acd36cd37534f049474d2e8a86a
+      size: 4714
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -5054,16 +5074,16 @@ stages:
       size: 6652
     - path: src/data_curation/core/paths.py
       hash: md5
-      md5: a18e342f77d5c50fa30092f01bb76a95
-      size: 2344
+      md5: ff83d0975f3b62656328adcd454d39e3
+      size: 2050
     - path: src/data_curation/core/standard.py
       hash: md5
       md5: 1fb72009dcea35b32ce0508e296022c9
       size: 9925
     - path: src/data_curation/omics/__init__.py
       hash: md5
-      md5: 9be4d14c3420172b1cbd6be3dbc66960
-      size: 840
+      md5: 615005d2acfebe508b869778d825dbc5
+      size: 903
     - path: src/data_curation/omics/data/PDX_Bruna_expression_sample_map.csv
       hash: md5
       md5: dc17ce986c1126ec147ac8b5cb594d68
@@ -5074,32 +5094,32 @@ stages:
       size: 3892
     - path: src/data_curation/omics/process_transcriptomics.py
       hash: md5
-      md5: fb4d7d66af39abfc0e7c99b35bca9ae5
-      size: 4552
+      md5: 1326ca04fee8ef6fbdae9a8b1b2f7385
+      size: 4022
     - path: src/data_curation/omics/samples.py
       hash: md5
-      md5: 47338e6804244d7f5ae158a128418f42
-      size: 3093
+      md5: 92d6c2407338acfcb925811e69c253af
+      size: 3054
     - path: src/data_curation/omics/transcriptomics/beataml.py
       hash: md5
-      md5: 1ba6adb669b4d086554106d4746c4a77
-      size: 3642
+      md5: d7edb572fce0f7eeb1391c576e1fdc2a
+      size: 3781
     - path: src/data_curation/omics/transcriptomics/bruna.py
       hash: md5
-      md5: 428158a1c5316aa152096059e330b0dd
-      size: 2557
+      md5: 53aaa6d725f2aeb4758c78d71db18744
+      size: 2703
     - path: src/data_curation/omics/transcriptomics/ccle.py
       hash: md5
-      md5: e248e8144b773eef8692c5d6e2cf9d43
-      size: 7563
+      md5: 72d6012497b2160beff9a35a5f1f2c3f
+      size: 7709
     - path: src/data_curation/omics/transcriptomics/gdsc.py
       hash: md5
-      md5: 88e97cff875b2bb5035e71d55c648ec4
-      size: 4956
+      md5: 92feed12d14289cf69cf00005b6d3795
+      size: 5095
     - path: src/data_curation/omics/transcriptomics/prism.py
       hash: md5
-      md5: 8cee6d9d42af9367e54a25ed09b456c0
-      size: 4735
+      md5: 79cd8a09dbe4351d8ae6f7abb7902029
+      size: 2742
     - path: src/data_curation/omics/transcriptomics/standard.py
       hash: md5
       md5: d2d3e7f89d3751c846a7fa69dfd3531c
@@ -5116,8 +5136,8 @@ stages:
     outs:
     - path: data/02_omics/transcriptomics/PRISM_19Q4.h5ad
       hash: md5
-      md5: 7a4d69c0cc558629dac75f468b7f5541
-      size: 95286416
+      md5: 3d900e06fa12f892631e5fc4b1498a44
+      size: 95467976
   process_transcriptomics_rna_only@PRISM_20Q2:
     cmd: uv run data-curation omics process transcriptomics PRISM_20Q2
     deps:
@@ -5141,16 +5161,16 @@ stages:
       size: 814
     - path: src/data_curation/cell_lines/native_ids.py
       hash: md5
-      md5: a2e73753ff08e01e0a06265ceadef48c
-      size: 5433
+      md5: 9aa6a5d707496a63213026a67ca0fd53
+      size: 3942
     - path: src/data_curation/cell_lines/sidm_mapping.py
       hash: md5
-      md5: 4aea4b7a55bb4448e90ffee53fd48bb6
-      size: 3932
+      md5: 83881acd36cd37534f049474d2e8a86a
+      size: 4714
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -5161,16 +5181,16 @@ stages:
       size: 6652
     - path: src/data_curation/core/paths.py
       hash: md5
-      md5: a18e342f77d5c50fa30092f01bb76a95
-      size: 2344
+      md5: ff83d0975f3b62656328adcd454d39e3
+      size: 2050
     - path: src/data_curation/core/standard.py
       hash: md5
       md5: 1fb72009dcea35b32ce0508e296022c9
       size: 9925
     - path: src/data_curation/omics/__init__.py
       hash: md5
-      md5: 9be4d14c3420172b1cbd6be3dbc66960
-      size: 840
+      md5: 615005d2acfebe508b869778d825dbc5
+      size: 903
     - path: src/data_curation/omics/data/PDX_Bruna_expression_sample_map.csv
       hash: md5
       md5: dc17ce986c1126ec147ac8b5cb594d68
@@ -5181,32 +5201,32 @@ stages:
       size: 3892
     - path: src/data_curation/omics/process_transcriptomics.py
       hash: md5
-      md5: fb4d7d66af39abfc0e7c99b35bca9ae5
-      size: 4552
+      md5: 1326ca04fee8ef6fbdae9a8b1b2f7385
+      size: 4022
     - path: src/data_curation/omics/samples.py
       hash: md5
-      md5: 47338e6804244d7f5ae158a128418f42
-      size: 3093
+      md5: 92d6c2407338acfcb925811e69c253af
+      size: 3054
     - path: src/data_curation/omics/transcriptomics/beataml.py
       hash: md5
-      md5: 1ba6adb669b4d086554106d4746c4a77
-      size: 3642
+      md5: d7edb572fce0f7eeb1391c576e1fdc2a
+      size: 3781
     - path: src/data_curation/omics/transcriptomics/bruna.py
       hash: md5
-      md5: 428158a1c5316aa152096059e330b0dd
-      size: 2557
+      md5: 53aaa6d725f2aeb4758c78d71db18744
+      size: 2703
     - path: src/data_curation/omics/transcriptomics/ccle.py
       hash: md5
-      md5: e248e8144b773eef8692c5d6e2cf9d43
-      size: 7563
+      md5: 72d6012497b2160beff9a35a5f1f2c3f
+      size: 7709
     - path: src/data_curation/omics/transcriptomics/gdsc.py
       hash: md5
-      md5: 88e97cff875b2bb5035e71d55c648ec4
-      size: 4956
+      md5: 92feed12d14289cf69cf00005b6d3795
+      size: 5095
     - path: src/data_curation/omics/transcriptomics/prism.py
       hash: md5
-      md5: 8cee6d9d42af9367e54a25ed09b456c0
-      size: 4735
+      md5: 79cd8a09dbe4351d8ae6f7abb7902029
+      size: 2742
     - path: src/data_curation/omics/transcriptomics/standard.py
       hash: md5
       md5: d2d3e7f89d3751c846a7fa69dfd3531c
@@ -5223,19 +5243,19 @@ stages:
     outs:
     - path: data/02_omics/transcriptomics/PRISM_20Q2.h5ad
       hash: md5
-      md5: 4458b3a4912bf0b8147c963d7d3bd096
-      size: 98503280
+      md5: dfcee2df2270ba20c5761f7553bfc8ee
+      size: 98685512
   download_response@PRISM_19Q4:
     cmd: uv run data-curation response download PRISM_19Q4
     deps:
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/download.py
       hash: md5
-      md5: 886464ce798e60e7f004bb8ddebf226d
-      size: 4949
+      md5: 69589e573d7935b01ab1552d869085c8
+      size: 4546
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -5246,12 +5266,12 @@ stages:
       size: 6652
     - path: src/data_curation/omics/__init__.py
       hash: md5
-      md5: 9be4d14c3420172b1cbd6be3dbc66960
-      size: 840
+      md5: 615005d2acfebe508b869778d825dbc5
+      size: 903
     - path: src/data_curation/omics/download.py
       hash: md5
-      md5: bf01ad0abf77ca01fc1fac6edaadfd3a
-      size: 3574
+      md5: 31e4e6bc15c95a77f5cc12a8a11f54ef
+      size: 3471
     params:
       config/sources.yaml:
         datasets.PRISM_19Q4.response:
@@ -5287,8 +5307,8 @@ stages:
       nfiles: 3
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -5299,52 +5319,52 @@ stages:
       size: 6652
     - path: src/data_curation/core/paths.py
       hash: md5
-      md5: a18e342f77d5c50fa30092f01bb76a95
-      size: 2344
+      md5: ff83d0975f3b62656328adcd454d39e3
+      size: 2050
     - path: src/data_curation/core/standard.py
       hash: md5
       md5: 1fb72009dcea35b32ce0508e296022c9
       size: 9925
     - path: src/data_curation/response/gdsc_tags.py
       hash: md5
-      md5: b1cf86ffa92e24ff52132d920f03d28d
-      size: 1558
+      md5: c55e5d04c14a2ada0abf1cb31c996005
+      size: 1522
     - path: src/data_curation/response/prepare/beataml.py
       hash: md5
-      md5: f2980d001aac40d1075c33327ea9c897
-      size: 2506
+      md5: c2c47b280e98b15e2a48a170d1d6a51c
+      size: 2404
     - path: src/data_curation/response/prepare/bruna.py
       hash: md5
-      md5: ebc3c8e2d2726d5f67a6dd2c53b5ea00
-      size: 2532
+      md5: 2bcc49ba5dfafebd988db804e74778ed
+      size: 2430
     - path: src/data_curation/response/prepare/ccle.py
       hash: md5
-      md5: 1a2102c2195375c63248cb94f8ff9345
-      size: 4561
+      md5: 6fcd8f50e20a57dcc94c1130d3d9718a
+      size: 4373
     - path: src/data_curation/response/prepare/ctrp.py
       hash: md5
-      md5: d918d5a940c5f5da3b7360644377327d
-      size: 5544
+      md5: 9649cca7a285f865131288bcb8cd2472
+      size: 5340
     - path: src/data_curation/response/prepare/gdsc.py
       hash: md5
-      md5: c609908d6c6ee5b56d50a517771248fe
-      size: 5431
+      md5: a3cb2223c083bd0073dd79737d1267ef
+      size: 5483
     - path: src/data_curation/response/prepare/prism.py
       hash: md5
-      md5: ed7e82c55f69ce2853f2530a00504e0d
-      size: 7899
+      md5: 3074d4afc1ed402fcac5b43432a2dfb6
+      size: 7797
     - path: src/data_curation/response/prepare/standard.py
       hash: md5
-      md5: c10de56866e0b7d01c8b0e0d652fdb76
-      size: 2159
+      md5: fc769e15db5746f2ac5497ab5a4267c3
+      size: 2057
     - path: src/data_curation/response/prepare/wells.py
       hash: md5
       md5: 53c031853b2691a8e82a57b692f26e61
       size: 6756
     - path: src/data_curation/response/prepare_viability.py
       hash: md5
-      md5: 84f3d3b016551602d308a81dbb23b7e5
-      size: 3531
+      md5: bdec0a65a2325e9c63d2e8a01bb44837
+      size: 3648
     params:
       config/sources.yaml:
         datasets.PRISM_19Q4.response:
@@ -5378,8 +5398,8 @@ stages:
       size: 150352022
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -5536,12 +5556,12 @@ stages:
       size: 814
     - path: src/data_curation/cell_lines/sidm_mapping.py
       hash: md5
-      md5: 4aea4b7a55bb4448e90ffee53fd48bb6
-      size: 3932
+      md5: 83881acd36cd37534f049474d2e8a86a
+      size: 4714
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -5552,36 +5572,36 @@ stages:
       size: 6652
     - path: src/data_curation/core/paths.py
       hash: md5
-      md5: a18e342f77d5c50fa30092f01bb76a95
-      size: 2344
+      md5: ff83d0975f3b62656328adcd454d39e3
+      size: 2050
     - path: src/data_curation/core/standard.py
       hash: md5
       md5: 1fb72009dcea35b32ce0508e296022c9
       size: 9925
     - path: src/data_curation/response/harmonize/collapse.py
       hash: md5
-      md5: 364ae3841aa729e60ffff88846618a0b
-      size: 8864
+      md5: cb91b0eed8013d70dcddded68bb40ddf
+      size: 8723
     - path: src/data_curation/response/harmonize/identity.py
       hash: md5
-      md5: 5d1444e413037fc8aaf2851947f80c0f
-      size: 8846
+      md5: 0ebfaf17a6c676602617449a6bf61b7e
+      size: 7617
     - path: src/data_curation/response/harmonize/published.py
       hash: md5
-      md5: a22f4e00ffe9d4224a20a416dc1aed47
-      size: 9221
+      md5: fd6c1d8c985a932aa5f139534a030b4e
+      size: 9229
     - path: src/data_curation/response/harmonize/structures.py
       hash: md5
       md5: 460630f7b1e12d12363e8ae8ee41606f
       size: 3845
     - path: src/data_curation/response/harmonize_response.py
       hash: md5
-      md5: c1801bb1971c93b0f5461e9bd2fc3830
-      size: 8782
+      md5: 1473b48b05b146766d527d03925e6057
+      size: 8399
     - path: src/data_curation/response/prepare/ccle.py
       hash: md5
-      md5: 1a2102c2195375c63248cb94f8ff9345
-      size: 4561
+      md5: 6fcd8f50e20a57dcc94c1130d3d9718a
+      size: 4373
     - path: src/data_curation/response/prepare/wells.py
       hash: md5
       md5: 53c031853b2691a8e82a57b692f26e61
@@ -5612,19 +5632,19 @@ stages:
     outs:
     - path: data/04_response/harmonized/PRISM_19Q4.h5ad
       hash: md5
-      md5: d973e94db6aab04d2d1f00cc87dda3a6
-      size: 281190956
+      md5: 54afa2995f46ee1e704e3e9e64c1a5e2
+      size: 281814510
   download_response@PRISM_20Q2:
     cmd: uv run data-curation response download PRISM_20Q2
     deps:
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/download.py
       hash: md5
-      md5: 886464ce798e60e7f004bb8ddebf226d
-      size: 4949
+      md5: 69589e573d7935b01ab1552d869085c8
+      size: 4546
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -5635,12 +5655,12 @@ stages:
       size: 6652
     - path: src/data_curation/omics/__init__.py
       hash: md5
-      md5: 9be4d14c3420172b1cbd6be3dbc66960
-      size: 840
+      md5: 615005d2acfebe508b869778d825dbc5
+      size: 903
     - path: src/data_curation/omics/download.py
       hash: md5
-      md5: bf01ad0abf77ca01fc1fac6edaadfd3a
-      size: 3574
+      md5: 31e4e6bc15c95a77f5cc12a8a11f54ef
+      size: 3471
     params:
       config/sources.yaml:
         datasets.PRISM_20Q2.response:
@@ -5676,8 +5696,8 @@ stages:
       nfiles: 3
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -5688,52 +5708,52 @@ stages:
       size: 6652
     - path: src/data_curation/core/paths.py
       hash: md5
-      md5: a18e342f77d5c50fa30092f01bb76a95
-      size: 2344
+      md5: ff83d0975f3b62656328adcd454d39e3
+      size: 2050
     - path: src/data_curation/core/standard.py
       hash: md5
       md5: 1fb72009dcea35b32ce0508e296022c9
       size: 9925
     - path: src/data_curation/response/gdsc_tags.py
       hash: md5
-      md5: b1cf86ffa92e24ff52132d920f03d28d
-      size: 1558
+      md5: c55e5d04c14a2ada0abf1cb31c996005
+      size: 1522
     - path: src/data_curation/response/prepare/beataml.py
       hash: md5
-      md5: f2980d001aac40d1075c33327ea9c897
-      size: 2506
+      md5: c2c47b280e98b15e2a48a170d1d6a51c
+      size: 2404
     - path: src/data_curation/response/prepare/bruna.py
       hash: md5
-      md5: ebc3c8e2d2726d5f67a6dd2c53b5ea00
-      size: 2532
+      md5: 2bcc49ba5dfafebd988db804e74778ed
+      size: 2430
     - path: src/data_curation/response/prepare/ccle.py
       hash: md5
-      md5: 1a2102c2195375c63248cb94f8ff9345
-      size: 4561
+      md5: 6fcd8f50e20a57dcc94c1130d3d9718a
+      size: 4373
     - path: src/data_curation/response/prepare/ctrp.py
       hash: md5
-      md5: d918d5a940c5f5da3b7360644377327d
-      size: 5544
+      md5: 9649cca7a285f865131288bcb8cd2472
+      size: 5340
     - path: src/data_curation/response/prepare/gdsc.py
       hash: md5
-      md5: c609908d6c6ee5b56d50a517771248fe
-      size: 5431
+      md5: a3cb2223c083bd0073dd79737d1267ef
+      size: 5483
     - path: src/data_curation/response/prepare/prism.py
       hash: md5
-      md5: ed7e82c55f69ce2853f2530a00504e0d
-      size: 7899
+      md5: 3074d4afc1ed402fcac5b43432a2dfb6
+      size: 7797
     - path: src/data_curation/response/prepare/standard.py
       hash: md5
-      md5: c10de56866e0b7d01c8b0e0d652fdb76
-      size: 2159
+      md5: fc769e15db5746f2ac5497ab5a4267c3
+      size: 2057
     - path: src/data_curation/response/prepare/wells.py
       hash: md5
       md5: 53c031853b2691a8e82a57b692f26e61
       size: 6756
     - path: src/data_curation/response/prepare_viability.py
       hash: md5
-      md5: 84f3d3b016551602d308a81dbb23b7e5
-      size: 3531
+      md5: bdec0a65a2325e9c63d2e8a01bb44837
+      size: 3648
     params:
       config/sources.yaml:
         datasets.PRISM_20Q2.response:
@@ -5767,8 +5787,8 @@ stages:
       size: 173701826
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -5925,12 +5945,12 @@ stages:
       size: 814
     - path: src/data_curation/cell_lines/sidm_mapping.py
       hash: md5
-      md5: 4aea4b7a55bb4448e90ffee53fd48bb6
-      size: 3932
+      md5: 83881acd36cd37534f049474d2e8a86a
+      size: 4714
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -5941,36 +5961,36 @@ stages:
       size: 6652
     - path: src/data_curation/core/paths.py
       hash: md5
-      md5: a18e342f77d5c50fa30092f01bb76a95
-      size: 2344
+      md5: ff83d0975f3b62656328adcd454d39e3
+      size: 2050
     - path: src/data_curation/core/standard.py
       hash: md5
       md5: 1fb72009dcea35b32ce0508e296022c9
       size: 9925
     - path: src/data_curation/response/harmonize/collapse.py
       hash: md5
-      md5: 364ae3841aa729e60ffff88846618a0b
-      size: 8864
+      md5: cb91b0eed8013d70dcddded68bb40ddf
+      size: 8723
     - path: src/data_curation/response/harmonize/identity.py
       hash: md5
-      md5: 5d1444e413037fc8aaf2851947f80c0f
-      size: 8846
+      md5: 0ebfaf17a6c676602617449a6bf61b7e
+      size: 7617
     - path: src/data_curation/response/harmonize/published.py
       hash: md5
-      md5: a22f4e00ffe9d4224a20a416dc1aed47
-      size: 9221
+      md5: fd6c1d8c985a932aa5f139534a030b4e
+      size: 9229
     - path: src/data_curation/response/harmonize/structures.py
       hash: md5
       md5: 460630f7b1e12d12363e8ae8ee41606f
       size: 3845
     - path: src/data_curation/response/harmonize_response.py
       hash: md5
-      md5: c1801bb1971c93b0f5461e9bd2fc3830
-      size: 8782
+      md5: 1473b48b05b146766d527d03925e6057
+      size: 8399
     - path: src/data_curation/response/prepare/ccle.py
       hash: md5
-      md5: 1a2102c2195375c63248cb94f8ff9345
-      size: 4561
+      md5: 6fcd8f50e20a57dcc94c1130d3d9718a
+      size: 4373
     - path: src/data_curation/response/prepare/wells.py
       hash: md5
       md5: 53c031853b2691a8e82a57b692f26e61
@@ -6001,8 +6021,8 @@ stages:
     outs:
     - path: data/04_response/harmonized/PRISM_20Q2.h5ad
       hash: md5
-      md5: 34f037aaae972683764ae583e4c09a02
-      size: 347836280
+      md5: 857155487c6be3a45d493958270a33ba
+      size: 348790074
   fit_curves_per_replicate@CCLE:
     cmd: uv run data-curation response fit-curves-per-replicate CCLE
     deps:
@@ -8232,16 +8252,16 @@ stages:
       size: 4349028
     - path: data/07_assembled/PRISM_19Q4.h5mu
       hash: md5
-      md5: 80b5830ff3ddee9d0afac9cb181ae6f7
-      size: 211811381
+      md5: 73093fdcec4f6560361216009649107d
+      size: 212266462
     - path: data/07_assembled/PRISM_20Q2.h5mu
       hash: md5
-      md5: 3bd821ba0dd67b13626d638ab6d644db
-      size: 254091064
+      md5: af5b3215cc370c0fd47d9c3705ceb5b4
+      size: 254749042
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -8252,24 +8272,24 @@ stages:
       size: 6652
     - path: src/data_curation/report/notebook.py
       hash: md5
-      md5: d8ad0596749aa07f13128d11f075a5d8
-      size: 7351
+      md5: 8bc0e37b67927cd05340527a5d098aca
+      size: 7241
     - path: src/data_curation/report/plots.py
       hash: md5
       md5: 09d9f1efdc1ac8244cd55d7a600c766c
       size: 1877
     - path: src/data_curation/report/reading.py
       hash: md5
-      md5: bc1e09ca0d700512bef635e95c1041ed
-      size: 9092
+      md5: 2aab06280883d5254e6fc28ebfc8c465
+      size: 8484
     - path: src/data_curation/report/render.py
       hash: md5
       md5: 7d00eeeb943b391c6d4ed1e901db3bca
       size: 1544
     - path: src/data_curation/report/summary.py
       hash: md5
-      md5: 638c7118aa46ad591278b5d1e662e631
-      size: 6232
+      md5: 2c33a43a63f0e922fd07d54e4fb514e9
+      size: 6008
     - path: src/data_curation/response/replicate_fits.py
       hash: md5
       md5: 4655aaa9a0e3fb082dc8a8846aa1aed0
@@ -8280,7 +8300,7 @@ stages:
     outs:
     - path: data/08_reports/data_summary.html
       hash: md5
-      md5: 5751f6c2535801ba138ccc80e752ff06
+      md5: 17e2cd50d606f3784db9ae05f926b757
       size: 728614
   record_fit_libs:
     cmd: uv run data-curation response record-fit-libs
@@ -8303,12 +8323,12 @@ stages:
     deps:
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/download.py
       hash: md5
-      md5: 886464ce798e60e7f004bb8ddebf226d
-      size: 4949
+      md5: 69589e573d7935b01ab1552d869085c8
+      size: 4546
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -8319,12 +8339,12 @@ stages:
       size: 6652
     - path: src/data_curation/omics/__init__.py
       hash: md5
-      md5: 9be4d14c3420172b1cbd6be3dbc66960
-      size: 840
+      md5: 615005d2acfebe508b869778d825dbc5
+      size: 903
     - path: src/data_curation/omics/download.py
       hash: md5
-      md5: bf01ad0abf77ca01fc1fac6edaadfd3a
-      size: 3574
+      md5: 31e4e6bc15c95a77f5cc12a8a11f54ef
+      size: 3471
     params:
       config/sources.yaml:
         cell_model_passports:
@@ -8442,24 +8462,24 @@ stages:
       size: 41144724
     - path: data/02_omics/transcriptomics/PRISM_19Q4.h5ad
       hash: md5
-      md5: 7a4d69c0cc558629dac75f468b7f5541
-      size: 95286416
+      md5: 3d900e06fa12f892631e5fc4b1498a44
+      size: 95467976
     - path: data/03_drugs/ontology.parquet
       hash: md5
       md5: 588e3ca18b63c0c6aea8b4a0500d9753
       size: 283550
     - path: data/04_response/harmonized/PRISM_19Q4.h5ad
       hash: md5
-      md5: d973e94db6aab04d2d1f00cc87dda3a6
-      size: 281190956
+      md5: 54afa2995f46ee1e704e3e9e64c1a5e2
+      size: 281814510
     - path: data/06_samples/metadata/cmp.parquet
       hash: md5
       md5: 5f89c4450f36b5fc56ae9ca8bf07b1db
       size: 153907
     - path: src/data_curation/assembly/assemble_mudata.py
       hash: md5
-      md5: 544e755cced2a13fdf2231a71824de68
-      size: 9169
+      md5: fda5725a83abe6f94eabd707aace3ef5
+      size: 8854
     - path: src/data_curation/assembly/write.py
       hash: md5
       md5: 7ef54f55e6c60e79986b4df644c148b2
@@ -8470,16 +8490,16 @@ stages:
       size: 5226
     - path: src/data_curation/cell_lines/meta.py
       hash: md5
-      md5: e9b042aa587ba09ba7bb22cdc0fc1eed
-      size: 9258
+      md5: 57f2a9d4969a4935cc250a5bf59a3a01
+      size: 9194
     - path: src/data_curation/cell_lines/sidm_mapping.py
       hash: md5
-      md5: 4aea4b7a55bb4448e90ffee53fd48bb6
-      size: 3932
+      md5: 83881acd36cd37534f049474d2e8a86a
+      size: 4714
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -8499,8 +8519,8 @@ stages:
     outs:
     - path: data/07_assembled/PRISM_19Q4.h5mu
       hash: md5
-      md5: 80b5830ff3ddee9d0afac9cb181ae6f7
-      size: 211811381
+      md5: 73093fdcec4f6560361216009649107d
+      size: 212266462
   assemble_mudata_prism@PRISM_20Q2:
     cmd: uv run data-curation assembly mudata PRISM_20Q2
     deps:
@@ -8510,24 +8530,24 @@ stages:
       size: 41144724
     - path: data/02_omics/transcriptomics/PRISM_20Q2.h5ad
       hash: md5
-      md5: 4458b3a4912bf0b8147c963d7d3bd096
-      size: 98503280
+      md5: dfcee2df2270ba20c5761f7553bfc8ee
+      size: 98685512
     - path: data/03_drugs/ontology.parquet
       hash: md5
       md5: 588e3ca18b63c0c6aea8b4a0500d9753
       size: 283550
     - path: data/04_response/harmonized/PRISM_20Q2.h5ad
       hash: md5
-      md5: 34f037aaae972683764ae583e4c09a02
-      size: 347836280
+      md5: 857155487c6be3a45d493958270a33ba
+      size: 348790074
     - path: data/06_samples/metadata/cmp.parquet
       hash: md5
       md5: 5f89c4450f36b5fc56ae9ca8bf07b1db
       size: 153907
     - path: src/data_curation/assembly/assemble_mudata.py
       hash: md5
-      md5: 544e755cced2a13fdf2231a71824de68
-      size: 9169
+      md5: fda5725a83abe6f94eabd707aace3ef5
+      size: 8854
     - path: src/data_curation/assembly/write.py
       hash: md5
       md5: 7ef54f55e6c60e79986b4df644c148b2
@@ -8538,16 +8558,16 @@ stages:
       size: 5226
     - path: src/data_curation/cell_lines/meta.py
       hash: md5
-      md5: e9b042aa587ba09ba7bb22cdc0fc1eed
-      size: 9258
+      md5: 57f2a9d4969a4935cc250a5bf59a3a01
+      size: 9194
     - path: src/data_curation/cell_lines/sidm_mapping.py
       hash: md5
-      md5: 4aea4b7a55bb4448e90ffee53fd48bb6
-      size: 3932
+      md5: 83881acd36cd37534f049474d2e8a86a
+      size: 4714
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -8567,8 +8587,8 @@ stages:
     outs:
     - path: data/07_assembled/PRISM_20Q2.h5mu
       hash: md5
-      md5: 3bd821ba0dd67b13626d638ab6d644db
-      size: 254091064
+      md5: af5b3215cc370c0fd47d9c3705ceb5b4
+      size: 254749042
   map_drugs_PRISM_19Q4:
     cmd: uv run data-curation drugs map-prism PRISM_19Q4
     deps:
@@ -8579,8 +8599,8 @@ stages:
       nfiles: 3
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -8591,16 +8611,16 @@ stages:
       size: 6652
     - path: src/data_curation/core/paths.py
       hash: md5
-      md5: a18e342f77d5c50fa30092f01bb76a95
-      size: 2344
+      md5: ff83d0975f3b62656328adcd454d39e3
+      size: 2050
     - path: src/data_curation/core/standard.py
       hash: md5
       md5: 1fb72009dcea35b32ce0508e296022c9
       size: 9925
     - path: src/data_curation/drugs/map_drugs.py
       hash: md5
-      md5: e0fadb8e7ce91ac9feb1b3e8080c1f5e
-      size: 20664
+      md5: 1ed5df72d6a25174c1585694bb538d89
+      size: 20628
     - path: src/data_curation/drugs/map_prism.py
       hash: md5
       md5: 2185a6ca7e2452d6567f4399f1a6030f
@@ -8611,24 +8631,24 @@ stages:
       size: 6099
     - path: src/data_curation/drugs/mapping/overrides.py
       hash: md5
-      md5: d225c9274b0b752e7338237eab4e0ba8
-      size: 2386
+      md5: 0b111415074f4750dc8ec89f7969608b
+      size: 2262
     - path: src/data_curation/drugs/ontology/pubchem.py
       hash: md5
-      md5: c55c2da4e6d7f7e49efd2ce2c5b78f37
-      size: 10561
+      md5: b07693f06099292dbe65c31902881f90
+      size: 9077
     - path: src/data_curation/drugs/prism_structures.py
       hash: md5
-      md5: 6e1404ac8e150b870a7aad2e58f0d99e
-      size: 11542
+      md5: be0d76ac6fba8e3202d74da3bb758a62
+      size: 11381
     - path: src/data_curation/response/gdsc_tags.py
       hash: md5
-      md5: b1cf86ffa92e24ff52132d920f03d28d
-      size: 1558
+      md5: c55e5d04c14a2ada0abf1cb31c996005
+      size: 1522
     - path: src/data_curation/response/prepare/ccle.py
       hash: md5
-      md5: 1a2102c2195375c63248cb94f8ff9345
-      size: 4561
+      md5: 6fcd8f50e20a57dcc94c1130d3d9718a
+      size: 4373
     - path: src/data_curation/response/prepare/wells.py
       hash: md5
       md5: 53c031853b2691a8e82a57b692f26e61
@@ -8678,8 +8698,8 @@ stages:
       nfiles: 3
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -8690,16 +8710,16 @@ stages:
       size: 6652
     - path: src/data_curation/core/paths.py
       hash: md5
-      md5: a18e342f77d5c50fa30092f01bb76a95
-      size: 2344
+      md5: ff83d0975f3b62656328adcd454d39e3
+      size: 2050
     - path: src/data_curation/core/standard.py
       hash: md5
       md5: 1fb72009dcea35b32ce0508e296022c9
       size: 9925
     - path: src/data_curation/drugs/map_drugs.py
       hash: md5
-      md5: e0fadb8e7ce91ac9feb1b3e8080c1f5e
-      size: 20664
+      md5: 1ed5df72d6a25174c1585694bb538d89
+      size: 20628
     - path: src/data_curation/drugs/map_prism.py
       hash: md5
       md5: 2185a6ca7e2452d6567f4399f1a6030f
@@ -8710,24 +8730,24 @@ stages:
       size: 6099
     - path: src/data_curation/drugs/mapping/overrides.py
       hash: md5
-      md5: d225c9274b0b752e7338237eab4e0ba8
-      size: 2386
+      md5: 0b111415074f4750dc8ec89f7969608b
+      size: 2262
     - path: src/data_curation/drugs/ontology/pubchem.py
       hash: md5
-      md5: c55c2da4e6d7f7e49efd2ce2c5b78f37
-      size: 10561
+      md5: b07693f06099292dbe65c31902881f90
+      size: 9077
     - path: src/data_curation/drugs/prism_structures.py
       hash: md5
-      md5: 6e1404ac8e150b870a7aad2e58f0d99e
-      size: 11542
+      md5: be0d76ac6fba8e3202d74da3bb758a62
+      size: 11381
     - path: src/data_curation/response/gdsc_tags.py
       hash: md5
-      md5: b1cf86ffa92e24ff52132d920f03d28d
-      size: 1558
+      md5: c55e5d04c14a2ada0abf1cb31c996005
+      size: 1522
     - path: src/data_curation/response/prepare/ccle.py
       hash: md5
-      md5: 1a2102c2195375c63248cb94f8ff9345
-      size: 4561
+      md5: 6fcd8f50e20a57dcc94c1130d3d9718a
+      size: 4373
     - path: src/data_curation/response/prepare/wells.py
       hash: md5
       md5: 53c031853b2691a8e82a57b692f26e61
@@ -8786,20 +8806,20 @@ stages:
       size: 814
     - path: src/data_curation/cell_lines/meta.py
       hash: md5
-      md5: e9b042aa587ba09ba7bb22cdc0fc1eed
-      size: 9258
+      md5: 57f2a9d4969a4935cc250a5bf59a3a01
+      size: 9194
     - path: src/data_curation/cell_lines/process_sample_meta.py
       hash: md5
       md5: 8770540c548e647718263fd48ce301d9
       size: 3791
     - path: src/data_curation/cell_lines/sidm_mapping.py
       hash: md5
-      md5: 4aea4b7a55bb4448e90ffee53fd48bb6
-      size: 3932
+      md5: 83881acd36cd37534f049474d2e8a86a
+      size: 4714
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -8842,20 +8862,20 @@ stages:
       size: 814
     - path: src/data_curation/cell_lines/meta.py
       hash: md5
-      md5: e9b042aa587ba09ba7bb22cdc0fc1eed
-      size: 9258
+      md5: 57f2a9d4969a4935cc250a5bf59a3a01
+      size: 9194
     - path: src/data_curation/cell_lines/process_sample_meta.py
       hash: md5
       md5: 8770540c548e647718263fd48ce301d9
       size: 3791
     - path: src/data_curation/cell_lines/sidm_mapping.py
       hash: md5
-      md5: 4aea4b7a55bb4448e90ffee53fd48bb6
-      size: 3932
+      md5: 83881acd36cd37534f049474d2e8a86a
+      size: 4714
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -8901,20 +8921,20 @@ stages:
       size: 814
     - path: src/data_curation/cell_lines/meta.py
       hash: md5
-      md5: e9b042aa587ba09ba7bb22cdc0fc1eed
-      size: 9258
+      md5: 57f2a9d4969a4935cc250a5bf59a3a01
+      size: 9194
     - path: src/data_curation/cell_lines/process_sample_meta.py
       hash: md5
       md5: 8770540c548e647718263fd48ce301d9
       size: 3791
     - path: src/data_curation/cell_lines/sidm_mapping.py
       hash: md5
-      md5: 4aea4b7a55bb4448e90ffee53fd48bb6
-      size: 3932
+      md5: 83881acd36cd37534f049474d2e8a86a
+      size: 4714
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -8953,12 +8973,12 @@ stages:
       size: 6652
     - path: src/data_curation/drugs/ontology/pubchem.py
       hash: md5
-      md5: c55c2da4e6d7f7e49efd2ce2c5b78f37
-      size: 10561
+      md5: b07693f06099292dbe65c31902881f90
+      size: 9077
     - path: src/data_curation/drugs/resolve_structures.py
       hash: md5
-      md5: c7ca99147a2fa23457b811003c254625
-      size: 9105
+      md5: 38835c29fc6e6d35afd6abb363f6fbf1
+      size: 9051
     - path: src/data_curation/response/harmonize/structures.py
       hash: md5
       md5: 460630f7b1e12d12363e8ae8ee41606f
@@ -9005,12 +9025,12 @@ stages:
       size: 4349028
     - path: data/07_assembled/PRISM_19Q4.h5mu
       hash: md5
-      md5: 80b5830ff3ddee9d0afac9cb181ae6f7
-      size: 211811381
+      md5: 73093fdcec4f6560361216009649107d
+      size: 212266462
     - path: data/07_assembled/PRISM_20Q2.h5mu
       hash: md5
-      md5: 3bd821ba0dd67b13626d638ab6d644db
-      size: 254091064
+      md5: af5b3215cc370c0fd47d9c3705ceb5b4
+      size: 254749042
     - path: data/07_assembled/TOYv1.h5mu
       hash: md5
       md5: 041e89760716885ca7094df3768fe4b0
@@ -9053,12 +9073,12 @@ stages:
     deps:
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/download.py
       hash: md5
-      md5: 886464ce798e60e7f004bb8ddebf226d
-      size: 4949
+      md5: 69589e573d7935b01ab1552d869085c8
+      size: 4546
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -9069,12 +9089,12 @@ stages:
       size: 6652
     - path: src/data_curation/omics/__init__.py
       hash: md5
-      md5: 9be4d14c3420172b1cbd6be3dbc66960
-      size: 840
+      md5: 615005d2acfebe508b869778d825dbc5
+      size: 903
     - path: src/data_curation/omics/download.py
       hash: md5
-      md5: bf01ad0abf77ca01fc1fac6edaadfd3a
-      size: 3574
+      md5: 31e4e6bc15c95a77f5cc12a8a11f54ef
+      size: 3471
     params:
       config/sources.yaml:
         ccle:
@@ -9135,16 +9155,16 @@ stages:
       size: 814
     - path: src/data_curation/cell_lines/native_ids.py
       hash: md5
-      md5: a2e73753ff08e01e0a06265ceadef48c
-      size: 5433
+      md5: 9aa6a5d707496a63213026a67ca0fd53
+      size: 3942
     - path: src/data_curation/cell_lines/sidm_mapping.py
       hash: md5
-      md5: 4aea4b7a55bb4448e90ffee53fd48bb6
-      size: 3932
+      md5: 83881acd36cd37534f049474d2e8a86a
+      size: 4714
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -9155,48 +9175,48 @@ stages:
       size: 6652
     - path: src/data_curation/core/paths.py
       hash: md5
-      md5: a18e342f77d5c50fa30092f01bb76a95
-      size: 2344
+      md5: ff83d0975f3b62656328adcd454d39e3
+      size: 2050
     - path: src/data_curation/core/standard.py
       hash: md5
       md5: 1fb72009dcea35b32ce0508e296022c9
       size: 9925
     - path: src/data_curation/omics/__init__.py
       hash: md5
-      md5: 9be4d14c3420172b1cbd6be3dbc66960
-      size: 840
+      md5: 615005d2acfebe508b869778d825dbc5
+      size: 903
     - path: src/data_curation/omics/gene_symbols.py
       hash: md5
       md5: 0503f6d7ee332b5589f48c27d2232919
       size: 3892
     - path: src/data_curation/omics/process_transcriptomics.py
       hash: md5
-      md5: fb4d7d66af39abfc0e7c99b35bca9ae5
-      size: 4552
+      md5: 1326ca04fee8ef6fbdae9a8b1b2f7385
+      size: 4022
     - path: src/data_curation/omics/samples.py
       hash: md5
-      md5: 47338e6804244d7f5ae158a128418f42
-      size: 3093
+      md5: 92d6c2407338acfcb925811e69c253af
+      size: 3054
     - path: src/data_curation/omics/transcriptomics/beataml.py
       hash: md5
-      md5: 1ba6adb669b4d086554106d4746c4a77
-      size: 3642
+      md5: d7edb572fce0f7eeb1391c576e1fdc2a
+      size: 3781
     - path: src/data_curation/omics/transcriptomics/bruna.py
       hash: md5
-      md5: 428158a1c5316aa152096059e330b0dd
-      size: 2557
+      md5: 53aaa6d725f2aeb4758c78d71db18744
+      size: 2703
     - path: src/data_curation/omics/transcriptomics/ccle.py
       hash: md5
-      md5: e248e8144b773eef8692c5d6e2cf9d43
-      size: 7563
+      md5: 72d6012497b2160beff9a35a5f1f2c3f
+      size: 7709
     - path: src/data_curation/omics/transcriptomics/gdsc.py
       hash: md5
-      md5: 88e97cff875b2bb5035e71d55c648ec4
-      size: 4956
+      md5: 92feed12d14289cf69cf00005b6d3795
+      size: 5095
     - path: src/data_curation/omics/transcriptomics/prism.py
       hash: md5
-      md5: 8cee6d9d42af9367e54a25ed09b456c0
-      size: 4735
+      md5: 79cd8a09dbe4351d8ae6f7abb7902029
+      size: 2742
     - path: src/data_curation/omics/transcriptomics/standard.py
       hash: md5
       md5: d2d3e7f89d3751c846a7fa69dfd3531c
@@ -9242,16 +9262,16 @@ stages:
       size: 814
     - path: src/data_curation/cell_lines/native_ids.py
       hash: md5
-      md5: a2e73753ff08e01e0a06265ceadef48c
-      size: 5433
+      md5: 9aa6a5d707496a63213026a67ca0fd53
+      size: 3942
     - path: src/data_curation/cell_lines/sidm_mapping.py
       hash: md5
-      md5: 4aea4b7a55bb4448e90ffee53fd48bb6
-      size: 3932
+      md5: 83881acd36cd37534f049474d2e8a86a
+      size: 4714
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -9262,48 +9282,48 @@ stages:
       size: 6652
     - path: src/data_curation/core/paths.py
       hash: md5
-      md5: a18e342f77d5c50fa30092f01bb76a95
-      size: 2344
+      md5: ff83d0975f3b62656328adcd454d39e3
+      size: 2050
     - path: src/data_curation/core/standard.py
       hash: md5
       md5: 1fb72009dcea35b32ce0508e296022c9
       size: 9925
     - path: src/data_curation/omics/__init__.py
       hash: md5
-      md5: 9be4d14c3420172b1cbd6be3dbc66960
-      size: 840
+      md5: 615005d2acfebe508b869778d825dbc5
+      size: 903
     - path: src/data_curation/omics/gene_symbols.py
       hash: md5
       md5: 0503f6d7ee332b5589f48c27d2232919
       size: 3892
     - path: src/data_curation/omics/process_transcriptomics.py
       hash: md5
-      md5: fb4d7d66af39abfc0e7c99b35bca9ae5
-      size: 4552
+      md5: 1326ca04fee8ef6fbdae9a8b1b2f7385
+      size: 4022
     - path: src/data_curation/omics/samples.py
       hash: md5
-      md5: 47338e6804244d7f5ae158a128418f42
-      size: 3093
+      md5: 92d6c2407338acfcb925811e69c253af
+      size: 3054
     - path: src/data_curation/omics/transcriptomics/beataml.py
       hash: md5
-      md5: 1ba6adb669b4d086554106d4746c4a77
-      size: 3642
+      md5: d7edb572fce0f7eeb1391c576e1fdc2a
+      size: 3781
     - path: src/data_curation/omics/transcriptomics/bruna.py
       hash: md5
-      md5: 428158a1c5316aa152096059e330b0dd
-      size: 2557
+      md5: 53aaa6d725f2aeb4758c78d71db18744
+      size: 2703
     - path: src/data_curation/omics/transcriptomics/ccle.py
       hash: md5
-      md5: e248e8144b773eef8692c5d6e2cf9d43
-      size: 7563
+      md5: 72d6012497b2160beff9a35a5f1f2c3f
+      size: 7709
     - path: src/data_curation/omics/transcriptomics/gdsc.py
       hash: md5
-      md5: 88e97cff875b2bb5035e71d55c648ec4
-      size: 4956
+      md5: 92feed12d14289cf69cf00005b6d3795
+      size: 5095
     - path: src/data_curation/omics/transcriptomics/prism.py
       hash: md5
-      md5: 8cee6d9d42af9367e54a25ed09b456c0
-      size: 4735
+      md5: 79cd8a09dbe4351d8ae6f7abb7902029
+      size: 2742
     - path: src/data_curation/omics/transcriptomics/standard.py
       hash: md5
       md5: d2d3e7f89d3751c846a7fa69dfd3531c
@@ -9353,16 +9373,16 @@ stages:
       size: 814
     - path: src/data_curation/cell_lines/native_ids.py
       hash: md5
-      md5: a2e73753ff08e01e0a06265ceadef48c
-      size: 5433
+      md5: 9aa6a5d707496a63213026a67ca0fd53
+      size: 3942
     - path: src/data_curation/cell_lines/sidm_mapping.py
       hash: md5
-      md5: 4aea4b7a55bb4448e90ffee53fd48bb6
-      size: 3932
+      md5: 83881acd36cd37534f049474d2e8a86a
+      size: 4714
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -9373,48 +9393,48 @@ stages:
       size: 6652
     - path: src/data_curation/core/paths.py
       hash: md5
-      md5: a18e342f77d5c50fa30092f01bb76a95
-      size: 2344
+      md5: ff83d0975f3b62656328adcd454d39e3
+      size: 2050
     - path: src/data_curation/core/standard.py
       hash: md5
       md5: 1fb72009dcea35b32ce0508e296022c9
       size: 9925
     - path: src/data_curation/omics/__init__.py
       hash: md5
-      md5: 9be4d14c3420172b1cbd6be3dbc66960
-      size: 840
+      md5: 615005d2acfebe508b869778d825dbc5
+      size: 903
     - path: src/data_curation/omics/gene_symbols.py
       hash: md5
       md5: 0503f6d7ee332b5589f48c27d2232919
       size: 3892
     - path: src/data_curation/omics/process_transcriptomics.py
       hash: md5
-      md5: fb4d7d66af39abfc0e7c99b35bca9ae5
-      size: 4552
+      md5: 1326ca04fee8ef6fbdae9a8b1b2f7385
+      size: 4022
     - path: src/data_curation/omics/samples.py
       hash: md5
-      md5: 47338e6804244d7f5ae158a128418f42
-      size: 3093
+      md5: 92d6c2407338acfcb925811e69c253af
+      size: 3054
     - path: src/data_curation/omics/transcriptomics/beataml.py
       hash: md5
-      md5: 1ba6adb669b4d086554106d4746c4a77
-      size: 3642
+      md5: d7edb572fce0f7eeb1391c576e1fdc2a
+      size: 3781
     - path: src/data_curation/omics/transcriptomics/bruna.py
       hash: md5
-      md5: 428158a1c5316aa152096059e330b0dd
-      size: 2557
+      md5: 53aaa6d725f2aeb4758c78d71db18744
+      size: 2703
     - path: src/data_curation/omics/transcriptomics/ccle.py
       hash: md5
-      md5: e248e8144b773eef8692c5d6e2cf9d43
-      size: 7563
+      md5: 72d6012497b2160beff9a35a5f1f2c3f
+      size: 7709
     - path: src/data_curation/omics/transcriptomics/gdsc.py
       hash: md5
-      md5: 88e97cff875b2bb5035e71d55c648ec4
-      size: 4956
+      md5: 92feed12d14289cf69cf00005b6d3795
+      size: 5095
     - path: src/data_curation/omics/transcriptomics/prism.py
       hash: md5
-      md5: 8cee6d9d42af9367e54a25ed09b456c0
-      size: 4735
+      md5: 79cd8a09dbe4351d8ae6f7abb7902029
+      size: 2742
     - path: src/data_curation/omics/transcriptomics/standard.py
       hash: md5
       md5: d2d3e7f89d3751c846a7fa69dfd3531c
@@ -9464,16 +9484,16 @@ stages:
       size: 814
     - path: src/data_curation/cell_lines/native_ids.py
       hash: md5
-      md5: a2e73753ff08e01e0a06265ceadef48c
-      size: 5433
+      md5: 9aa6a5d707496a63213026a67ca0fd53
+      size: 3942
     - path: src/data_curation/cell_lines/sidm_mapping.py
       hash: md5
-      md5: 4aea4b7a55bb4448e90ffee53fd48bb6
-      size: 3932
+      md5: 83881acd36cd37534f049474d2e8a86a
+      size: 4714
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -9484,48 +9504,48 @@ stages:
       size: 6652
     - path: src/data_curation/core/paths.py
       hash: md5
-      md5: a18e342f77d5c50fa30092f01bb76a95
-      size: 2344
+      md5: ff83d0975f3b62656328adcd454d39e3
+      size: 2050
     - path: src/data_curation/core/standard.py
       hash: md5
       md5: 1fb72009dcea35b32ce0508e296022c9
       size: 9925
     - path: src/data_curation/omics/__init__.py
       hash: md5
-      md5: 9be4d14c3420172b1cbd6be3dbc66960
-      size: 840
+      md5: 615005d2acfebe508b869778d825dbc5
+      size: 903
     - path: src/data_curation/omics/gene_symbols.py
       hash: md5
       md5: 0503f6d7ee332b5589f48c27d2232919
       size: 3892
     - path: src/data_curation/omics/process_transcriptomics.py
       hash: md5
-      md5: fb4d7d66af39abfc0e7c99b35bca9ae5
-      size: 4552
+      md5: 1326ca04fee8ef6fbdae9a8b1b2f7385
+      size: 4022
     - path: src/data_curation/omics/samples.py
       hash: md5
-      md5: 47338e6804244d7f5ae158a128418f42
-      size: 3093
+      md5: 92d6c2407338acfcb925811e69c253af
+      size: 3054
     - path: src/data_curation/omics/transcriptomics/beataml.py
       hash: md5
-      md5: 1ba6adb669b4d086554106d4746c4a77
-      size: 3642
+      md5: d7edb572fce0f7eeb1391c576e1fdc2a
+      size: 3781
     - path: src/data_curation/omics/transcriptomics/bruna.py
       hash: md5
-      md5: 428158a1c5316aa152096059e330b0dd
-      size: 2557
+      md5: 53aaa6d725f2aeb4758c78d71db18744
+      size: 2703
     - path: src/data_curation/omics/transcriptomics/ccle.py
       hash: md5
-      md5: e248e8144b773eef8692c5d6e2cf9d43
-      size: 7563
+      md5: 72d6012497b2160beff9a35a5f1f2c3f
+      size: 7709
     - path: src/data_curation/omics/transcriptomics/gdsc.py
       hash: md5
-      md5: 88e97cff875b2bb5035e71d55c648ec4
-      size: 4956
+      md5: 92feed12d14289cf69cf00005b6d3795
+      size: 5095
     - path: src/data_curation/omics/transcriptomics/prism.py
       hash: md5
-      md5: 8cee6d9d42af9367e54a25ed09b456c0
-      size: 4735
+      md5: 79cd8a09dbe4351d8ae6f7abb7902029
+      size: 2742
     - path: src/data_curation/omics/transcriptomics/standard.py
       hash: md5
       md5: d2d3e7f89d3751c846a7fa69dfd3531c
@@ -9575,16 +9595,16 @@ stages:
       size: 814
     - path: src/data_curation/cell_lines/native_ids.py
       hash: md5
-      md5: a2e73753ff08e01e0a06265ceadef48c
-      size: 5433
+      md5: 9aa6a5d707496a63213026a67ca0fd53
+      size: 3942
     - path: src/data_curation/cell_lines/sidm_mapping.py
       hash: md5
-      md5: 4aea4b7a55bb4448e90ffee53fd48bb6
-      size: 3932
+      md5: 83881acd36cd37534f049474d2e8a86a
+      size: 4714
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -9595,48 +9615,48 @@ stages:
       size: 6652
     - path: src/data_curation/core/paths.py
       hash: md5
-      md5: a18e342f77d5c50fa30092f01bb76a95
-      size: 2344
+      md5: ff83d0975f3b62656328adcd454d39e3
+      size: 2050
     - path: src/data_curation/core/standard.py
       hash: md5
       md5: 1fb72009dcea35b32ce0508e296022c9
       size: 9925
     - path: src/data_curation/omics/__init__.py
       hash: md5
-      md5: 9be4d14c3420172b1cbd6be3dbc66960
-      size: 840
+      md5: 615005d2acfebe508b869778d825dbc5
+      size: 903
     - path: src/data_curation/omics/gene_symbols.py
       hash: md5
       md5: 0503f6d7ee332b5589f48c27d2232919
       size: 3892
     - path: src/data_curation/omics/process_transcriptomics.py
       hash: md5
-      md5: fb4d7d66af39abfc0e7c99b35bca9ae5
-      size: 4552
+      md5: 1326ca04fee8ef6fbdae9a8b1b2f7385
+      size: 4022
     - path: src/data_curation/omics/samples.py
       hash: md5
-      md5: 47338e6804244d7f5ae158a128418f42
-      size: 3093
+      md5: 92d6c2407338acfcb925811e69c253af
+      size: 3054
     - path: src/data_curation/omics/transcriptomics/beataml.py
       hash: md5
-      md5: 1ba6adb669b4d086554106d4746c4a77
-      size: 3642
+      md5: d7edb572fce0f7eeb1391c576e1fdc2a
+      size: 3781
     - path: src/data_curation/omics/transcriptomics/bruna.py
       hash: md5
-      md5: 428158a1c5316aa152096059e330b0dd
-      size: 2557
+      md5: 53aaa6d725f2aeb4758c78d71db18744
+      size: 2703
     - path: src/data_curation/omics/transcriptomics/ccle.py
       hash: md5
-      md5: e248e8144b773eef8692c5d6e2cf9d43
-      size: 7563
+      md5: 72d6012497b2160beff9a35a5f1f2c3f
+      size: 7709
     - path: src/data_curation/omics/transcriptomics/gdsc.py
       hash: md5
-      md5: 88e97cff875b2bb5035e71d55c648ec4
-      size: 4956
+      md5: 92feed12d14289cf69cf00005b6d3795
+      size: 5095
     - path: src/data_curation/omics/transcriptomics/prism.py
       hash: md5
-      md5: 8cee6d9d42af9367e54a25ed09b456c0
-      size: 4735
+      md5: 79cd8a09dbe4351d8ae6f7abb7902029
+      size: 2742
     - path: src/data_curation/omics/transcriptomics/standard.py
       hash: md5
       md5: d2d3e7f89d3751c846a7fa69dfd3531c
@@ -9682,16 +9702,16 @@ stages:
       size: 814
     - path: src/data_curation/cell_lines/native_ids.py
       hash: md5
-      md5: a2e73753ff08e01e0a06265ceadef48c
-      size: 5433
+      md5: 9aa6a5d707496a63213026a67ca0fd53
+      size: 3942
     - path: src/data_curation/cell_lines/sidm_mapping.py
       hash: md5
-      md5: 4aea4b7a55bb4448e90ffee53fd48bb6
-      size: 3932
+      md5: 83881acd36cd37534f049474d2e8a86a
+      size: 4714
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -9702,28 +9722,28 @@ stages:
       size: 6652
     - path: src/data_curation/core/paths.py
       hash: md5
-      md5: a18e342f77d5c50fa30092f01bb76a95
-      size: 2344
+      md5: ff83d0975f3b62656328adcd454d39e3
+      size: 2050
     - path: src/data_curation/omics/__init__.py
       hash: md5
-      md5: 9be4d14c3420172b1cbd6be3dbc66960
-      size: 840
+      md5: 615005d2acfebe508b869778d825dbc5
+      size: 903
     - path: src/data_curation/omics/methylation/ccle.py
       hash: md5
       md5: 0dbb87d38affab46f550bb9d052ff06e
       size: 10525
     - path: src/data_curation/omics/methylation/gdsc.py
       hash: md5
-      md5: bd2aa5181c83ae16d42fd1269f35ac8f
-      size: 9459
+      md5: c2336fd15e3469f2244f0a2d858c3c72
+      size: 8888
     - path: src/data_curation/omics/process_methylation.py
       hash: md5
       md5: f65a6585213238d1182eaaa130e0c043
       size: 2155
     - path: src/data_curation/omics/samples.py
       hash: md5
-      md5: 47338e6804244d7f5ae158a128418f42
-      size: 3093
+      md5: 92d6c2407338acfcb925811e69c253af
+      size: 3054
     params:
       config/sources.yaml:
         datasets.GDSC1.omics:
@@ -9765,16 +9785,16 @@ stages:
       size: 814
     - path: src/data_curation/cell_lines/native_ids.py
       hash: md5
-      md5: a2e73753ff08e01e0a06265ceadef48c
-      size: 5433
+      md5: 9aa6a5d707496a63213026a67ca0fd53
+      size: 3942
     - path: src/data_curation/cell_lines/sidm_mapping.py
       hash: md5
-      md5: 4aea4b7a55bb4448e90ffee53fd48bb6
-      size: 3932
+      md5: 83881acd36cd37534f049474d2e8a86a
+      size: 4714
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -9785,28 +9805,28 @@ stages:
       size: 6652
     - path: src/data_curation/core/paths.py
       hash: md5
-      md5: a18e342f77d5c50fa30092f01bb76a95
-      size: 2344
+      md5: ff83d0975f3b62656328adcd454d39e3
+      size: 2050
     - path: src/data_curation/omics/__init__.py
       hash: md5
-      md5: 9be4d14c3420172b1cbd6be3dbc66960
-      size: 840
+      md5: 615005d2acfebe508b869778d825dbc5
+      size: 903
     - path: src/data_curation/omics/methylation/ccle.py
       hash: md5
       md5: 0dbb87d38affab46f550bb9d052ff06e
       size: 10525
     - path: src/data_curation/omics/methylation/gdsc.py
       hash: md5
-      md5: bd2aa5181c83ae16d42fd1269f35ac8f
-      size: 9459
+      md5: c2336fd15e3469f2244f0a2d858c3c72
+      size: 8888
     - path: src/data_curation/omics/process_methylation.py
       hash: md5
       md5: f65a6585213238d1182eaaa130e0c043
       size: 2155
     - path: src/data_curation/omics/samples.py
       hash: md5
-      md5: 47338e6804244d7f5ae158a128418f42
-      size: 3093
+      md5: 92d6c2407338acfcb925811e69c253af
+      size: 3054
     params:
       config/sources.yaml:
         datasets.GDSC2.omics:
@@ -9852,16 +9872,16 @@ stages:
       size: 814
     - path: src/data_curation/cell_lines/native_ids.py
       hash: md5
-      md5: a2e73753ff08e01e0a06265ceadef48c
-      size: 5433
+      md5: 9aa6a5d707496a63213026a67ca0fd53
+      size: 3942
     - path: src/data_curation/cell_lines/sidm_mapping.py
       hash: md5
-      md5: 4aea4b7a55bb4448e90ffee53fd48bb6
-      size: 3932
+      md5: 83881acd36cd37534f049474d2e8a86a
+      size: 4714
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -9872,28 +9892,28 @@ stages:
       size: 6652
     - path: src/data_curation/core/paths.py
       hash: md5
-      md5: a18e342f77d5c50fa30092f01bb76a95
-      size: 2344
+      md5: ff83d0975f3b62656328adcd454d39e3
+      size: 2050
     - path: src/data_curation/omics/__init__.py
       hash: md5
-      md5: 9be4d14c3420172b1cbd6be3dbc66960
-      size: 840
+      md5: 615005d2acfebe508b869778d825dbc5
+      size: 903
     - path: src/data_curation/omics/methylation/ccle.py
       hash: md5
       md5: 0dbb87d38affab46f550bb9d052ff06e
       size: 10525
     - path: src/data_curation/omics/methylation/gdsc.py
       hash: md5
-      md5: bd2aa5181c83ae16d42fd1269f35ac8f
-      size: 9459
+      md5: c2336fd15e3469f2244f0a2d858c3c72
+      size: 8888
     - path: src/data_curation/omics/process_methylation.py
       hash: md5
       md5: f65a6585213238d1182eaaa130e0c043
       size: 2155
     - path: src/data_curation/omics/samples.py
       hash: md5
-      md5: 47338e6804244d7f5ae158a128418f42
-      size: 3093
+      md5: 92d6c2407338acfcb925811e69c253af
+      size: 3054
     params:
       config/sources.yaml:
         datasets.CCLE.omics:
@@ -9939,16 +9959,16 @@ stages:
       size: 814
     - path: src/data_curation/cell_lines/native_ids.py
       hash: md5
-      md5: a2e73753ff08e01e0a06265ceadef48c
-      size: 5433
+      md5: 9aa6a5d707496a63213026a67ca0fd53
+      size: 3942
     - path: src/data_curation/cell_lines/sidm_mapping.py
       hash: md5
-      md5: 4aea4b7a55bb4448e90ffee53fd48bb6
-      size: 3932
+      md5: 83881acd36cd37534f049474d2e8a86a
+      size: 4714
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -9959,28 +9979,28 @@ stages:
       size: 6652
     - path: src/data_curation/core/paths.py
       hash: md5
-      md5: a18e342f77d5c50fa30092f01bb76a95
-      size: 2344
+      md5: ff83d0975f3b62656328adcd454d39e3
+      size: 2050
     - path: src/data_curation/omics/__init__.py
       hash: md5
-      md5: 9be4d14c3420172b1cbd6be3dbc66960
-      size: 840
+      md5: 615005d2acfebe508b869778d825dbc5
+      size: 903
     - path: src/data_curation/omics/methylation/ccle.py
       hash: md5
       md5: 0dbb87d38affab46f550bb9d052ff06e
       size: 10525
     - path: src/data_curation/omics/methylation/gdsc.py
       hash: md5
-      md5: bd2aa5181c83ae16d42fd1269f35ac8f
-      size: 9459
+      md5: c2336fd15e3469f2244f0a2d858c3c72
+      size: 8888
     - path: src/data_curation/omics/process_methylation.py
       hash: md5
       md5: f65a6585213238d1182eaaa130e0c043
       size: 2155
     - path: src/data_curation/omics/samples.py
       hash: md5
-      md5: 47338e6804244d7f5ae158a128418f42
-      size: 3093
+      md5: 92d6c2407338acfcb925811e69c253af
+      size: 3054
     params:
       config/sources.yaml:
         datasets.CTRPv1.omics:
@@ -10026,16 +10046,16 @@ stages:
       size: 814
     - path: src/data_curation/cell_lines/native_ids.py
       hash: md5
-      md5: a2e73753ff08e01e0a06265ceadef48c
-      size: 5433
+      md5: 9aa6a5d707496a63213026a67ca0fd53
+      size: 3942
     - path: src/data_curation/cell_lines/sidm_mapping.py
       hash: md5
-      md5: 4aea4b7a55bb4448e90ffee53fd48bb6
-      size: 3932
+      md5: 83881acd36cd37534f049474d2e8a86a
+      size: 4714
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -10046,28 +10066,28 @@ stages:
       size: 6652
     - path: src/data_curation/core/paths.py
       hash: md5
-      md5: a18e342f77d5c50fa30092f01bb76a95
-      size: 2344
+      md5: ff83d0975f3b62656328adcd454d39e3
+      size: 2050
     - path: src/data_curation/omics/__init__.py
       hash: md5
-      md5: 9be4d14c3420172b1cbd6be3dbc66960
-      size: 840
+      md5: 615005d2acfebe508b869778d825dbc5
+      size: 903
     - path: src/data_curation/omics/methylation/ccle.py
       hash: md5
       md5: 0dbb87d38affab46f550bb9d052ff06e
       size: 10525
     - path: src/data_curation/omics/methylation/gdsc.py
       hash: md5
-      md5: bd2aa5181c83ae16d42fd1269f35ac8f
-      size: 9459
+      md5: c2336fd15e3469f2244f0a2d858c3c72
+      size: 8888
     - path: src/data_curation/omics/process_methylation.py
       hash: md5
       md5: f65a6585213238d1182eaaa130e0c043
       size: 2155
     - path: src/data_curation/omics/samples.py
       hash: md5
-      md5: 47338e6804244d7f5ae158a128418f42
-      size: 3093
+      md5: 92d6c2407338acfcb925811e69c253af
+      size: 3054
     params:
       config/sources.yaml:
         datasets.CTRPv2.omics:
@@ -10113,16 +10133,16 @@ stages:
       size: 814
     - path: src/data_curation/cell_lines/native_ids.py
       hash: md5
-      md5: a2e73753ff08e01e0a06265ceadef48c
-      size: 5433
+      md5: 9aa6a5d707496a63213026a67ca0fd53
+      size: 3942
     - path: src/data_curation/cell_lines/sidm_mapping.py
       hash: md5
-      md5: 4aea4b7a55bb4448e90ffee53fd48bb6
-      size: 3932
+      md5: 83881acd36cd37534f049474d2e8a86a
+      size: 4714
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -10133,28 +10153,28 @@ stages:
       size: 6652
     - path: src/data_curation/core/paths.py
       hash: md5
-      md5: a18e342f77d5c50fa30092f01bb76a95
-      size: 2344
+      md5: ff83d0975f3b62656328adcd454d39e3
+      size: 2050
     - path: src/data_curation/omics/__init__.py
       hash: md5
-      md5: 9be4d14c3420172b1cbd6be3dbc66960
-      size: 840
+      md5: 615005d2acfebe508b869778d825dbc5
+      size: 903
     - path: src/data_curation/omics/methylation/ccle.py
       hash: md5
       md5: 0dbb87d38affab46f550bb9d052ff06e
       size: 10525
     - path: src/data_curation/omics/methylation/gdsc.py
       hash: md5
-      md5: bd2aa5181c83ae16d42fd1269f35ac8f
-      size: 9459
+      md5: c2336fd15e3469f2244f0a2d858c3c72
+      size: 8888
     - path: src/data_curation/omics/process_methylation.py
       hash: md5
       md5: f65a6585213238d1182eaaa130e0c043
       size: 2155
     - path: src/data_curation/omics/samples.py
       hash: md5
-      md5: 47338e6804244d7f5ae158a128418f42
-      size: 3093
+      md5: 92d6c2407338acfcb925811e69c253af
+      size: 3054
     params:
       config/sources.yaml:
         datasets.PRISM_19Q4.omics:
@@ -10196,16 +10216,16 @@ stages:
       size: 814
     - path: src/data_curation/cell_lines/native_ids.py
       hash: md5
-      md5: a2e73753ff08e01e0a06265ceadef48c
-      size: 5433
+      md5: 9aa6a5d707496a63213026a67ca0fd53
+      size: 3942
     - path: src/data_curation/cell_lines/sidm_mapping.py
       hash: md5
-      md5: 4aea4b7a55bb4448e90ffee53fd48bb6
-      size: 3932
+      md5: 83881acd36cd37534f049474d2e8a86a
+      size: 4714
     - path: src/data_curation/core/config.py
       hash: md5
-      md5: 053435552a4b8876fa1e486e70302dfe
-      size: 6486
+      md5: f3054d20d6d87ab7e782c0aeef252651
+      size: 5979
     - path: src/data_curation/core/errors.py
       hash: md5
       md5: b5116cda92f509f1dcde5e3ab998a053
@@ -10216,28 +10236,28 @@ stages:
       size: 6652
     - path: src/data_curation/core/paths.py
       hash: md5
-      md5: a18e342f77d5c50fa30092f01bb76a95
-      size: 2344
+      md5: ff83d0975f3b62656328adcd454d39e3
+      size: 2050
     - path: src/data_curation/omics/__init__.py
       hash: md5
-      md5: 9be4d14c3420172b1cbd6be3dbc66960
-      size: 840
+      md5: 615005d2acfebe508b869778d825dbc5
+      size: 903
     - path: src/data_curation/omics/methylation/ccle.py
       hash: md5
       md5: 0dbb87d38affab46f550bb9d052ff06e
       size: 10525
     - path: src/data_curation/omics/methylation/gdsc.py
       hash: md5
-      md5: bd2aa5181c83ae16d42fd1269f35ac8f
-      size: 9459
+      md5: c2336fd15e3469f2244f0a2d858c3c72
+      size: 8888
     - path: src/data_curation/omics/process_methylation.py
       hash: md5
       md5: f65a6585213238d1182eaaa130e0c043
       size: 2155
     - path: src/data_curation/omics/samples.py
       hash: md5
-      md5: 47338e6804244d7f5ae158a128418f42
-      size: 3093
+      md5: 92d6c2407338acfcb925811e69c253af
+      size: 3054
     params:
       config/sources.yaml:
         datasets.PRISM_20Q2.omics:
