@@ -148,7 +148,7 @@ def fetch_structures(cids: list[str], cache_path: UPath) -> Cache:
     return {cid: cache[cid] for cid in cids}
 
 
-def _group_by_inchikey(structures: dict[str, dict[str, str] | None]) -> dict[str, str]:
+def _group_by_inchikey(structures: Cache) -> dict[str, str]:
     """Map every CID that PubChem knows to the lowest CID sharing its InChIKey."""
     groups: dict[str, list[int]] = {}
     for cid, record in structures.items():
@@ -157,7 +157,7 @@ def _group_by_inchikey(structures: dict[str, dict[str, str] | None]) -> dict[str
     return {str(cid): str(min(group)) for group in groups.values() for cid in group}
 
 
-def resolve_structures(study: pd.DataFrame, fetched: dict[str, dict[str, str] | None]) -> pd.DataFrame:
+def resolve_structures(study: pd.DataFrame, fetched: Cache) -> pd.DataFrame:
     """Build the structure table from the study SMILES and PubChem's records.
 
     Args:
