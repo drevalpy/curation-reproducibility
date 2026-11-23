@@ -69,12 +69,11 @@ _CTRPV2_WELL_COLUMNS = frozenset(
 _VALUE_SEPARATOR = ";"
 
 
-def prepare_ctrpv1(raw_dir: UPath, ds_params: dict) -> Wells:  # noqa: ARG001
+def prepare_ctrpv1(raw_dir: UPath) -> Wells:
     """Read CTRPv1 viability, which ``cpd_avg_pv`` already reports fractionally.
 
     Args:
         raw_dir: Raw response directory for the dataset.
-        ds_params: Unused; the signature is shared across preparers.
 
     Returns:
         Long-form viability keyed by ``ccl_name`` and ``cpd_name``, one series per pair.
@@ -88,12 +87,11 @@ def prepare_ctrpv1(raw_dir: UPath, ds_params: dict) -> Wells:  # noqa: ARG001
     return Wells(df[CTRPV1_SPEC.columns], CTRPV1_SPEC)
 
 
-def prepare_ctrpv2(raw_dir: UPath, ds_params: dict) -> Wells:  # noqa: ARG001
+def prepare_ctrpv2(raw_dir: UPath) -> Wells:
     """Linearize CTRPv2's log2 background-subtracted values and join metadata.
 
     Args:
         raw_dir: Raw response directory for the dataset.
-        ds_params: Unused; the signature is shared across preparers.
 
     Returns:
         Wells keyed by ``ccl_name`` and ``master_cpd_id``, grouped into series per experiment and plate.

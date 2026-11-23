@@ -43,12 +43,11 @@ SPEC = SeriesSpec(
 _PERCENT_SCALE = 100.0
 
 
-def prepare_beataml(raw_dir: UPath, ds_params: dict) -> Wells:  # noqa: ARG001
+def prepare_beataml(raw_dir: UPath) -> Wells:
     """Rescale BeatAML2's percent viability to a fraction.
 
     Args:
         raw_dir: Raw response directory for the dataset.
-        ds_params: Unused; the signature is shared across preparers.
 
     Returns:
         Wells keyed by ``dbgap_subject_id`` and ``inhibitor``, grouped into series per run, panel, plate and

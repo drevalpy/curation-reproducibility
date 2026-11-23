@@ -22,12 +22,11 @@ from data_curation.response.prepare.wells import WELL_COLUMNS, SeriesSpec, Wells
 logger = logging.getLogger(__name__)
 
 
-def prepare_standard(raw_dir: UPath, ds_params: dict) -> Wells:  # noqa: ARG001
+def prepare_standard(raw_dir: UPath) -> Wells:
     """Read the standard well table and describe its series.
 
     Args:
         raw_dir: Raw response directory holding ``wells.parquet``.
-        ds_params: Unused; the signature is shared across preparers.
 
     Returns:
         Wells keyed by the native ``sample`` and ``drug``, intensity clipped at zero.

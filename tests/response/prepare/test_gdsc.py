@@ -7,7 +7,7 @@ from upath import UPath
 
 from data_curation.response.prepare.gdsc import prepare_gdsc
 
-DS_PARAMS = {"negative_control_tag": "NC-1", "positive_control_tag": "B"}
+CONTROL_TAGS = {"negative_control_tag": "NC-1", "positive_control_tag": "B"}
 
 RAW_COLUMNS = [
     "RESEARCH_PROJECT",
@@ -77,12 +77,12 @@ PLATE = [
 ]
 
 
-def _prepare(raw_dir: UPath, params: dict = DS_PARAMS) -> pd.DataFrame:
-    return prepare_gdsc(raw_dir, params).frame
+def _prepare(raw_dir: UPath, tags: dict[str, str] = CONTROL_TAGS) -> pd.DataFrame:
+    return prepare_gdsc(raw_dir, **tags).frame
 
 
 def _series(raw_dir: UPath) -> pd.DataFrame:
-    wells = prepare_gdsc(raw_dir, DS_PARAMS)
+    wells = prepare_gdsc(raw_dir, **CONTROL_TAGS)
     return number(wells).series
 
 
@@ -131,11 +131,11 @@ class TestWellSelection:
         wells = [*PLATE[:2], _well("L1-D1-S", 40.0, POSITION=2, CONC=0.5)]
         assert _prepare(write_raw(wells)).empty
 
-    def test_the_negative_control_tag_is_read_from_params(self, write_raw) -> None:
+    def test_the_negative_control_tag_is_configurable(self, write_raw) -> None:
         """GDSC1 tags its untreated wells NC-0, GDSC2 NC-1."""
         wells = [_well("B", 0.0), _well("NC-0", 100.0), PLATE[2]]
-        params = {"negative_control_tag": "NC-0", "positive_control_tag": "B"}
-        assert _prepare(write_raw(wells), params)["intensity"].tolist() == pytest.approx([0.4])
+        tags = {"negative_control_tag": "NC-0", "positive_control_tag": "B"}
+        assert _prepare(write_raw(wells), tags)["intensity"].tolist() == pytest.approx([0.4])
 
 
 def _plate(

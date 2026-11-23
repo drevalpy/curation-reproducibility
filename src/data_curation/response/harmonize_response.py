@@ -1,7 +1,6 @@
 """Rename fitted curves onto canonical identifiers and attach the annotations.
 
-The cheap second half of the old ``process_response`` stage. It takes the
-native-keyed curve metrics from ``fit_curves``, renames both axes to the
+Takes the native-keyed curve metrics from ``fit_curves``, renames both axes to the
 identifiers drevalpy expects - sample IDs (Cellosaurus accessions for the
 cell-line datasets) and PubChem CIDs - resolves the duplicates that renaming can
 create, and attaches ``canonical_smiles``, ``cell_line_name`` (cell-line datasets
@@ -76,7 +75,8 @@ def harmonize(
     Returns:
         The metrics keyed by sample ID (Cellosaurus accession for cell lines) and
         PubChem CID, with ``canonical_smiles`` attached, ``cell_line_name`` for
-        the cell-line datasets, and the re-keyed replicate-fits table.
+        the cell-line datasets, and the re-keyed replicate-fits table. ``X`` still
+        holds :data:`CURVES_X_COLUMN`; :func:`use_as_x` changes that.
     """
     table = curves.uns.get(KEY)
     sample_natives = curves.obs_names
@@ -119,13 +119,10 @@ def _canonical_table(table: pd.DataFrame, sample_identity: pd.Series, drug_ident
         failure_fraction=UNMAPPED_FAILURE_FRACTION,
     )
     out = canonicalize(table, sample_map, drug_map)
-    logger.info("Replicate-fits table: %d of %d rows resolved, %s", len(out), len(table), _status_counts(out))
+    logger.info(
+        "Replicate-fits table: %d of %d rows resolved, %s", len(out), len(table), out["status"].value_counts().to_dict()
+    )
     return out
-
-
-def _status_counts(table: pd.DataFrame) -> dict[str, int]:
-    """Rows per fit status, for the log."""
-    return {str(status): int(count) for status, count in table["status"].value_counts().items()}
 
 
 def _annotate(adata: ad.AnnData, *, cell_line_names: dict[str, str], drug_mapping: pd.DataFrame) -> None:
@@ -176,9 +173,6 @@ def main(dataset: str) -> None:
     fmt = dataset_config(dataset, "response")["format"]
 
     drug_mapping = pd.read_parquet(str(layout.drug_mapping(dataset)))
-    # Identifiers are stored as strings in the Parquet file; the cast is kept as
-    # a defensive guard for any future reader that passes a non-string column.
-    drug_mapping["pubchem_id"] = drug_mapping["pubchem_id"].astype(str)
     # One canonical ID and one SMILES per drug across all datasets.
     drug_mapping = apply_structures(drug_mapping, read_structures())
 

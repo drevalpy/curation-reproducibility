@@ -8,10 +8,9 @@ GDSC is injective) but drugs are not - **GDSC1 collapses 402 native ``DRUG_ID``s
 onto 378 PubChem CIDs and GDSC2 294 onto 285**, all repeat screens of the same
 compound (Doxorubicin, Docetaxel, Selumetinib, ...).
 
-The split does not create this. Those repeat screens use different dose ranges,
-and CurveCurator groups by dose range, so they were already separate fitted rows
-sharing one ``Name``; ``_pivot_metric``'s ``aggfunc="first"`` in drevalpy then
-picked one arbitrarily. What changes is that the choice is now explicit.
+Those repeat screens use different dose ranges, and CurveCurator groups by dose
+range, so they are separate fitted rows. Left to drevalpy's pivot (``aggfunc="first"``)
+one would be picked arbitrarily, so the choice is made here, explicitly.
 
 **The rule.** For every canonical (sample, drug) cell, among the native
 candidates take:
@@ -110,9 +109,8 @@ def _reduce_groups(adata: ad.AnnData, groups: dict[str, list[str]]) -> tuple[ad.
 def _as_matrices(adata: ad.AnnData) -> dict[str, np.ndarray]:
     """Collect ``X`` and every real layer as float64 arrays.
 
-    anndata 0.13 lists a ``None`` key in ``layers`` as an alias for ``X``.
-    Stringifying the keys while copying turned that alias into a real layer
-    literally named ``"None"`` - a second copy of ``X`` in the written file.
+    anndata 0.13 lists a ``None`` key in ``layers`` as an alias for ``X``; it is
+    skipped so it does not become a second copy of ``X`` in the written file.
     """
     matrices: dict[str, np.ndarray] = {"X": np.asarray(adata.X, dtype=np.float64)}
     for name, layer in adata.layers.items():

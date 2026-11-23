@@ -44,11 +44,11 @@ def bruna_dir(tmp_dir: UPath):
 
 
 def _prepare(raw_dir: UPath) -> pd.DataFrame:
-    return prepare_bruna(raw_dir, {}).frame
+    return prepare_bruna(raw_dir).frame
 
 
 def _series(raw_dir: UPath) -> pd.DataFrame:
-    wells = prepare_bruna(raw_dir, {})
+    wells = prepare_bruna(raw_dir)
     return number(wells).series
 
 
