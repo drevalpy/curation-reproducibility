@@ -14,8 +14,12 @@ wheels/
 .ruff_cache/
 .complexipy_cache/
 
-# DVC outputs: the numbered step directories (see src/data_curation/core/layout.py)
-/data/0*/
+# DVC outputs: the numbered step directories (see src/data_curation/core/layout.py).
+# Everything in them is ignored except the .dvc files of `dvc add`-tracked inputs
+# (data/01_raw/gdsc/<kind>.dvc), so git still has to descend into the directories.
+/data/0*/**
+!/data/0*/**/
+!/data/0*/**/*.dvc
 
 # Chunk-level curve fitting cache (content-addressed, auto-populated)
 /data/cache/

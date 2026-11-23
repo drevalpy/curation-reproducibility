@@ -12,7 +12,13 @@ from upath import UPath
 from data_curation.cell_lines.download_model_list import cmp_model_list_path
 from data_curation.core import layout
 from data_curation.core.errors import CurationError
-from data_curation.omics import process_cnv, process_mutations, process_proteomics, process_transcriptomics
+from data_curation.omics import (
+    process_cnv,
+    process_methylation,
+    process_mutations,
+    process_proteomics,
+    process_transcriptomics,
+)
 
 SOURCES = Path(__file__).parents[2] / "config" / "sources.yaml"
 
@@ -134,19 +140,23 @@ class TestProteomics:
 
 
 class TestTranscriptomics:
-    def test_a_cmp_dataset_reads_the_shared_rnaseq(self, workdir, monkeypatch) -> None:
+    @pytest.mark.parametrize(
+        ("dataset", "source", "unit"),
+        [("GDSC1", "gdsc", "log2_rma"), ("CTRPv2", "ccle", "log2_tpm_plus_1")],
+    )
+    def test_a_dataset_reads_its_shared_source(self, workdir, monkeypatch, dataset, source, unit) -> None:
         seen: list[UPath] = []
 
         def fake(raw_dir: UPath, model_list: UPath) -> ad.AnnData:
             seen.append(raw_dir)
             return ad.AnnData(X=np.ones((1, 1), dtype=np.float32))
 
-        monkeypatch.setattr(process_transcriptomics, "_process_cmp_rnaseq", fake)
+        monkeypatch.setitem(process_transcriptomics.SHARED_PROCESSORS, source, fake)
 
-        process_transcriptomics.main("GDSC1")
+        process_transcriptomics.main(dataset)
 
-        assert seen == [layout.cmp_raw("rnaseq")]
-        assert ad.read_h5ad(str(layout.omics("transcriptomics", "GDSC1"))).uns["expression_unit"] == "log2_tpm_plus_1"
+        assert seen == [layout.source_raw(source, "transcriptomics")]
+        assert ad.read_h5ad(str(layout.omics("transcriptomics", dataset))).uns["expression_unit"] == unit
 
     def test_another_dataset_reads_its_own_raw_directory(self, workdir, monkeypatch) -> None:
         seen: list[UPath] = []
@@ -162,13 +172,33 @@ class TestTranscriptomics:
         assert seen == [layout.raw_dir("transcriptomics", "BeatAML2")]
 
     def test_an_unknown_dataset_is_rejected(self, workdir) -> None:
-        with pytest.raises(CurationError, match="No transcriptomics processor"):
+        with pytest.raises(CurationError, match="not configured"):
             process_transcriptomics.main("NOPE")
 
-    def test_the_matrix_files_are_picked_in_sorted_order(self, workdir) -> None:
-        """Both the TPM and the count file are chosen by the shared, deterministic finder."""
-        for name in ("rnaseq_merged_rsem_tpm_2.csv", "rnaseq_merged_rsem_tpm_1.csv"):
-            _cmp_file("rnaseq", name).write_text("x")
-        from data_curation.core.paths import find_first
 
-        assert find_first(layout.cmp_raw("rnaseq"), ("*rsem_tpm*", "*tpm*")).name == "rnaseq_merged_rsem_tpm_1.csv"
+class TestMethylation:
+    @pytest.mark.parametrize(
+        ("dataset", "source", "raw_dirs"),
+        [
+            ("GDSC2", "gdsc", [("gdsc", "methylation"), ("gdsc", "methylation_samples")]),
+            ("CCLE", "ccle", [("ccle", "methylation"), ("gdsc", "methylation")]),
+            ("PRISM_20Q2", "ccle", [("ccle", "methylation"), ("gdsc", "methylation")]),
+        ],
+    )
+    def test_a_dataset_reads_its_source_and_writes_the_modality(self, workdir, monkeypatch, dataset, source, raw_dirs):
+        seen: list[tuple[UPath, UPath]] = []
+
+        def fake(raw_dir: UPath, other_dir: UPath, model_list: UPath) -> ad.AnnData:
+            seen.append((raw_dir, other_dir))
+            return ad.AnnData(X=np.zeros((1, 1), dtype=np.float32))
+
+        monkeypatch.setattr(process_methylation, f"process_{source}_methylation", fake)
+
+        process_methylation.main(dataset)
+
+        assert seen == [tuple(layout.source_raw(*pair) for pair in raw_dirs)]
+        assert layout.omics("methylation", dataset).exists()
+
+    def test_a_dataset_without_methylation_is_rejected(self, workdir) -> None:
+        with pytest.raises(CurationError, match="No methylation processor"):
+            process_methylation.main("BeatAML2")

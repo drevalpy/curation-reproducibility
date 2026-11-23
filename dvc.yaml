@@ -39,7 +39,7 @@ stages:
       outs:
         - data/01_raw/transcriptomics/${item}/
 
-  # Cell Model Passports files (model list, RNA-seq, mutations, CNV, proteomics)
+  # Cell Model Passports files (model list, gene annotation, mutations, CNV, proteomics)
   # are identical for every CMP dataset, so they are downloaded once here and
   # read by every CMP process stage.
   download_cmp:
@@ -56,35 +56,100 @@ stages:
           - cell_model_passports
     outs:
       - data/01_raw/cmp/model_list/
-      - data/01_raw/cmp/rnaseq/
+      - data/01_raw/cmp/gene_identifiers/
       - data/01_raw/cmp/mutations/
       - data/01_raw/cmp/cnv/
       - data/01_raw/cmp/proteomics/
 
-  process_transcriptomics:
-    foreach: ${cmp_datasets}
+  # The Broad's CCLE 2019 release: expression and methylation of CCLE, CTRPv1/v2,
+  # and methylation of PRISM.
+  download_ccle:
+    cmd: uv run data-curation omics download-shared ccle
+    deps:
+      - src/data_curation/omics/download.py
+      - src/data_curation/core/config.py
+      - src/data_curation/core/download.py
+      - src/data_curation/core/errors.py
+      - src/data_curation/core/layout.py
+      - src/data_curation/omics/__init__.py
+    params:
+      - config/sources.yaml:
+          - ccle
+    outs:
+      - data/01_raw/ccle/transcriptomics/
+      - data/01_raw/ccle/methylation/
+
+  # The GDSC1000 files (data/01_raw/gdsc/<kind>/) have no download stage: their
+  # original host is gone, so they were fetched once from the Internet Archive and
+  # GEO with `data-curation omics download-shared gdsc` and are tracked by
+  # data/01_raw/gdsc/<kind>.dvc (`dvc add`). See the `gdsc` block of config/sources.yaml.
+
+  # GDSC1/GDSC2: GDSC1000 RMA microarray expression, keyed by COSMIC ID.
+  process_transcriptomics_gdsc:
+    foreach: ${gdsc_omics_datasets}
     do:
       cmd: uv run data-curation omics process transcriptomics ${item}
       deps:
         - src/data_curation/omics/process_transcriptomics.py
-        - src/data_curation/omics/cmp_matrix.py
-        - src/data_curation/core/paths.py
-        - src/data_curation/cell_lines/sidm_mapping.py
+        - src/data_curation/omics/gene_symbols.py
+        - src/data_curation/omics/samples.py
+        - src/data_curation/omics/transcriptomics/beataml.py
+        - src/data_curation/omics/transcriptomics/bruna.py
+        - src/data_curation/omics/transcriptomics/ccle.py
+        - src/data_curation/omics/transcriptomics/gdsc.py
+        - src/data_curation/omics/transcriptomics/prism.py
+        - src/data_curation/omics/transcriptomics/standard.py
+        - src/data_curation/omics/__init__.py
+        - src/data_curation/cell_lines/cellosaurus.py
         - src/data_curation/cell_lines/download_model_list.py
+        - src/data_curation/cell_lines/native_ids.py
+        - src/data_curation/cell_lines/sidm_mapping.py
         - src/data_curation/core/config.py
         - src/data_curation/core/errors.py
         - src/data_curation/core/layout.py
+        - src/data_curation/core/paths.py
         - src/data_curation/core/standard.py
-        - src/data_curation/omics/__init__.py
-        - src/data_curation/omics/transcriptomics/beataml.py
-        - src/data_curation/omics/transcriptomics/bruna.py
-        - src/data_curation/omics/transcriptomics/prism.py
-        - src/data_curation/omics/transcriptomics/standard.py
         - data/01_raw/cmp/model_list/
-        - data/01_raw/cmp/rnaseq/
+        - data/01_raw/cmp/gene_identifiers/
+        - data/01_raw/gdsc/transcriptomics/
       params:
         - config/sources.yaml:
-            - datasets.${item}.omics_source
+            - datasets.${item}.omics
+      outs:
+        - data/02_omics/transcriptomics/${item}.h5ad
+
+  # CCLE, CTRPv1/v2: the Broad's CCLE 2019 RNA-seq, keyed by CCLE name.
+  process_transcriptomics_ccle:
+    foreach: ${ccle_omics_datasets}
+    do:
+      cmd: uv run data-curation omics process transcriptomics ${item}
+      deps:
+        - src/data_curation/omics/process_transcriptomics.py
+        - src/data_curation/omics/gene_symbols.py
+        - src/data_curation/omics/samples.py
+        - src/data_curation/omics/transcriptomics/beataml.py
+        - src/data_curation/omics/transcriptomics/bruna.py
+        - src/data_curation/omics/transcriptomics/ccle.py
+        - src/data_curation/omics/transcriptomics/gdsc.py
+        - src/data_curation/omics/transcriptomics/prism.py
+        - src/data_curation/omics/transcriptomics/standard.py
+        - src/data_curation/omics/__init__.py
+        - src/data_curation/cell_lines/cellosaurus.py
+        - src/data_curation/cell_lines/download_model_list.py
+        - src/data_curation/cell_lines/native_ids.py
+        - src/data_curation/cell_lines/sidm_mapping.py
+        - src/data_curation/core/config.py
+        - src/data_curation/core/errors.py
+        - src/data_curation/core/layout.py
+        - src/data_curation/core/paths.py
+        - src/data_curation/core/standard.py
+        - data/01_raw/cmp/model_list/
+        - data/01_raw/cmp/gene_identifiers/
+        - data/01_raw/mapping/cellosaurus.parquet
+        - data/01_raw/ccle/transcriptomics/
+      params:
+        - config/sources.yaml:
+            - datasets.${item}.omics
       outs:
         - data/02_omics/transcriptomics/${item}.h5ad
 
@@ -97,20 +162,25 @@ stages:
       cmd: uv run data-curation omics process transcriptomics ${item}
       deps:
         - src/data_curation/omics/process_transcriptomics.py
-        - src/data_curation/omics/transcriptomics/bruna.py
+        - src/data_curation/omics/gene_symbols.py
+        - src/data_curation/omics/samples.py
         - src/data_curation/omics/transcriptomics/beataml.py
+        - src/data_curation/omics/transcriptomics/bruna.py
+        - src/data_curation/omics/transcriptomics/ccle.py
+        - src/data_curation/omics/transcriptomics/gdsc.py
         - src/data_curation/omics/transcriptomics/prism.py
         - src/data_curation/omics/transcriptomics/standard.py
-        - src/data_curation/omics/data/PDX_Bruna_expression_sample_map.csv
-        - src/data_curation/core/paths.py
+        - src/data_curation/omics/__init__.py
+        - src/data_curation/cell_lines/cellosaurus.py
         - src/data_curation/cell_lines/download_model_list.py
+        - src/data_curation/cell_lines/native_ids.py
         - src/data_curation/cell_lines/sidm_mapping.py
         - src/data_curation/core/config.py
         - src/data_curation/core/errors.py
         - src/data_curation/core/layout.py
+        - src/data_curation/core/paths.py
         - src/data_curation/core/standard.py
-        - src/data_curation/omics/__init__.py
-        - src/data_curation/omics/cmp_matrix.py
+        - src/data_curation/omics/data/PDX_Bruna_expression_sample_map.csv
         - data/01_raw/cmp/model_list/
         - data/01_raw/transcriptomics/${item}/
       params:
@@ -118,6 +188,66 @@ stages:
             - datasets.${item}.transcriptomics
       outs:
         - data/02_omics/transcriptomics/${item}.h5ad
+
+  # Methylation shares one feature space, the CpG islands of the GDSC 450K arrays
+  # (the ranges drevalpy's methylation_intersection list names). GDSC1/GDSC2 read
+  # the island beta values, keyed by Sentrix array ID through the GEO series.
+  process_methylation_gdsc:
+    foreach: ${gdsc_omics_datasets}
+    do:
+      cmd: uv run data-curation omics process methylation ${item}
+      deps:
+        - src/data_curation/omics/process_methylation.py
+        - src/data_curation/omics/samples.py
+        - src/data_curation/omics/methylation/ccle.py
+        - src/data_curation/omics/methylation/gdsc.py
+        - src/data_curation/omics/__init__.py
+        - src/data_curation/cell_lines/cellosaurus.py
+        - src/data_curation/cell_lines/download_model_list.py
+        - src/data_curation/cell_lines/native_ids.py
+        - src/data_curation/cell_lines/sidm_mapping.py
+        - src/data_curation/core/config.py
+        - src/data_curation/core/errors.py
+        - src/data_curation/core/layout.py
+        - src/data_curation/core/paths.py
+        - data/01_raw/cmp/model_list/
+        - data/01_raw/gdsc/methylation/
+        - data/01_raw/gdsc/methylation_samples/
+      params:
+        - config/sources.yaml:
+            - datasets.${item}.omics
+      outs:
+        - data/02_omics/methylation/${item}.h5ad
+
+  # CCLE RRBS clusters, each GDSC island taking the cluster that overlaps it most,
+  # hence the dependency on the GDSC methylation download.
+  process_methylation_ccle:
+    foreach: ${ccle_methylation_datasets}
+    do:
+      cmd: uv run data-curation omics process methylation ${item}
+      deps:
+        - src/data_curation/omics/process_methylation.py
+        - src/data_curation/omics/samples.py
+        - src/data_curation/omics/methylation/ccle.py
+        - src/data_curation/omics/methylation/gdsc.py
+        - src/data_curation/omics/__init__.py
+        - src/data_curation/cell_lines/cellosaurus.py
+        - src/data_curation/cell_lines/download_model_list.py
+        - src/data_curation/cell_lines/native_ids.py
+        - src/data_curation/cell_lines/sidm_mapping.py
+        - src/data_curation/core/config.py
+        - src/data_curation/core/errors.py
+        - src/data_curation/core/layout.py
+        - src/data_curation/core/paths.py
+        - data/01_raw/cmp/model_list/
+        - data/01_raw/mapping/cellosaurus.parquet
+        - data/01_raw/ccle/methylation/
+        - data/01_raw/gdsc/methylation/
+      params:
+        - config/sources.yaml:
+            - datasets.${item}.omics
+      outs:
+        - data/02_omics/methylation/${item}.h5ad
 
   process_mutations:
     foreach: ${cmp_datasets}
@@ -240,10 +370,11 @@ stages:
         - data/02_omics/mutations/${item}.h5ad
         - data/02_omics/cnv/${item}.h5ad
         - data/02_omics/proteomics/${item}.h5ad
+        - data/02_omics/methylation/${item}.h5ad
       outs:
         - data/07_assembled/${item}.h5mu
 
-  # PRISM has only transcriptomics but Cell Model Passports metadata, so it uses the
+  # PRISM has only transcriptomics and methylation but Cell Model Passports metadata, so it uses the
   # shared cmp.parquet; PDX_Bruna and BeatAML2 (below) have their own tables.
   assemble_mudata_prism:
     foreach: ${prism_datasets}
@@ -264,6 +395,7 @@ stages:
         - data/06_samples/metadata/cmp.parquet
         - data/04_response/harmonized/${item}.h5ad
         - data/02_omics/transcriptomics/${item}.h5ad
+        - data/02_omics/methylation/${item}.h5ad
       outs:
         - data/07_assembled/${item}.h5mu
 

@@ -1,0 +1,6 @@
+outs:
+- md5: 3bb63c0cd6dcd1224151a186a56b3cc3.dir
+  size: 180521736
+  nfiles: 1
+  hash: md5
+  path: methylation

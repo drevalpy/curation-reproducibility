@@ -17,9 +17,11 @@ from data_curation.core.errors import CurationError
 from data_curation.response.harmonize.identity import resolve_samples
 from data_curation.response.harmonize.structures import apply_structures
 from data_curation.response.harmonize_response import (
+    CURVES_X_COLUMN,
     RESPONSE_X_COLUMN,
     VAR_INDEX_NAME,
     harmonize,
+    use_as_x,
 )
 
 DRUG_MAPPING = pd.DataFrame(
@@ -88,7 +90,42 @@ class TestAxisRename:
     def test_the_meaning_of_x_is_recorded(self, raw_dir: UPath) -> None:
         curves = _curves(["SIDM00001"], ["1001"], [[6.5]])
         result = harmonize(curves, fmt="gdsc", model_list_path=raw_dir / "model_list.csv", drug_mapping=DRUG_MAPPING)
-        assert result.uns["x_column"] == RESPONSE_X_COLUMN
+        assert result.uns["x_column"] == CURVES_X_COLUMN
+
+
+class TestUseAsX:
+    @staticmethod
+    def _response() -> ad.AnnData:
+        adata = ad.AnnData(
+            X=np.array([[6.5]], dtype=np.float32), layers={"LN_IC50": np.array([[-1.0]], dtype=np.float32)}
+        )
+        adata.uns["x_column"] = CURVES_X_COLUMN
+        return adata
+
+    def test_the_published_response_holds_ln_ic50_in_x(self) -> None:
+        assert RESPONSE_X_COLUMN == "LN_IC50"
+
+    def test_the_layer_moves_into_x_and_x_becomes_a_layer(self) -> None:
+        adata = self._response()
+
+        use_as_x(adata, "LN_IC50")
+
+        assert _values(adata.X) == [-1.0]
+        assert _values(adata.layers["pEC50"]) == [6.5]
+        assert "LN_IC50" not in adata.layers
+        assert adata.uns["x_column"] == "LN_IC50"
+
+    def test_asking_for_the_current_measure_changes_nothing(self) -> None:
+        adata = self._response()
+
+        use_as_x(adata, CURVES_X_COLUMN)
+
+        assert _values(adata.X) == [6.5]
+        assert {name for name in adata.layers.keys() if name is not None} == {"LN_IC50"}
+
+    def test_a_missing_layer_is_reported(self) -> None:
+        with pytest.raises(CurationError, match="no AUC layer"):
+            use_as_x(self._response(), "AUC")
 
 
 class TestAnnotations:

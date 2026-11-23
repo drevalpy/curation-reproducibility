@@ -1,0 +1,6 @@
+outs:
+- md5: 1cd722e832b20efe41c4d3dbe6d6462f.dir
+  size: 306264209
+  nfiles: 1
+  hash: md5
+  path: transcriptomics

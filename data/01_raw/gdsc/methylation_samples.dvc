@@ -1,0 +1,6 @@
+outs:
+- md5: 8a5f4ac06bd4a29cc17e2097aa98fd54.dir
+  size: 54342
+  nfiles: 1
+  hash: md5
+  path: methylation_samples

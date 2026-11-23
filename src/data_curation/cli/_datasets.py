@@ -25,6 +25,7 @@ class Modality(StrEnum):
     MUTATIONS = "mutations"
     CNV = "cnv"
     PROTEOMICS = "proteomics"
+    METHYLATION = "methylation"
 
 
 def complete_dataset(incomplete: str) -> list[str]:

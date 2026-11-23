@@ -5,8 +5,11 @@ rather than the eight near-identical modules this replaces. The four download
 modules were 6-line shims whose whole body was binding one string; that string is
 now the ``MODALITY`` argument.
 
-The Cell Model Passports files are identical for every dataset that uses them, so
-they have their own dataset-free ``download-cmp`` command.
+Files shared by several datasets are identical for every dataset that uses them,
+so they have dataset-free commands: ``download-cmp`` for Cell Model Passports and
+``download-shared SOURCE`` for any shared source (``ccle``, ``gdsc``). The GDSC
+files are fetched with ``download-shared gdsc`` once and then tracked with
+``dvc add``; no stage downloads them.
 """
 
 from typing import Annotated
@@ -15,7 +18,7 @@ import typer
 
 from data_curation.cli._datasets import DATASET_ARGUMENT, Modality, validate
 
-app = typer.Typer(help="Transcriptomics, mutations, CNV and proteomics.", no_args_is_help=True)
+app = typer.Typer(help="Transcriptomics, methylation, mutations, CNV and proteomics.", no_args_is_help=True)
 
 MODALITY_ARGUMENT = typer.Argument(metavar="MODALITY", help="Omics modality to act on.")
 
@@ -44,6 +47,24 @@ def download_cmp() -> None:
     fetch()
 
 
+@app.command("download-shared")
+def download_shared(
+    source: Annotated[
+        str, typer.Argument(metavar="SOURCE", help="Shared source block of config/sources.yaml, e.g. ccle or gdsc.")
+    ],
+) -> None:
+    """Download the files of one shared omics source, once for all the datasets that use it."""
+    from data_curation.core import layout
+
+    if source not in layout.SHARED_SOURCES:
+        msg = f"Unknown shared source '{source}'. Shared sources: {', '.join(layout.SHARED_SOURCES)}"
+        raise typer.BadParameter(msg)
+
+    from data_curation.omics.download import download_shared as fetch
+
+    fetch(source)
+
+
 @app.command("process")
 def process(
     modality: Annotated[Modality, MODALITY_ARGUMENT],
@@ -63,5 +84,7 @@ def process(
             from data_curation.omics.process_cnv import main
         case Modality.PROTEOMICS:
             from data_curation.omics.process_proteomics import main
+        case Modality.METHYLATION:
+            from data_curation.omics.process_methylation import main
 
     main(dataset)

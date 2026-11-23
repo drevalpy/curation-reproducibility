@@ -4,8 +4,8 @@ Every stage reads and writes through these helpers rather than spelling paths ou
 so the directory tree can be understood (and changed) in one place::
 
     data/
-      01_raw/          downloads, one subdirectory per source kind; the Cell Model
-                       Passports files shared by several datasets sit in cmp/<kind>/
+      01_raw/          downloads, one subdirectory per source kind; the files shared
+                       by several datasets sit in <source>/<kind>/ (cmp, ccle, gdsc)
       02_omics/        processed omics matrices, one per modality
       03_drugs/        per-dataset drug mappings and the global drug ontology
       04_response/     wells -> fitted curves (+ replicate fits) -> harmonized response
@@ -48,6 +48,8 @@ CACHE = DATA / "cache"
 # Shared raw inputs.
 CELLOSAURUS = RAW / "mapping" / "cellosaurus.parquet"
 CMP_RAW = RAW / "cmp"
+CCLE_RAW = RAW / "ccle"
+GDSC_RAW = RAW / "gdsc"
 RAW_DRUG_ONTOLOGY = RAW / "drug_ontology"
 
 # Global outputs.
@@ -63,7 +65,15 @@ SAMPLE_INDEX_NAME = "sample_id"
 
 #: Downloads of Cell Model Passports, each landing in ``CMP_RAW / <kind>``; the keys
 #: of the ``cell_model_passports`` block in ``config/sources.yaml``.
-CMP_KINDS = ("model_list", "rnaseq", "mutations", "cnv", "proteomics")
+CMP_KINDS = ("model_list", "gene_identifiers", "mutations", "cnv", "proteomics")
+
+#: Shared omics sources (the top-level blocks of ``config/sources.yaml`` named in a
+#: dataset's ``omics`` mapping) -> (raw directory, the kinds it declares).
+SHARED_SOURCES: dict[str, tuple[UPath, tuple[str, ...]]] = {
+    "cell_model_passports": (CMP_RAW, CMP_KINDS),
+    "ccle": (CCLE_RAW, ("transcriptomics", "methylation")),
+    "gdsc": (GDSC_RAW, ("transcriptomics", "methylation", "methylation_samples")),
+}
 
 #: Assembled modality key -> directory holding that modality's per-dataset .h5ad.
 MODALITY_DIRS = {
@@ -72,12 +82,29 @@ MODALITY_DIRS = {
     "mutations": OMICS / "mutations",
     "cnv": OMICS / "cnv",
     "proteomics": OMICS / "proteomics",
+    "methylation": OMICS / "methylation",
 }
 
 
 def raw_dir(kind: str, dataset: str) -> UPath:
     """Download directory for one dataset, e.g. ``raw_dir("response", "GDSC2")``."""
     return RAW / kind / dataset
+
+
+def source_raw(source: str, kind: str) -> UPath:
+    """Download directory of one shared-source file, e.g. ``source_raw("ccle", "methylation")``.
+
+    Raises:
+        ValueError: If *source* is not in :data:`SHARED_SOURCES` or does not declare *kind*.
+    """
+    if source not in SHARED_SOURCES:
+        msg = f"Unknown shared omics source '{source}'; expected one of {', '.join(SHARED_SOURCES)}"
+        raise ValueError(msg)
+    root, kinds = SHARED_SOURCES[source]
+    if kind not in kinds:
+        msg = f"Unknown {source} kind '{kind}'; expected one of {', '.join(kinds)}"
+        raise ValueError(msg)
+    return root / kind
 
 
 def cmp_raw(kind: str) -> UPath:

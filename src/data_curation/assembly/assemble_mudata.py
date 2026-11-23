@@ -30,6 +30,7 @@ OMICS_MODALITY_MAP: dict[str, str] = {
     "mutations": "mutations",
     "cnv": "copy_number_variation_gistic",
     "proteomics": "proteomics",
+    "methylation": "methylation",
     "response": "response",
 }
 
@@ -140,9 +141,10 @@ def _build_global_obs(mdata: md.MuData, meta_path: UPath) -> None:
 def _subset_to_screened(modalities: dict[str, ad.AnnData]) -> dict[str, ad.AnnData]:
     """Restrict the omics modalities to the samples this dataset screened.
 
-    The Cell Model Passports omics are dataset-independent: every screen reads
-    the same matrices, so without subsetting each assembled file embeds all 1584
-    profiled cell lines regardless of which its response covers. Subsetting is
+    The shared omics (Cell Model Passports, the CCLE and GDSC releases) are
+    dataset-independent: every screen of a source reads the same matrices, so
+    without subsetting each assembled file embeds every profiled cell line
+    regardless of which its response covers. Subsetting is
     both smaller and more honest about what the dataset contains.
 
     Samples with a response but no omics are kept in the union index, so
