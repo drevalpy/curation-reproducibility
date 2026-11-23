@@ -1,13 +1,8 @@
 """Locating raw input files by glob pattern.
 
 Download stages land their sources under names carrying an upstream release date
-(``rnaseq_merged_rsem_tpm_20260323.csv``), so process stages address them by
-pattern rather than by literal name.
-
-This lives in its own module because both the response and the omics stages need
-it. It used to sit in the response preparers' shared module, which made every
-transcriptomics stage declare a dependency on the response code and rebuild
-whenever an unrelated response preparer changed.
+(``mutations_all_20260724.csv``), so process stages address them by pattern
+rather than by literal name.
 
 Paths throughout the package are :class:`~upath.UPath`, so a stage can address a
 remote filesystem without changing. Note that a remote ``UPath`` is *not* an

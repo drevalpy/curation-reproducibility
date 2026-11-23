@@ -22,9 +22,6 @@ from data_curation.core.errors import CurationError
 SOURCES_PATH = UPath("config/sources.yaml")
 PROCESSING_PATH = UPath("config/processing.yaml")
 
-#: Name of the Cell Model Passports block in ``config/sources.yaml``.
-CMP_SOURCE = "cell_model_passports"
-
 #: Top-level blocks of ``config/sources.yaml`` holding omics downloads shared by
 #: several datasets. A dataset names one of them per modality in its ``omics``
 #: mapping instead of carrying a ``<modality>`` block of its own.
@@ -149,21 +146,6 @@ def shared_source(source: str, kind: str) -> dict[str, Any]:
         KeyError: If *source* or *kind* is not declared.
     """
     return source_config(source)[kind]
-
-
-def cmp_source(kind: str) -> dict[str, Any]:
-    """Return one download entry of the ``cell_model_passports`` block.
-
-    Args:
-        kind: Entry key, e.g. ``"mutations"`` or ``"model_list"``.
-
-    Returns:
-        The entry (``url``, ``known_hash`` and optionally ``fname``, ``keep``).
-
-    Raises:
-        KeyError: If *kind* is not declared.
-    """
-    return shared_source(CMP_SOURCE, kind)
 
 
 def dataset_names(modality: str | None = None) -> list[str]:

@@ -15,7 +15,7 @@ from datetime import UTC, datetime
 
 from data_curation.core import layout
 from data_curation.core.config import source_config
-from data_curation.core.download import download_file_list
+from data_curation.core.download import download_files
 from data_curation.core.errors import CurationError
 from data_curation.drugs.ontology.pubchem import fetch_cid_to_ncit
 
@@ -33,7 +33,7 @@ def main() -> None:
     """
     onto_params = source_config("drug_ontology")
 
-    download_file_list(onto_params.get("files") or [], RAW_DIR)
+    download_files(onto_params.get("files") or [], RAW_DIR)
 
     mapping = fetch_cid_to_ncit(onto_params["ncit_heading"])
     if not mapping:

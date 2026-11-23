@@ -27,7 +27,7 @@ class TestPinnedSources:
 
     @pytest.mark.parametrize("kind", layout.CMP_KINDS)
     def test_each_cmp_download_has_a_sha256_pin(self, kind: str) -> None:
-        entry = config.cmp_source(kind)
+        entry = config.shared_source("cell_model_passports", kind)
         assert entry["known_hash"].startswith("sha256:")
         assert len(entry["known_hash"]) == len("sha256:") + 64
         assert entry["url"].startswith("https://")
@@ -43,7 +43,8 @@ class TestPinnedSources:
 
     def test_only_the_unversioned_proteomics_url_has_no_date(self) -> None:
         """CMP publishes no dated proteomics file; every other CMP URL carries a release date."""
-        undated = [kind for kind in layout.CMP_KINDS if "latest" in config.cmp_source(kind)["url"]]
+        urls = {kind: config.shared_source("cell_model_passports", kind)["url"] for kind in layout.CMP_KINDS}
+        undated = [kind for kind, url in urls.items() if "latest" in url]
         assert undated == ["proteomics"]
 
 
@@ -59,7 +60,7 @@ class TestOmicsSources:
     @pytest.mark.parametrize("dataset", ["CCLE", "CTRPv1", "CTRPv2", "GDSC1", "GDSC2"])
     @pytest.mark.parametrize("modality", ["mutations", "cnv", "proteomics"])
     def test_the_rest_comes_from_cell_model_passports(self, dataset: str, modality: str) -> None:
-        assert config.omics_source(dataset, modality) == config.CMP_SOURCE
+        assert config.omics_source(dataset, modality) == "cell_model_passports"
 
     @pytest.mark.parametrize("dataset", ["PRISM_19Q4", "PRISM_20Q2"])
     def test_prism_takes_ccle_methylation_but_its_own_expression(self, dataset: str) -> None:
