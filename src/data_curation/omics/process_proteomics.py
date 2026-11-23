@@ -10,15 +10,15 @@ named accordingly.
 """
 
 import anndata as ad
-import numpy as np
 import pandas as pd
 from upath import UPath
 
 from data_curation.cell_lines.download_model_list import cmp_model_list_path
-from data_curation.cell_lines.sidm_mapping import build_sidm_to_cellosaurus_map
+from data_curation.cell_lines.sidm_mapping import build_id_to_cellosaurus_map
 from data_curation.core import layout
 from data_curation.core.errors import CurationError
 from data_curation.core.paths import find_first
+from data_curation.omics.samples import to_sample_anndata
 
 
 def _find_proteomics_file(raw_dir: UPath) -> UPath:
@@ -52,24 +52,8 @@ def _process_proteomics(raw_dir: UPath, model_list_path: UPath) -> ad.AnnData:
     # For duplicates (multiple proteins per gene), take the mean
     pivot = df.pivot_table(index=model_col, columns=symbol_col, values=intensity_col, aggfunc="mean")
 
-    sidm_to_cvcl = build_sidm_to_cellosaurus_map(model_list_path)
-
-    valid_rows = [idx for idx in pivot.index if str(idx) in sidm_to_cvcl]
-    pivot = pivot.loc[valid_rows]
-
-    cellosaurus_ids = [sidm_to_cvcl[str(idx)][0] for idx in valid_rows]
-    cell_line_names = [sidm_to_cvcl[str(idx)][1] for idx in valid_rows]
-
-    adata = ad.AnnData(
-        X=np.array(pivot.values, dtype=np.float32),
-        obs=pd.DataFrame({"cell_line_name": cell_line_names}, index=pd.Index(cellosaurus_ids)),
-        var=pd.DataFrame(index=pd.Index(pivot.columns, name="gene_symbol")),
-    )
-    adata.obs_names.name = layout.SAMPLE_INDEX_NAME
-    adata.var_names_make_unique()
-    adata = adata[~adata.obs_names.duplicated(keep="first")].copy()
-
-    return adata
+    ids = build_id_to_cellosaurus_map(model_list_path, "model_id")
+    return to_sample_anndata(pivot, ids, var_name="gene_symbol")
 
 
 def main(dataset: str) -> None:

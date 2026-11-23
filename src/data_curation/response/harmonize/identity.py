@@ -28,11 +28,7 @@ import pandas as pd
 from upath import UPath
 
 from data_curation.cell_lines.cellosaurus import build_fallback_name_map, resolve_names
-from data_curation.cell_lines.sidm_mapping import (
-    _valid_cvcl,
-    build_name_to_cellosaurus_map,
-    build_sidm_to_cellosaurus_map,
-)
+from data_curation.cell_lines.sidm_mapping import build_id_to_cellosaurus_map, build_name_to_cellosaurus_map
 from data_curation.core.errors import CurationError
 
 logger = logging.getLogger(__name__)
@@ -93,19 +89,19 @@ def resolve_samples(natives: pd.Index, fmt: str, model_list_path: UPath | None =
     if fmt in NAME_KEYED_FORMATS:
         return _resolve_by_name(values, model_list_path)
     if fmt == "gdsc":
-        return _resolve_by_sidm(values, model_list_path)
+        return _resolve_by_model_list_id(values, model_list_path, "model_id")
     if fmt in DEPMAP_KEYED_FORMATS:
-        return _resolve_by_depmap_id(values, model_list_path)
+        return _resolve_by_model_list_id(values, model_list_path, "BROAD_ID")
 
     msg = f"No sample resolution route for response format '{fmt}'"
     raise CurationError(msg)
 
 
-def _resolve_by_sidm(values: pd.Series, model_list_path: UPath) -> SampleIdentity:
-    """Resolve Cell Model Passports model IDs through the model list."""
-    sidm_to_cvcl = build_sidm_to_cellosaurus_map(model_list_path)
-    canonical = values.map(lambda sidm: sidm_to_cvcl[sidm][0] if sidm in sidm_to_cvcl else None)
-    return SampleIdentity(canonical=canonical, cell_line_names=dict(sidm_to_cvcl.values()))
+def _resolve_by_model_list_id(values: pd.Series, model_list_path: UPath, column: str) -> SampleIdentity:
+    """Resolve SIDM or DepMap IDs through their model list column (``model_id`` or ``BROAD_ID``)."""
+    mapping = build_id_to_cellosaurus_map(model_list_path, column)
+    canonical = values.map(lambda native: mapping[native][0] if native in mapping else None)
+    return SampleIdentity(canonical=canonical, cell_line_names=dict(mapping.values()))
 
 
 def _resolve_by_name(values: pd.Series, model_list_path: UPath) -> SampleIdentity:
@@ -117,37 +113,6 @@ def _resolve_by_name(values: pd.Series, model_list_path: UPath) -> SampleIdentit
     name_to_cvcl = build_name_to_cellosaurus_map(model_list_path)
     canonical, rescued = resolve_names(values, name_to_cvcl, build_fallback_name_map())
     names = dict(name_to_cvcl.values()) | {accession: name for name, accession in rescued.items()}
-    return SampleIdentity(canonical=canonical, cell_line_names=names)
-
-
-def _resolve_by_depmap_id(values: pd.Series, model_list_path: UPath) -> SampleIdentity:
-    """Resolve DepMap ACH-* IDs via the BROAD_ID column of model_list.csv.
-
-    The Cell Model Passports model list stores the DepMap identifier in a column
-    called ``BROAD_ID``. Building a ``BROAD_ID -> (cellosaurus_id, name)`` map
-    from that column mirrors the SIDM route but uses a different key.
-
-    Args:
-        values: DepMap ACH-* identifiers, indexed by themselves.
-        model_list_path: Cell Model Passports model list.
-
-    Returns:
-        Accession and names for every resolved identifier.
-    """
-    models = pd.read_csv(str(model_list_path), low_memory=False)
-    mapping: dict[str, tuple[str, str]] = {}
-    for _, row in models.iterrows():
-        broad = row.get("BROAD_ID")
-        if pd.isna(broad):
-            continue
-        cvcl = _valid_cvcl(row)
-        if cvcl is None:
-            continue
-        name = str(row["model_name"]) if pd.notna(row.get("model_name")) else ""
-        mapping[str(broad).strip()] = (cvcl, name)
-
-    canonical = values.map(lambda dep_id: mapping[dep_id][0] if dep_id in mapping else None)
-    names = {cvcl: name for cvcl, name in mapping.values()}
     return SampleIdentity(canonical=canonical, cell_line_names=names)
 
 

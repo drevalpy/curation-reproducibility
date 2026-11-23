@@ -38,6 +38,9 @@ from data_curation.omics.samples import to_sample_anndata
 
 logger = logging.getLogger(__name__)
 
+#: Unit of ``X``, recorded in ``uns["expression_unit"]``.
+EXPRESSION_UNIT = "log2_tpm_plus_1"
+
 #: Unit of the counts layer: RNA-SeQC gene read counts.
 COUNTS_UNIT = "rnaseqc_read_count"
 
@@ -168,4 +171,5 @@ def process_ccle_transcriptomics(
     )
     adata.uns["layer_units"] = {COUNT_LAYER: COUNTS_UNIT}
     logger.info("Processed CCLE transcriptomics: %d cell lines x %d genes", adata.n_obs, adata.n_vars)
+    adata.uns["expression_unit"] = EXPRESSION_UNIT
     return adata

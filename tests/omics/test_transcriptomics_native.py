@@ -89,6 +89,7 @@ class TestGdsc:
         assert list(adata.var_names) == ["TP53", "KRAS"]
         assert adata.var_names.name == "gene_symbol"
         assert np.asarray(adata.X).tolist() == [[5.5, 8.0], [6.5, 9.0]]
+        assert adata.uns["expression_unit"] == "log2_rma"
         assert not adata.layers
 
     def test_unresolved_cosmic_ids_are_dropped(self, raw_dir, model_list, gene_identifiers) -> None:
@@ -189,6 +190,7 @@ class TestCcle:
         np.testing.assert_allclose(np.asarray(adata.X), [[0.0, 3.0], [2.0, 4.0]])
         assert np.asarray(adata.layers[COUNT_LAYER]).tolist() == [[10.0, 30.0], [20.0, 40.0]]
         assert adata.uns["layer_units"] == {COUNT_LAYER: "rnaseqc_read_count"}
+        assert adata.uns["expression_unit"] == "log2_tpm_plus_1"
 
     def test_unannotated_genes_the_counts_file_lacks_are_dropped(
         self, raw_dir, model_list, cellosaurus, gene_identifiers

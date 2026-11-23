@@ -255,6 +255,7 @@ stages:
       cmd: uv run data-curation omics process mutations ${item}
       deps:
         - src/data_curation/omics/process_mutations.py
+        - src/data_curation/omics/samples.py
         - src/data_curation/cell_lines/sidm_mapping.py
         - src/data_curation/cell_lines/download_model_list.py
         - src/data_curation/core/layout.py
@@ -271,11 +272,10 @@ stages:
       cmd: uv run data-curation omics process cnv ${item}
       deps:
         - src/data_curation/omics/process_cnv.py
-        - src/data_curation/omics/cmp_matrix.py
+        - src/data_curation/omics/samples.py
         - src/data_curation/cell_lines/sidm_mapping.py
         - src/data_curation/cell_lines/download_model_list.py
         - src/data_curation/core/layout.py
-        - src/data_curation/core/errors.py
         - src/data_curation/core/paths.py
         - src/data_curation/omics/__init__.py
         - data/01_raw/cmp/model_list/
@@ -289,6 +289,7 @@ stages:
       cmd: uv run data-curation omics process proteomics ${item}
       deps:
         - src/data_curation/omics/process_proteomics.py
+        - src/data_curation/omics/samples.py
         - src/data_curation/cell_lines/sidm_mapping.py
         - src/data_curation/cell_lines/download_model_list.py
         - src/data_curation/core/layout.py

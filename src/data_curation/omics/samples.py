@@ -1,11 +1,11 @@
 """Turn a sample x feature matrix keyed by native IDs into a sample-keyed AnnData.
 
-The dataset-specific omics files (GDSC, CCLE) key their samples by the producer's
-identifier. Each processor resolves those to Cellosaurus accessions (see
-:mod:`data_curation.cell_lines.native_ids`) and hands the matrix and the mapping
-here, so that unmapped samples, duplicate accessions and the ``obs`` layout are
-handled the same way for every source, and the same way as
-:func:`data_curation.omics.cmp_matrix.to_cell_line_anndata`.
+Each omics file keys its samples by its producer's identifier: SIDM model IDs
+(Cell Model Passports), DepMap IDs, COSMIC IDs (GDSC) or CCLE names. Each processor
+resolves those to Cellosaurus accessions (see
+:func:`data_curation.cell_lines.sidm_mapping.build_id_to_cellosaurus_map`) and hands
+the matrix and the mapping here, so that unmapped samples, duplicate accessions and
+the ``obs`` layout are handled the same way for every source.
 """
 
 import logging
@@ -30,8 +30,8 @@ def to_sample_anndata(
     """Build a Cellosaurus-keyed AnnData from a native-ID-keyed matrix.
 
     Samples without an entry in *ids* are dropped. When two samples resolve to
-    the same accession the first one in file order is kept, as for the Cell Model
-    Passports matrices. Repeated feature names are made unique.
+    the same accession the first one in file order is kept. Repeated feature names
+    are made unique.
 
     Args:
         values: Samples x features, indexed by native sample ID.

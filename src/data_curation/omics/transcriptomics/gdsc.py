@@ -34,6 +34,9 @@ from data_curation.omics.samples import to_sample_anndata
 
 logger = logging.getLogger(__name__)
 
+#: Unit of ``X``, recorded in ``uns["expression_unit"]``.
+EXPRESSION_UNIT = "log2_rma"
+
 #: Annotation column holding the gene symbol, and the second annotation column.
 SYMBOL_COLUMN = "GENE_SYMBOLS"
 TITLE_COLUMN = "GENE_title"
@@ -114,4 +117,5 @@ def process_gdsc_transcriptomics(
     ids = resolve_cosmic_ids(samples.index, model_list_path)
     adata = to_sample_anndata(samples, ids, var_name="gene_symbol")
     logger.info("Processed GDSC transcriptomics: %d cell lines x %d genes", adata.n_obs, adata.n_vars)
+    adata.uns["expression_unit"] = EXPRESSION_UNIT
     return adata

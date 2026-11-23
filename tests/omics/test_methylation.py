@@ -83,13 +83,6 @@ class TestGdsc:
         assert list(islands.columns) == ["1_R01C01", "2_R01C01"]
         assert islands.loc["chr2:100-500", "2_R01C01"] == pytest.approx(0.7)
 
-    def test_it_rejects_island_names_that_are_not_ranges(self, tmp_dir) -> None:
-        (tmp_dir / "raw").mkdir()
-        (tmp_dir / "raw" / "F2_METH_CELL_DATA.txt").write_bytes(b"\ta\rcg0001\t0.5\r")
-
-        with pytest.raises(CurationError, match="ranges"):
-            gdsc.read_gdsc_islands(tmp_dir / "raw")
-
     def test_it_maps_sentrix_ids_to_cosmic_ids_and_skips_samples_without_one(self, tmp_dir) -> None:
         _write_series_matrix(
             tmp_dir / "geo",

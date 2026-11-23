@@ -23,6 +23,9 @@ from data_curation.core.paths import find_file
 
 logger = logging.getLogger(__name__)
 
+#: Unit of ``X``, recorded in ``uns["expression_unit"]``.
+EXPRESSION_UNIT = "log2_microarray"
+
 # Packaged alongside the omics code rather than under data/, which holds only
 # DVC-tracked artifacts. Anchored on the omics package directory (this module's
 # grandparent) so it keeps resolving if this file moves within the subpackage.
@@ -60,4 +63,5 @@ def process_bruna_transcriptomics(raw_dir: UPath) -> ad.AnnData:
     adata.var_names_make_unique()
     adata = adata[~adata.obs_names.duplicated(keep="first")].copy()
 
+    adata.uns["expression_unit"] = EXPRESSION_UNIT
     return adata

@@ -19,7 +19,6 @@ The features keep the island ranges as names, which is what the CCLE processor a
 
 import csv
 import gzip
-import io
 import logging
 import re
 from collections.abc import Iterator
@@ -49,7 +48,7 @@ MISSING_FILL_VALUE = 0.0
 FEATURE_SPACE = "gdsc_cpg_islands"
 
 _ISLAND_PATTERNS = ("F2_METH_CELL_DATA.txt", "*/F2_METH_CELL_DATA.txt")
-_SERIES_MATRIX_PATTERNS = ("*series_matrix.txt.gz", "*series_matrix.txt")
+_SERIES_MATRIX_PATTERNS = ("*series_matrix.txt.gz",)
 
 _COSMIC = re.compile(r"^cosmic_id:\s*(\d+)\s*$")
 _SENTRIX = re.compile(r"_(\d+_R\d\dC\d\d)_Grn\.idat(?:\.gz)?$")
@@ -68,17 +67,13 @@ def read_gdsc_islands(raw_dir: UPath) -> pd.DataFrame:
 
     Raises:
         FileNotFoundError: If the file is missing.
-        CurationError: If an island name is not a ``chrN:start-end`` range or an array appears twice.
+        CurationError: If the file has no islands or repeats one.
     """
     path = find_first(raw_dir, _ISLAND_PATTERNS)
     frame = pd.read_csv(str(path), sep="\t", index_col=0)
     frame.index = frame.index.astype(str).str.strip()
     frame.index.name = ISLAND_INDEX_NAME
     frame.columns = frame.columns.astype(str).str.strip()
-    malformed = [name for name in frame.index if not _ISLAND.match(name)]
-    if malformed:
-        msg = f"{path} has island names that are not 'chrN:start-end' ranges: {malformed[:5]}"
-        raise CurationError(msg)
     if frame.empty or frame.index.has_duplicates:
         msg = f"{path} has no islands or repeats an island"
         raise CurationError(msg)
@@ -106,28 +101,17 @@ def parse_islands(names: pd.Index) -> pd.DataFrame:
     )
 
 
-def _open_text(path: UPath) -> Iterator[str]:
-    """Yield the lines of a possibly gzipped text file."""
-    with path.open("rb") as handle:
-        text = (
-            gzip.open(handle, "rt", encoding="utf-8")
-            if path.suffix == ".gz"
-            else io.TextIOWrapper(handle, encoding="utf-8")
-        )
-        yield from text
-
-
 def _series_matrix_rows(path: UPath) -> dict[str, list[list[str]]]:
     """Collect the values of every ``!Sample_*`` header row of a series matrix, keyed by row name."""
     rows: dict[str, list[list[str]]] = {}
-    lines = (line.rstrip("\r\n") for line in _open_text(path))
-    for fields in csv.reader(lines, delimiter="\t"):
-        if not fields:
-            continue
-        if fields[0].startswith("!series_matrix_table_begin"):
-            break
-        if fields[0].startswith("!Sample_"):
-            rows.setdefault(fields[0], []).append(fields[1:])
+    with path.open("rb") as handle, gzip.open(handle, "rt", encoding="utf-8") as text:
+        for fields in csv.reader((line.rstrip("\r\n") for line in text), delimiter="\t"):
+            if not fields:
+                continue
+            if fields[0].startswith("!series_matrix_table_begin"):
+                break
+            if fields[0].startswith("!Sample_"):
+                rows.setdefault(fields[0], []).append(fields[1:])
     return rows
 
 
@@ -192,7 +176,7 @@ def finalize_beta(adata: ad.AnnData) -> ad.AnnData:
     missing = np.isnan(matrix)
     adata.uns["methylation_unit"] = METHYLATION_UNIT
     adata.uns["missing_filled_with"] = MISSING_FILL_VALUE
-    adata.uns["missing_fraction"] = float(missing.mean()) if missing.size else 0.0
+    adata.uns["missing_fraction"] = float(missing.mean())
     adata.uns["feature_space"] = FEATURE_SPACE
     matrix[missing] = MISSING_FILL_VALUE
     adata.X = matrix

@@ -1,43 +1,39 @@
 """Process CNV GISTIC data into a standardized AnnData file.
 
-Parses the SNP6 GISTIC scores from Cell Model Passports into
-a cell line x gene matrix of discrete copy number values.
+Parses the SNP6 GISTIC scores from Cell Model Passports into a cell line x gene
+matrix of discrete copy number values. The file has genes as rows and models as
+columns, under three header rows: the SIDM model IDs, the model names, and the
+names of the two gene annotation columns (``gene_id``, ``symbol``).
 """
 
 import anndata as ad
+import numpy as np
+import pandas as pd
 from upath import UPath
 
 from data_curation.cell_lines.download_model_list import cmp_model_list_path
+from data_curation.cell_lines.sidm_mapping import build_id_to_cellosaurus_map
 from data_curation.core import layout
 from data_curation.core.paths import find_first
-from data_curation.omics.cmp_matrix import read_cmp_matrix, to_cell_line_anndata
+from data_curation.omics.samples import to_sample_anndata
 
-# model_id / model_name / (gene_id, symbol) precede the per-gene data rows.
-CNV_HEADER_ROWS = 3
+#: Header rows below the SIDM row: the model names and the annotation column names.
+_SKIPPED_HEADER_ROWS = [1, 2]
 
-# Gene annotation column holding the HGNC symbol; the SIDG accession in the
-# other annotation column cannot be aligned with the symbol-keyed expression
-# and mutation views.
-SYMBOL_COLUMN = "symbol"
-
-
-def _find_cnv_file(raw_dir: UPath) -> UPath:
-    """Locate the CNV GISTIC CSV in the raw directory."""
-    return find_first(raw_dir, ("*gistic*", "*cnv*.csv"))
+#: Leading annotation columns: the SIDG gene accession and the HGNC symbol. Genes are
+#: named by symbol, the identifier the expression and mutation views share.
+_ANNOTATION_COLUMNS = 2
+_SYMBOL_POSITION = 1
 
 
 def _process_cnv(raw_dir: UPath, model_list_path: UPath) -> ad.AnnData:
-    """Process CMP CNV GISTIC data into AnnData.
-
-    Genes are rows and cell lines are columns in the raw file; the result is
-    transposed so cell lines are obs and genes are var, keyed by HGNC symbol.
-    """
-    matrix = read_cmp_matrix(_find_cnv_file(raw_dir), CNV_HEADER_ROWS)
-    return to_cell_line_anndata(
-        values=matrix.values,
-        gene_names=matrix.annotations[SYMBOL_COLUMN],
-        model_list_path=model_list_path,
-    )
+    """Read the CMP CNV GISTIC matrix as cell lines x genes, keyed by Cellosaurus and HGNC symbol."""
+    path = find_first(raw_dir, ("*gistic*", "*cnv*.csv"))
+    table = pd.read_csv(str(path), skiprows=_SKIPPED_HEADER_ROWS, low_memory=False)
+    values = table.iloc[:, _ANNOTATION_COLUMNS:].astype(np.float32)
+    values.index = pd.Index(table.iloc[:, _SYMBOL_POSITION])
+    ids = build_id_to_cellosaurus_map(model_list_path, "model_id")
+    return to_sample_anndata(values.T, ids, var_name="gene_symbol")
 
 
 def main(dataset: str) -> None:
@@ -46,9 +42,6 @@ def main(dataset: str) -> None:
     Every CMP dataset reads the same file, so *dataset* only names the output; the
     screened subset is taken at assembly.
     """
-    raw_dir = layout.cmp_raw("cnv")
     output_path = layout.omics("cnv", dataset)
     output_path.parent.mkdir(parents=True, exist_ok=True)
-
-    adata = _process_cnv(raw_dir, cmp_model_list_path())
-    adata.write_h5ad(str(output_path))
+    _process_cnv(layout.cmp_raw("cnv"), cmp_model_list_path()).write_h5ad(str(output_path))

@@ -28,7 +28,9 @@ def _write_fitted(raw_dir: UPath, columns: dict[str, list]) -> None:
 
 @pytest.fixture(autouse=True)
 def _sidm_map(monkeypatch) -> None:
-    monkeypatch.setattr(published, "build_sidm_to_cellosaurus_map", lambda _path: {"SIDM1": ("CVCL_0001", "Line")})
+    monkeypatch.setattr(
+        published, "build_id_to_cellosaurus_map", lambda _path, _column: {"SIDM1": ("CVCL_0001", "Line")}
+    )
 
 
 class TestGdsc:

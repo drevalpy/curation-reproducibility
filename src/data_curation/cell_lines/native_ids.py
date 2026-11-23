@@ -15,46 +15,9 @@ import pandas as pd
 from upath import UPath
 
 from data_curation.cell_lines.cellosaurus import CELLOSAURUS_PATH, build_fallback_name_map, resolve_names
-from data_curation.cell_lines.sidm_mapping import _valid_cvcl, build_name_to_cellosaurus_map
+from data_curation.cell_lines.sidm_mapping import build_id_to_cellosaurus_map, build_name_to_cellosaurus_map
 
 logger = logging.getLogger(__name__)
-
-#: Separator of the model list's multi-valued ID columns (``"1331031;1331030"``).
-ID_SEPARATOR = ";"
-
-
-def _clean_id(value: object) -> str:
-    """Return one identifier as a string, dropping the ``.0`` pandas adds to integer columns with gaps."""
-    text = str(value).strip()
-    return text.removesuffix(".0") if text.endswith(".0") and text[:-2].isdigit() else text
-
-
-def build_id_to_cellosaurus_map(model_list_path: UPath, column: str) -> dict[str, tuple[str, str]]:
-    """Build native ID -> (Cellosaurus accession, model name) from one model list column.
-
-    Every value of a multi-valued cell (``"1331031;1331030"``) maps to the model.
-    When two models claim the same ID, the first one in the file wins.
-
-    Args:
-        model_list_path: Cell Model Passports ``model_list.csv``.
-        column: ID column, e.g. ``"COSMIC_ID"`` or ``"CCLE_ID"``.
-
-    Returns:
-        The mapping, for models with a usable accession only.
-    """
-    models = pd.read_csv(str(model_list_path), low_memory=False)
-    mapping: dict[str, tuple[str, str]] = {}
-    for _, row in models.iterrows():
-        value = row.get(column)
-        cvcl = _valid_cvcl(row)
-        if pd.isna(value) or cvcl is None:
-            continue
-        name = str(row["model_name"]) if pd.notna(row.get("model_name")) else ""
-        for native in str(value).split(ID_SEPARATOR):
-            key = _clean_id(native)
-            if key and key not in mapping:
-                mapping[key] = (cvcl, name)
-    return mapping
 
 
 def resolve_cosmic_ids(cosmic_ids: Iterable[object], model_list_path: UPath) -> dict[str, tuple[str, str]]:
@@ -65,10 +28,10 @@ def resolve_cosmic_ids(cosmic_ids: Iterable[object], model_list_path: UPath) -> 
         model_list_path: Cell Model Passports ``model_list.csv``.
 
     Returns:
-        ``{cosmic_id: (accession, name)}`` for the resolved IDs, keyed by the cleaned string form.
+        ``{cosmic_id: (accession, name)}`` for the resolved IDs, keyed by their string form.
     """
     mapping = build_id_to_cellosaurus_map(model_list_path, "COSMIC_ID")
-    keys = [_clean_id(value) for value in cosmic_ids]
+    keys = [str(value) for value in cosmic_ids]
     resolved = {key: mapping[key] for key in keys if key in mapping}
     _log_unresolved("COSMIC IDs", keys, resolved)
     return resolved

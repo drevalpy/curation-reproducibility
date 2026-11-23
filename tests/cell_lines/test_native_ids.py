@@ -7,7 +7,6 @@ import pytest
 from upath import UPath
 
 from data_curation.cell_lines.native_ids import (
-    build_id_to_cellosaurus_map,
     resolve_ccle_names,
     resolve_cosmic_ids,
     strip_ccle_name,
@@ -55,31 +54,11 @@ def cellosaurus(tmp_dir: UPath) -> UPath:
     return path
 
 
-class TestBuildIdMap:
-    def test_every_value_of_a_multi_valued_cell_maps_to_the_model(self, model_list: UPath) -> None:
-        mapping = build_id_to_cellosaurus_map(model_list, "COSMIC_ID")
-
-        assert mapping["1331031"] == ("CVCL_1870", "MEC-1")
-        assert mapping["1331030"] == ("CVCL_1870", "MEC-1")
-
-    def test_the_first_model_wins_a_shared_id(self, model_list: UPath) -> None:
-        assert build_id_to_cellosaurus_map(model_list, "COSMIC_ID")["905949"] == ("CVCL_0023", "A549")
-
-    def test_models_without_an_accession_or_the_id_are_skipped(self, model_list: UPath) -> None:
-        mapping = build_id_to_cellosaurus_map(model_list, "COSMIC_ID")
-
-        assert "111" not in mapping
-        assert set(mapping) == {"905949", "1331031", "1331030"}
-
-
 class TestResolveCosmicIds:
     def test_integers_and_strings_resolve_to_the_same_key(self, model_list: UPath) -> None:
         resolved = resolve_cosmic_ids([905949, "1331030"], model_list)
 
         assert resolved == {"905949": ("CVCL_0023", "A549"), "1331030": ("CVCL_1870", "MEC-1")}
-
-    def test_a_float_suffix_from_a_gappy_column_is_dropped(self, model_list: UPath) -> None:
-        assert resolve_cosmic_ids(["905949.0"], model_list) == {"905949": ("CVCL_0023", "A549")}
 
     def test_unknown_ids_are_left_out_and_warned_about(self, model_list: UPath, caplog) -> None:
         with caplog.at_level(logging.WARNING):

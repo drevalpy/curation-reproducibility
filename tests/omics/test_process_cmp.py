@@ -75,13 +75,15 @@ class TestCnv:
         _write_cnv(_cmp_file("cnv", "cnv_gistic_b.csv"), ["BRCA1"])
         _write_cnv(_cmp_file("cnv", "cnv_gistic_a.csv"), ["TP53"])
 
-        assert process_cnv._find_cnv_file(layout.cmp_raw("cnv")).name == "cnv_gistic_a.csv"
+        process_cnv.main("GDSC1")
+
+        assert list(ad.read_h5ad(str(layout.omics("cnv", "GDSC1"))).var_names) == ["TP53"]
 
     def test_a_missing_download_is_reported_with_the_directory_contents(self, workdir) -> None:
         _cmp_file("cnv", "unrelated.txt").write_text("x")
 
         with pytest.raises(FileNotFoundError, match="unrelated.txt"):
-            process_cnv._find_cnv_file(layout.cmp_raw("cnv"))
+            process_cnv.main("GDSC1")
 
 
 class TestMutations:
@@ -140,11 +142,8 @@ class TestProteomics:
 
 
 class TestTranscriptomics:
-    @pytest.mark.parametrize(
-        ("dataset", "source", "unit"),
-        [("GDSC1", "gdsc", "log2_rma"), ("CTRPv2", "ccle", "log2_tpm_plus_1")],
-    )
-    def test_a_dataset_reads_its_shared_source(self, workdir, monkeypatch, dataset, source, unit) -> None:
+    @pytest.mark.parametrize(("dataset", "source"), [("GDSC1", "gdsc"), ("CTRPv2", "ccle")])
+    def test_a_dataset_reads_its_shared_source(self, workdir, monkeypatch, dataset, source) -> None:
         seen: list[UPath] = []
 
         def fake(raw_dir: UPath, model_list: UPath) -> ad.AnnData:
@@ -156,7 +155,7 @@ class TestTranscriptomics:
         process_transcriptomics.main(dataset)
 
         assert seen == [layout.source_raw(source, "transcriptomics")]
-        assert ad.read_h5ad(str(layout.omics("transcriptomics", dataset))).uns["expression_unit"] == unit
+        assert layout.omics("transcriptomics", dataset).exists()
 
     def test_another_dataset_reads_its_own_raw_directory(self, workdir, monkeypatch) -> None:
         seen: list[UPath] = []
