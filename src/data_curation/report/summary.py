@@ -23,8 +23,6 @@ def modality_membership(snapshots: list[DatasetSnapshot]) -> pd.DataFrame:
         for modality, lines in s.omics_samples.items():
             kept = lines.intersection(s.response_samples)
             frames.append(pd.DataFrame({"dataset": s.name, "sample": kept, "modality": modality}))
-    if not frames:
-        return pd.DataFrame(columns=pd.Index(["dataset", "sample", "modality"]))
     return pd.concat(frames, ignore_index=True)
 
 
@@ -68,19 +66,24 @@ def replicate_structure(snapshots: list[DatasetSnapshot]) -> pd.DataFrame:
         }
         for s in snapshots
     ]
-    columns = pd.Index(
-        ["replicate_pairs", "biological_pairs", "technical_only_pairs", "median_biological", "median_technical"]
-    )
-    return pd.DataFrame(rows, columns=pd.Index(["dataset", *columns])).set_index("dataset")
+    columns = [
+        "dataset",
+        "replicate_pairs",
+        "biological_pairs",
+        "technical_only_pairs",
+        "median_biological",
+        "median_technical",
+    ]
+    return pd.DataFrame(rows, columns=pd.Index(columns)).set_index("dataset")
 
 
 def tissue_counts(snapshots: list[DatasetSnapshot]) -> pd.DataFrame:
     """Return the number of response samples per (dataset, tissue)."""
-    frames = [s.tissues.value_counts().rename("samples").rename_axis("tissue").reset_index() for s in snapshots]
-    for frame, s in zip(frames, snapshots, strict=True):
+    frames = []
+    for s in snapshots:
+        frame = s.tissues.value_counts().rename("samples").rename_axis("tissue").reset_index()
         frame.insert(0, "dataset", s.name)
-    if not frames:
-        return pd.DataFrame(columns=pd.Index(["dataset", "tissue", "samples"]))
+        frames.append(frame)
     return pd.concat(frames, ignore_index=True)
 
 
@@ -136,9 +139,8 @@ def dataset_indicators(snapshots: list[DatasetSnapshot], axis: str = "samples") 
         "samples": lambda s: s.response_samples,
         "drugs": lambda s: s.response_drugs,
     }[axis]
-    names = [s.name for s in snapshots]
     index = pd.Index(sorted({x for s in snapshots for x in members(s)}), name=axis.rstrip("s"))
-    return pd.DataFrame({s.name: index.isin(members(s)) for s in snapshots}, index=index)[names]
+    return pd.DataFrame({s.name: index.isin(members(s)) for s in snapshots}, index=index)
 
 
 def dataset_multiplicity(snapshots: list[DatasetSnapshot]) -> pd.Series:

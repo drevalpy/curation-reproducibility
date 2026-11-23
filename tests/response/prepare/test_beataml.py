@@ -40,11 +40,11 @@ def beataml_dir(tmp_dir: UPath):
 
 
 def _prepare(raw_dir: UPath) -> pd.DataFrame:
-    return prepare_beataml(raw_dir, {}).frame
+    return prepare_beataml(raw_dir).frame
 
 
 def _series(raw_dir: UPath) -> pd.DataFrame:
-    wells = prepare_beataml(raw_dir, {})
+    wells = prepare_beataml(raw_dir)
     return number(wells).series
 
 

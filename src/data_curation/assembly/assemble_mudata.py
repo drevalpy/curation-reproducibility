@@ -1,6 +1,7 @@
 """Assemble per-omics AnnData files into a single MuData (.h5mu) file.
 
-Combines all available omics modalities for a dataset into the MuData
+Combines a dataset's response with whichever omics modalities exist (gene
+expression, mutations, copy number, proteomics, methylation) into the MuData
 format expected by drevalpy. Drug ontology annotations from the central
 dictionary are attached to the response modality on the way through, and
 sample annotations are consolidated into the global ``mdata.obs``.
@@ -30,33 +31,20 @@ OMICS_MODALITY_MAP: dict[str, str] = {
     "mutations": "mutations",
     "cnv": "copy_number_variation_gistic",
     "proteomics": "proteomics",
+    "methylation": "methylation",
     "response": "response",
 }
-
-
-# drevalpy requires only "tissue" (drevalpy/data/utils.py); "cellosaurus_id" and
-# "cell_line_name" are optional and only present for cell-line datasets. Everything
-# else the metadata table carries rides along so downstream code can stratify or
-# filter on it - "cancer_type" is a finer split variable than "tissue",
-# "patient_id" exposes shared-donor leakage, and "problematic" marks contaminated
-# or misidentified lines. The global columns are whatever the table holds.
 
 
 def _attach_drug_ontology(response: ad.AnnData) -> None:
     """Attach drug ontology annotations to a response modality in place.
 
     Reindexing on ``var_names`` subsets the central dictionary to this dataset's
-    drugs and guarantees row alignment. Columns already present are not
-    overwritten, so re-assembly stays idempotent.
+    drugs and guarantees row alignment. Columns the response already carries, such
+    as ``canonical_smiles``, are not overwritten.
     """
-    if not layout.DRUG_ONTOLOGY.exists():
-        return
-
     ontology = pd.read_parquet(str(layout.DRUG_ONTOLOGY))
     new_columns = [c for c in ontology.columns if c not in response.var.columns]
-    if not new_columns:
-        return
-
     aligned = ontology[new_columns].reindex(response.var_names)
     for column in new_columns:
         response.var[column] = aligned[column].to_numpy()
@@ -88,9 +76,13 @@ def _build_global_obs(mdata: md.MuData, meta_path: UPath) -> None:
     The metadata table is joined onto the union sample index, which is the only
     index that spans every modality: for GDSC2 it holds 1675 cell lines while
     ``gene_expression`` covers 1584, so resolving tissue inside a single modality
-    would leave holes. The global columns are those of the table, so a dataset
-    whose samples are not cell lines gets no ``cellosaurus_id`` or
-    ``cell_line_name``.
+    would leave holes.
+
+    The global columns are those of the table. drevalpy requires only ``tissue``;
+    ``cellosaurus_id`` and ``cell_line_name`` exist for cell-line datasets only. The
+    rest rides along so downstream code can stratify or filter on it: ``cancer_type``
+    is a finer split variable than ``tissue``, ``patient_id`` exposes shared-donor
+    leakage and ``problematic`` marks contaminated or misidentified lines.
     """
     meta = read_sample_meta(meta_path)
 
@@ -132,18 +124,17 @@ def _build_global_obs(mdata: md.MuData, meta_path: UPath) -> None:
 
     for modality in mdata.mod.values():
         obs = pd.DataFrame(modality.obs)
-        kept = [c for c in obs.columns if c not in global_obs.columns]
-        if len(kept) != len(obs.columns):
-            modality.obs = obs[kept]
+        modality.obs = obs[[c for c in obs.columns if c not in global_obs.columns]]
 
 
 def _subset_to_screened(modalities: dict[str, ad.AnnData]) -> dict[str, ad.AnnData]:
     """Restrict the omics modalities to the samples this dataset screened.
 
-    The Cell Model Passports omics are dataset-independent: every screen reads
-    the same matrices, so without subsetting each assembled file embeds all 1584
-    profiled cell lines regardless of which its response covers. Subsetting is
-    both smaller and more honest about what the dataset contains.
+    The shared omics (Cell Model Passports, the CCLE and GDSC releases) are
+    dataset-independent: every screen of a source reads the same matrices, so
+    without subsetting each assembled file embeds every profiled cell line
+    regardless of which its response covers. Subsetting is both smaller and more
+    honest about what the dataset contains.
 
     Samples with a response but no omics are kept in the union index, so
     ``mdata.obs`` still spans them and their features read as missing rather than
@@ -155,11 +146,7 @@ def _subset_to_screened(modalities: dict[str, ad.AnnData]) -> dict[str, ad.AnnDa
     Returns:
         The modalities, with the non-response ones subset.
     """
-    response = modalities.get("response")
-    if response is None:
-        return modalities
-
-    screened = set(response.obs_names)
+    screened = set(modalities["response"].obs_names)
     subset: dict[str, ad.AnnData] = {}
     for name, adata in modalities.items():
         if name == "response":
@@ -182,28 +169,27 @@ def _restrict_replicate_fits(response: ad.AnnData) -> None:
 
 
 def main(dataset: str) -> None:
-    """Assemble all available omics for a dataset into a MuData file."""
+    """Assemble the response and every available omics modality of a dataset into a MuData file.
+
+    Raises:
+        CurationError: If the dataset has no response modality.
+    """
     output_path = layout.assembled(dataset)
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     modalities: dict[str, ad.AnnData] = {}
-
     for layout_key, mudata_key in OMICS_MODALITY_MAP.items():
         h5ad_path = layout.modality(layout_key, dataset)
         if h5ad_path.exists():
             modalities[mudata_key] = ad.read_h5ad(str(h5ad_path))
 
-    if not modalities:
-        msg = f"No omics data found for dataset: {dataset}"
+    if "response" not in modalities:
+        msg = f"No response data found for dataset: {dataset}"
         raise CurationError(msg)
 
-    if "response" in modalities:
-        _attach_drug_ontology(modalities["response"])
-
+    _attach_drug_ontology(modalities["response"])
     modalities = _subset_to_screened(modalities)
-
-    if "response" in modalities:
-        _restrict_replicate_fits(modalities["response"])
+    _restrict_replicate_fits(modalities["response"])
 
     mdata = md.MuData(modalities)
     mdata.uns["dataset_name"] = dataset

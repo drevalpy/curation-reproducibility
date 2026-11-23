@@ -9,8 +9,7 @@ so it is exploded into long form here.
 percent-change-in-growth measure on roughly ``[-100, 0]``: ``0`` means the
 treated well matched the untreated control and ``-100`` means growth was
 abolished. Every other preparer emits fractional viability where ``1.0`` is
-untreated, so the values are converted with ``activity / 100 + 1``, which is the
-transform the original notebook applied before its own CurveCurator run. A third
+untreated, so the values are converted with ``activity / 100 + 1``. A third
 of the resulting values exceed 1 (treated wells that grew *faster* than control)
 and 0.16% of the raw values fall below ``-100``; the same ``clip(0, None)`` the
 other preparers use bounds the latter at zero rather than dropping them.
@@ -54,12 +53,11 @@ ACTIVITY_COLUMN = "Activity Data (median)"
 _PERCENT_SCALE = 100.0
 
 
-def prepare_ccle(raw_dir: UPath, ds_params: dict) -> Wells:  # noqa: ARG001
+def prepare_ccle(raw_dir: UPath) -> Wells:
     """Explode the packed CCLE dose series and convert activity to viability.
 
     Args:
         raw_dir: Raw response directory for the dataset.
-        ds_params: Unused; the signature is shared across preparers.
 
     Returns:
         Long-form viability keyed by ``Primary Cell Line Name`` and ``Compound``, one series per pair.

@@ -65,7 +65,6 @@ class Structure:
     """A registered structure reduced to its standardized parent.
 
     Attributes:
-        smiles: Canonical SMILES of the structure as registered.
         connectivity: InChIKey first block of the parent.
         inchikey: Full InChIKey of the parent, stereo included.
         n_stereo: Number of specified stereo centres and double bonds.
@@ -73,7 +72,6 @@ class Structure:
         has_metal: Whether the parent is a metal complex, whose InChI differs between bonded and ionic drawings.
     """
 
-    smiles: str
     connectivity: str
     inchikey: str
     n_stereo: int
@@ -205,7 +203,6 @@ def _structure(smiles: str) -> Structure | None:
     if not key:
         return None
     return Structure(
-        smiles,
         key[:_CONNECTIVITY_LENGTH],
         key,
         count_specified_stereo(parent),
@@ -268,8 +265,8 @@ def resolve_prism_drug(
 
     The name CID wins when it agrees with a registered structure. Otherwise the most stereo-specific structure
     is looked up by InChIKey, then the remaining ones. A name CID that no structure could replace is kept but
-    flagged, as the current pipeline does for drugs without a structure hit. Metal complexes are never
-    overridden by structure: PubChem draws them ionic and the registry covalent, so the comparison is unreliable.
+    flagged. Metal complexes are never overridden by structure: PubChem draws them ionic and the registry
+    covalent, so the comparison is unreliable.
 
     Args:
         name: Drug name from the treatment info.

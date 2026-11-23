@@ -4,8 +4,8 @@ import pytest
 from upath import UPath
 
 from data_curation.cell_lines.sidm_mapping import (
+    build_id_to_cellosaurus_map,
     build_name_to_cellosaurus_map,
-    build_sidm_to_cellosaurus_map,
     normalize_cell_line_name,
 )
 
@@ -29,10 +29,10 @@ class TestNormalizeCellLineName:
         assert normalize_cell_line_name("---") == ""
 
 
-class TestBuildSidmToCellosaurusMap:
+class TestBuildIdToCellosaurusMap:
     def test_maps_sidm_to_accession_and_name(self, write_model_list) -> None:
         path = write_model_list([{"model_id": "SIDM00001", "model_name": "MEC-1", "RRID": "CVCL_1870"}])
-        assert build_sidm_to_cellosaurus_map(path) == {"SIDM00001": ("CVCL_1870", "MEC-1")}
+        assert build_id_to_cellosaurus_map(path, "model_id") == {"SIDM00001": ("CVCL_1870", "MEC-1")}
 
     def test_rows_without_a_cvcl_are_skipped(self, write_model_list) -> None:
         path = write_model_list(
@@ -42,11 +42,32 @@ class TestBuildSidmToCellosaurusMap:
                 {"model_id": "SIDM00003", "model_name": "Bogus", "RRID": "NOTACVCL"},
             ]
         )
-        assert list(build_sidm_to_cellosaurus_map(path)) == ["SIDM00001"]
+        assert list(build_id_to_cellosaurus_map(path, "model_id")) == ["SIDM00001"]
 
     def test_missing_model_name_becomes_empty_string(self, write_model_list) -> None:
         path = write_model_list([{"model_id": "SIDM00001", "model_name": None, "RRID": "CVCL_1870"}])
-        assert build_sidm_to_cellosaurus_map(path)["SIDM00001"] == ("CVCL_1870", "")
+        assert build_id_to_cellosaurus_map(path, "model_id")["SIDM00001"] == ("CVCL_1870", "")
+
+    def test_every_value_of_a_multi_valued_cell_maps_to_the_model(self, write_model_list) -> None:
+        path = write_model_list(
+            [{"model_id": "SIDM00002", "model_name": "MEC-1", "RRID": "CVCL_1870", "BROAD_ID": "ACH-1;ACH-2"}],
+            columns=["model_id", "model_name", "RRID", "BROAD_ID"],
+        )
+        assert build_id_to_cellosaurus_map(path, "BROAD_ID") == {
+            "ACH-1": ("CVCL_1870", "MEC-1"),
+            "ACH-2": ("CVCL_1870", "MEC-1"),
+        }
+
+    def test_the_first_model_wins_a_shared_id_and_float_suffixes_are_dropped(self, write_model_list) -> None:
+        path = write_model_list(
+            [
+                {"model_id": "SIDM00001", "model_name": "A549", "RRID": "CVCL_0023", "COSMIC_ID": 905949},
+                {"model_id": "SIDM00002", "model_name": "Twin", "RRID": "CVCL_0004", "COSMIC_ID": 905949},
+                {"model_id": "SIDM00003", "model_name": "NoId", "RRID": "CVCL_0005", "COSMIC_ID": None},
+            ],
+            columns=["model_id", "model_name", "RRID", "COSMIC_ID"],
+        )
+        assert build_id_to_cellosaurus_map(path, "COSMIC_ID") == {"905949": ("CVCL_0023", "A549")}
 
 
 class TestMultiAccessionRrid:
@@ -61,7 +82,7 @@ class TestMultiAccessionRrid:
 
     def test_sidm_map_rejects_multi_accession(self, write_model_list) -> None:
         path = write_model_list([{"model_id": "SIDM00400", "model_name": "SC-1", "RRID": self.AMBIGUOUS}])
-        assert build_sidm_to_cellosaurus_map(path) == {}
+        assert build_id_to_cellosaurus_map(path, "model_id") == {}
 
     def test_name_map_rejects_multi_accession(self, write_model_list) -> None:
         path = write_model_list(
@@ -73,16 +94,16 @@ class TestMultiAccessionRrid:
     def test_every_separator_is_rejected(self, write_model_list, separator: str) -> None:
         rrid = f"CVCL_2717{separator}CVCL_1888"
         path = write_model_list([{"model_id": "SIDM00400", "model_name": "SC-1", "RRID": rrid}])
-        assert build_sidm_to_cellosaurus_map(path) == {}
+        assert build_id_to_cellosaurus_map(path, "model_id") == {}
 
     def test_a_clean_accession_is_still_accepted(self, write_model_list) -> None:
         path = write_model_list([{"model_id": "SIDM00400", "model_name": "SC-1", "RRID": " CVCL_2717 "}])
-        assert build_sidm_to_cellosaurus_map(path)["SIDM00400"][0] == "CVCL_2717"
+        assert build_id_to_cellosaurus_map(path, "model_id")["SIDM00400"][0] == "CVCL_2717"
 
     def test_rejection_is_logged(self, write_model_list, caplog) -> None:
         path = write_model_list([{"model_id": "SIDM00400", "model_name": "SC-1", "RRID": self.AMBIGUOUS}])
         with caplog.at_level("WARNING"):
-            build_sidm_to_cellosaurus_map(path)
+            build_id_to_cellosaurus_map(path, "model_id")
         assert "SIDM00400" in caplog.text
 
 

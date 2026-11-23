@@ -16,17 +16,16 @@ from typing import Any
 import yaml
 from upath import UPath
 
+from data_curation.core import layout
 from data_curation.core.errors import CurationError
 
 SOURCES_PATH = UPath("config/sources.yaml")
 PROCESSING_PATH = UPath("config/processing.yaml")
 
-#: Value of a dataset's ``omics_source`` key when its omics come from the shared
-#: Cell Model Passports downloads rather than from per-dataset ``<modality>`` blocks.
-CMP_SOURCE = "cell_model_passports"
-
-#: Modalities a CMP-sourced dataset provides, which have no per-dataset block.
-CMP_MODALITIES = frozenset({"transcriptomics", "mutations", "cnv", "proteomics"})
+#: Top-level blocks of ``config/sources.yaml`` holding omics downloads shared by
+#: several datasets. A dataset names one of them per modality in its ``omics``
+#: mapping instead of carrying a ``<modality>`` block of its own.
+SHARED_SOURCES = tuple(layout.SHARED_SOURCES)
 
 
 def _load(path: UPath) -> dict[str, Any]:
@@ -110,42 +109,51 @@ def dataset_config(dataset: str, section: str | None = None) -> dict[str, Any]:
     return block[section]
 
 
-def is_cmp_dataset(dataset: str) -> bool:
-    """Whether a dataset's omics are the shared Cell Model Passports downloads.
+def omics_source(dataset: str, modality: str) -> str | None:
+    """Return the shared source a dataset takes one omics modality from.
 
     Args:
         dataset: Dataset name, e.g. ``"GDSC2"``.
+        modality: Omics modality, e.g. ``"methylation"``.
 
     Returns:
-        True when ``datasets.<dataset>.omics_source`` is ``cell_model_passports``.
+        The source named in ``datasets.<dataset>.omics.<modality>`` (one of
+        :data:`SHARED_SOURCES`), or None when the dataset has its own
+        ``<modality>`` block or no such modality.
 
     Raises:
-        CurationError: If the dataset is not configured.
+        CurationError: If the dataset is not configured, or names an unknown source.
     """
-    return dataset_config(dataset).get("omics_source") == CMP_SOURCE
+    source = (dataset_config(dataset).get("omics") or {}).get(modality)
+    if source is not None and source not in SHARED_SOURCES:
+        msg = f"Dataset '{dataset}' takes {modality} from unknown source '{source}'; expected one of {SHARED_SOURCES}"
+        raise CurationError(msg)
+    return source
 
 
-def cmp_source(kind: str) -> dict[str, Any]:
-    """Return one download entry of the ``cell_model_passports`` block.
+def shared_source(source: str, kind: str) -> dict[str, Any]:
+    """Return one download entry of a shared source block, e.g. ``shared_source("ccle", "methylation")``.
 
     Args:
-        kind: Entry key, e.g. ``"mutations"`` or ``"model_list"``.
+        source: One of :data:`SHARED_SOURCES`.
+        kind: Entry key within the block.
 
     Returns:
-        The entry (``url``, ``known_hash`` and optionally ``fname``, ``keep``).
+        The entry: ``url``, ``known_hash`` and optionally ``fname``, or a ``files``
+        list of those; optionally ``keep``.
 
     Raises:
-        KeyError: If *kind* is not declared.
+        KeyError: If *source* or *kind* is not declared.
     """
-    return source_config(CMP_SOURCE)[kind]
+    return source_config(source)[kind]
 
 
 def dataset_names(modality: str | None = None) -> list[str]:
     """List the datasets configured for a modality, or every dataset.
 
     A dataset is valid for a modality when that modality key is present under
-    its block in ``config/sources.yaml``, or when it is sourced from Cell Model
-    Passports and the modality is one of its omics. Falls back to an empty list when the
+    its block in ``config/sources.yaml``, or when its ``omics`` mapping names a
+    shared source for the modality. Falls back to an empty list when the
     file is unreadable, so that shell completion and ``--help`` still work
     outside the repository.
 
@@ -166,5 +174,5 @@ def dataset_names(modality: str | None = None) -> list[str]:
     return sorted(
         name
         for name, block in datasets.items()
-        if modality in (block or {}) or (modality in CMP_MODALITIES and (block or {}).get("omics_source") == CMP_SOURCE)
+        if modality in (block or {}) or modality in ((block or {}).get("omics") or {})
     )

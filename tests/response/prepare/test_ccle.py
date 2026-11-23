@@ -59,11 +59,11 @@ def ccle_dir(tmp_dir: UPath):
 
 
 def _prepare(raw_dir: UPath) -> pd.DataFrame:
-    return prepare_ccle(raw_dir, {}).frame
+    return prepare_ccle(raw_dir).frame
 
 
 def _series(raw_dir: UPath) -> pd.DataFrame:
-    wells = prepare_ccle(raw_dir, {})
+    wells = prepare_ccle(raw_dir)
     return number(wells).series
 
 

@@ -14,7 +14,8 @@ src/data_curation/
                  response/pipeline.py runs the drevalpy/curate Nextflow pipeline for fit_curves
   cli/           the whole `data-curation` command tree, one module per group
 tests/           mirrors src/; data-free (fixtures are built into tmp_path)
-config/          sources.yaml (pinned URLs, hashes, per-dataset blocks), processing.yaml (fit, execution, pubchem),
+config/          sources.yaml (pinned URLs, hashes, shared omics sources cmp/ccle/gdsc, per-dataset blocks with
+                 an `omics` mapping naming each modality's shared source), processing.yaml (fit, execution, pubchem),
                  nextflow/<backend>.config (executor settings for local, slurm, aws_batch)
 params.yaml      only the dataset lists DVC expands `foreach` over; the Python code never reads it
 dvc.yaml         one stage per command; dvc.lock is the recorded state
@@ -69,7 +70,8 @@ uv run --frozen prek run --all-files         # all of the above plus file hygien
 - PRISM drug mapping is its own stage group (`map_drugs_PRISM_*`, `drugs map-prism`, `drugs/map_prism.py`) so that
   the `map_drugs` stages of the other datasets do not list `prism_structures.py`. Keep `map_drugs.py` free of
   imports of `map_prism`/`prism_structures`; `PRISM_20Q2` alone also depends on the `PRISM_19Q4` download.
-- Never edit or delete `data/`. Outputs there are DVC-managed.
+- Never edit or delete `data/`. Outputs there are DVC-managed. `data/01_raw/gdsc/` has no download stage (its host
+  is gone): it is tracked by `data/01_raw/gdsc/<kind>.dvc` and refetched only with `omics download-shared gdsc`.
 - `earlyoom` on this host kills processes above 85% memory (exit code 143); a stage that dies with 143 ran out
   of memory, so lower parallelism (`executor.cpus`/`memory` in `config/nextflow/local.config`) or use another
   backend rather than retrying blindly.

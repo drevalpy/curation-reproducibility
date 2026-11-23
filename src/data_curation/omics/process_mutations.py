@@ -5,14 +5,14 @@ Filters for coding, non-silent mutations and creates a binary
 """
 
 import anndata as ad
-import numpy as np
 import pandas as pd
 from upath import UPath
 
 from data_curation.cell_lines.download_model_list import cmp_model_list_path
-from data_curation.cell_lines.sidm_mapping import build_sidm_to_cellosaurus_map
+from data_curation.cell_lines.sidm_mapping import build_id_to_cellosaurus_map
 from data_curation.core import layout
 from data_curation.core.paths import find_first
+from data_curation.omics.samples import to_sample_anndata
 
 _USED_COLUMNS = frozenset({"model_id", "gene_symbol", "coding", "effect"})
 
@@ -42,23 +42,8 @@ def _process_mutations(raw_dir: UPath, model_list_path: UPath) -> ad.AnnData:
 
     pivot = mut_pairs.pivot_table(index="model_id", columns="gene_symbol", values="mutated", fill_value=0)
 
-    sidm_to_cvcl = build_sidm_to_cellosaurus_map(model_list_path)
-
-    valid_rows = [idx for idx in pivot.index if idx in sidm_to_cvcl]
-    pivot = pivot.loc[valid_rows]
-
-    cellosaurus_ids = [sidm_to_cvcl[idx][0] for idx in valid_rows]
-    cell_line_names = [sidm_to_cvcl[idx][1] for idx in valid_rows]
-
-    adata = ad.AnnData(
-        X=np.array(pivot.values, dtype=np.float32),
-        obs=pd.DataFrame({"cell_line_name": cell_line_names}, index=pd.Index(cellosaurus_ids)),
-        var=pd.DataFrame(index=pd.Index(pivot.columns, name="gene_symbol")),
-    )
-    adata.obs_names.name = layout.SAMPLE_INDEX_NAME
-    adata = adata[~adata.obs_names.duplicated(keep="first")].copy()
-
-    return adata
+    ids = build_id_to_cellosaurus_map(model_list_path, "model_id")
+    return to_sample_anndata(pivot, ids, var_name="gene_symbol")
 
 
 def main(dataset: str) -> None:

@@ -2,7 +2,7 @@
 
 Two kinds of lookup are needed:
 
-- Per-compound cross references (InChIKey, ChEBI ID) for the drugs in our
+- Per-compound cross references (preferred name, ChEBI ID) for the drugs in our
   datasets. These are batched, since PubChem accepts many CIDs per request.
 - The complete PubChem -> NCI Thesaurus link table, which is only available by
   paging through the PUG-View annotations endpoint.
@@ -32,10 +32,8 @@ logger = logging.getLogger(__name__)
 _PUG_REST = "https://pubchem.ncbi.nlm.nih.gov/rest/pug"
 _PUG_VIEW = "https://pubchem.ncbi.nlm.nih.gov/rest/pug_view"
 
-# PubChem asks for no more than 5 requests/s; these batch sizes keep the number
-# of requests low while staying inside the URL length limit for GET requests.
+# PubChem asks for no more than 5 requests/s; batching keeps the number of requests low.
 _SYNONYM_BATCH = 100
-_PROPERTY_BATCH = 150
 _REQUEST_DELAY = 0.25
 _MAX_ATTEMPTS = 4
 _RETRY_BACKOFF = 2.0
@@ -144,7 +142,7 @@ def _batched(items: list[str], size: int) -> list[list[str]]:
     return [items[i : i + size] for i in range(0, len(items), size)]
 
 
-def fetch_cross_references(cids: list[str], failures: list[tuple[str, str]] | None = None) -> dict[str, dict[str, str]]:
+def fetch_cross_references(cids: list[str], failures: list[tuple[str, str]]) -> dict[str, dict[str, str]]:
     """Look up the preferred name and ChEBI ID for each CID.
 
     PubChem does not expose a dedicated cross-reference endpoint for ChEBI, but
@@ -152,14 +150,11 @@ def fetch_cross_references(cids: list[str], failures: list[tuple[str, str]] | No
 
     Args:
         cids: Numeric PubChem CIDs as strings.
-        failures: If given, batches that fail after all retries are recorded here
-            as ``(cid, reason)`` pairs, one per CID, instead of raising.
+        failures: Collects ``(query, reason)`` for every CID of a batch that fails after all retries;
+            those CIDs are missing from the result.
 
     Returns:
         Mapping of CID to a dict with ``name`` and ``chebi_id`` keys.
-
-    Raises:
-        PubChemUnavailable: If a batch fails and ``failures`` is None.
     """
     result: dict[str, dict[str, str]] = {}
     batches = _batched(cids, _SYNONYM_BATCH)
@@ -167,8 +162,6 @@ def fetch_cross_references(cids: list[str], failures: list[tuple[str, str]] | No
         try:
             payload = _request(f"{_PUG_REST}/compound/cid/synonyms/JSON", {"cid": ",".join(batch)})
         except PubChemUnavailable as exc:
-            if failures is None:
-                raise
             failures.extend((f"cross_reference:{cid}", str(exc)) for cid in batch)
             continue
         result.update(_parse_cross_references(payload))
@@ -188,37 +181,6 @@ def _parse_cross_references(payload: dict) -> dict[str, dict[str, str]]:
             "chebi_id": chebi,
         }
     return parsed
-
-
-def fetch_inchikeys(cids: list[str], failures: list[tuple[str, str]] | None = None) -> dict[str, str]:
-    """Look up the InChIKey for each CID.
-
-    Args:
-        cids: Numeric PubChem CIDs as strings.
-        failures: If given, batches that fail after all retries are recorded here
-            as ``(cid, reason)`` pairs, one per CID, instead of raising.
-
-    Returns:
-        Mapping of CID to InChIKey.
-
-    Raises:
-        PubChemUnavailable: If a batch fails and ``failures`` is None.
-    """
-    result: dict[str, str] = {}
-    for batch in track(_batched(cids, _PROPERTY_BATCH), "Fetching PubChem InChIKeys"):
-        try:
-            payload = _request(f"{_PUG_REST}/compound/cid/{','.join(batch)}/property/InChIKey/JSON")
-        except PubChemUnavailable as exc:
-            if failures is None:
-                raise
-            failures.extend((f"inchikey:{cid}", str(exc)) for cid in batch)
-            continue
-        for record in payload.get("PropertyTable", {}).get("Properties", []):
-            if record.get("InChIKey"):
-                result[str(record["CID"])] = record["InChIKey"]
-        logger.debug("Resolved InChIKeys for %d/%d CIDs", len(result), len(cids))
-        time.sleep(_REQUEST_DELAY)
-    return result
 
 
 def _ncit_codes(record: dict) -> list[str]:

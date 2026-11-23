@@ -13,21 +13,37 @@ logger = logging.getLogger(__name__)
 _ACCESSION_SEPARATORS = (";", ",", "|", " ")
 
 
-def build_sidm_to_cellosaurus_map(model_list_path: UPath) -> dict[str, tuple[str, str]]:
-    """Build SIDM ID -> (cellosaurus_id, model_name) from the model list.
+def _clean_id(value: object) -> str:
+    """Return one identifier as a string, dropping the ``.0`` pandas adds to integer columns with gaps."""
+    text = str(value).strip()
+    return text.removesuffix(".0") if text.endswith(".0") and text[:-2].isdigit() else text
+
+
+def build_id_to_cellosaurus_map(model_list_path: UPath, column: str) -> dict[str, tuple[str, str]]:
+    """Build native ID -> (Cellosaurus accession, model name) from one model list column.
+
+    Every value of a multi-valued cell (``"ACH-002392;ACH-002303"``) maps to the model.
+    When two models claim the same ID, the first one in the file wins.
+
+    Args:
+        model_list_path: Cell Model Passports ``model_list.csv``.
+        column: ID column: ``"model_id"`` (SIDM), ``"BROAD_ID"`` (DepMap), ``"COSMIC_ID"`` or ``"CCLE_ID"``.
 
     Returns:
-        Dict mapping SIDM model ID to (CVCL accession, human-readable name).
+        The mapping, for models with a usable accession only.
     """
-    models = pd.read_csv(str(model_list_path))
+    models = pd.read_csv(str(model_list_path), low_memory=False)
     mapping: dict[str, tuple[str, str]] = {}
     for _, row in models.iterrows():
-        sidm = row["model_id"]
+        value = row.get(column)
         cvcl = _valid_cvcl(row)
-        name = row["model_name"] if pd.notna(row.get("model_name")) else ""
-        if pd.notna(sidm) and cvcl is not None:
-            mapping[str(sidm)] = (cvcl, str(name))
-
+        if pd.isna(value) or cvcl is None:
+            continue
+        name = str(row["model_name"]) if pd.notna(row.get("model_name")) else ""
+        for native in str(value).split(";"):
+            key = _clean_id(native)
+            if key and key not in mapping:
+                mapping[key] = (cvcl, name)
     return mapping
 
 

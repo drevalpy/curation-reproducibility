@@ -338,10 +338,8 @@ def _drug_mapping_config(dataset: str) -> tuple[dict[str, int], frozenset[str]]:
 
 def _given_cid(value: object) -> int | None:
     """Turn a ``pubchem_id`` cell of the drugs file into a CID; missing or non-positive is unknown."""
-    cid = pd.to_numeric(pd.Series([value]), errors="coerce").iloc[0]
-    if pd.isna(cid) or cid <= 0:
-        return None
-    return int(cid)
+    cid = pd.to_numeric(value, errors="coerce")
+    return None if pd.isna(cid) or cid <= 0 else int(cid)
 
 
 def _map_standard(raw_dir: UPath, dataset: str) -> pd.DataFrame:

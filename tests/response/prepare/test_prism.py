@@ -55,7 +55,7 @@ def prism_dir(tmp_dir: UPath):
 
 
 def _number(raw_dir: UPath):
-    wells = prepare_prism(raw_dir, {})
+    wells = prepare_prism(raw_dir)
     return number(wells)
 
 
@@ -73,12 +73,12 @@ class TestViability:
     def test_a_missing_value_is_dropped(self, prism_dir) -> None:
         conditions = _conditions("PREP014_CS5_X1")
         raw = prism_dir(conditions, {"ACH-1": "ACH-1"}, {"ACH-1": {conditions[0]["column_name"]: float("nan")}})
-        assert len(prepare_prism(raw, {}).frame) == 2
+        assert len(prepare_prism(raw).frame) == 2
 
     def test_controls_are_not_measurements(self, prism_dir) -> None:
         conditions = _conditions("PREP014_CS5_X1")
         conditions[0]["perturbation_type"] = "vehicle_control"
-        assert len(prepare_prism(prism_dir(conditions, {"ACH-1": "ACH-1"}), {}).frame) == 2
+        assert len(prepare_prism(prism_dir(conditions, {"ACH-1": "ACH-1"})).frame) == 2
 
     def test_the_mts010_redo_supersedes_the_original_screen(self, prism_dir) -> None:
         conditions = [*_conditions("PREP014_CS5_X1"), *_conditions("PROS001_PR500_120H_X1_P4", screen="MTS010")]

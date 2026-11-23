@@ -17,7 +17,7 @@ only reads the parameters, applies the selection and writes the result.
 
 import logging
 from collections.abc import Mapping, Sequence
-from typing import Any
+from typing import Any, cast
 
 import anndata as ad
 import mudata as md
@@ -43,8 +43,6 @@ logger = logging.getLogger(__name__)
 
 md.set_options(pull_on_update=False)
 
-ASSEMBLED_DIR = layout.ASSEMBLED
-
 # The response modality is subset by drug rather than by variance, so it is
 # excluded from the per-modality feature selection.
 RESPONSE_KEY = "response"
@@ -52,9 +50,6 @@ RESPONSE_KEY = "response"
 # Global obs columns carried over from the source dataset. Only ``tissue`` is
 # required; the cell-line columns exist when the source samples are cell lines.
 GLOBAL_OBS_COLUMNS = ("cellosaurus_id", "cell_line_name", TISSUE_COLUMN)
-
-
-GeneLists = Mapping[str, Mapping[str, Sequence[str]]]
 
 
 def _subset_modality(
@@ -94,25 +89,9 @@ def _global_obs(source_obs: pd.DataFrame, samples: list[str]) -> pd.DataFrame:
     return obs
 
 
-def _anndata_modalities(source: md.MuData) -> dict[str, ad.AnnData]:
-    """Return the source modalities, rejecting nested MuData containers.
-
-    ``MuData.mod`` is typed to allow nested MuData objects; the assembled
-    datasets never contain one, and the selection logic assumes plain AnnData.
-
-    Raises:
-        TypeError: If a modality is itself a MuData.
-    """
-    modalities: dict[str, ad.AnnData] = {}
-    for key, modality in source.mod.items():
-        if not isinstance(modality, ad.AnnData):
-            msg = f"Modality '{key}' is a nested MuData, which is not supported"
-            raise TypeError(msg)
-        modalities[key] = modality
-    return modalities
-
-
-def build_toy(source: md.MuData, toy_params: dict[str, Any], gene_lists: GeneLists) -> md.MuData:
+def build_toy(
+    source: md.MuData, toy_params: dict[str, Any], gene_lists: Mapping[str, Mapping[str, Sequence[str]]]
+) -> md.MuData:
     """Build the toy MuData from an assembled source dataset.
 
     Args:
@@ -128,7 +107,7 @@ def build_toy(source: md.MuData, toy_params: dict[str, Any], gene_lists: GeneLis
         CurationError: If the source has no response modality to select drugs from, or a
             modality lacks genes of one of its lists.
     """
-    source_modalities = _anndata_modalities(source)
+    source_modalities = cast(dict[str, ad.AnnData], source.mod)  # an assembled file has no nested MuData
     if RESPONSE_KEY not in source_modalities:
         msg = f"Source dataset has no '{RESPONSE_KEY}' modality to subsample drugs from"
         raise CurationError(msg)
@@ -164,8 +143,8 @@ def main() -> None:
     """Write the toy dataset described by the ``toy`` block of ``params.yaml``."""
     toy_params = processing_config("toy")
 
-    source_path = ASSEMBLED_DIR / f"{toy_params['source']}.h5mu"
-    output_path = ASSEMBLED_DIR / f"{toy_params['name']}.h5mu"
+    source_path = layout.ASSEMBLED / f"{toy_params['source']}.h5mu"
+    output_path = layout.ASSEMBLED / f"{toy_params['name']}.h5mu"
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     source = md.read_h5mu(str(source_path))

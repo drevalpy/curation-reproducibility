@@ -90,12 +90,8 @@ _MIN_TARGET_COVERAGE = 0.30
 def collect_drugs(structures: pd.DataFrame) -> dict[str, list[str]]:
     """Collect the canonical drug IDs screened by each dataset, from the drug mappings.
 
-    Read from ``drug_mapping/`` rather than the fitted response files. The two
-    carry an identical drug universe (verified: 1222 IDs either way, zero
-    difference on any dataset), but ``drug_mapping`` does not depend on curve
-    fitting. Depending on the response files instead made this a global barrier -
-    no dataset could be assembled until every CurveCurator run had finished, and
-    re-fitting one dataset invalidated the ontology and so every assembly.
+    Read from ``drug_mapping/`` rather than the fitted response files, which carry the same
+    drugs but would make the ontology wait for every curve fit.
 
     Args:
         structures: The structure table; CIDs that share an InChIKey are one drug, listed

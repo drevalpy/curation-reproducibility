@@ -1,11 +1,11 @@
 """Rename fitted curves onto canonical identifiers and attach the annotations.
 
-The cheap second half of the old ``process_response`` stage. It takes the
-native-keyed curve metrics from ``fit_curves``, renames both axes to the
+Takes the native-keyed curve metrics from ``fit_curves``, renames both axes to the
 identifiers drevalpy expects - sample IDs (Cellosaurus accessions for the
 cell-line datasets) and PubChem CIDs - resolves the duplicates that renaming can
 create, and attaches ``canonical_smiles``, ``cell_line_name`` (cell-line datasets
-only) and the published metric layers. The replicate-fits table ``fit_curves`` stored in
+only) and the published metric layers, and makes LN_IC50 the ``X`` matrix (the fits
+hold pEC50 there, which becomes a layer). The replicate-fits table ``fit_curves`` stored in
 ``uns["replicate_fits"]`` is re-keyed onto the same identifiers
 (:func:`~data_curation.response.replicate_fits.canonicalize`), without collapsing.
 
@@ -16,12 +16,14 @@ minutes rather than the hours ``fit_curves`` costs.
 import logging
 
 import anndata as ad
+import numpy as np
 import pandas as pd
 from upath import UPath
 
 from data_curation.cell_lines.download_model_list import cmp_model_list_path
 from data_curation.core import layout
 from data_curation.core.config import dataset_config
+from data_curation.core.errors import CurationError
 from data_curation.response.harmonize.collapse import collapse_axis, log_collapses
 from data_curation.response.harmonize.identity import (
     drop_unresolved,
@@ -45,8 +47,12 @@ UNMAPPED_FAILURE_FRACTION = 0.10
 #: that wrote it.
 VAR_INDEX_NAME = "pubchem_id"
 
-#: The response ``X`` matrix holds pEC50.
-RESPONSE_X_COLUMN = "pEC50"
+#: The measure the fitted curves hold in ``X``; every other metric is a layer.
+CURVES_X_COLUMN = "pEC50"
+
+#: The measure the published response ``X`` holds, recorded in ``uns["x_column"]`` (drevalpy's
+#: default target). The curves' own ``X`` measure becomes a layer like the other metrics.
+RESPONSE_X_COLUMN = "LN_IC50"
 
 
 def harmonize(
@@ -69,7 +75,8 @@ def harmonize(
     Returns:
         The metrics keyed by sample ID (Cellosaurus accession for cell lines) and
         PubChem CID, with ``canonical_smiles`` attached, ``cell_line_name`` for
-        the cell-line datasets, and the re-keyed replicate-fits table.
+        the cell-line datasets, and the re-keyed replicate-fits table. ``X`` still
+        holds :data:`CURVES_X_COLUMN`; :func:`use_as_x` changes that.
     """
     table = curves.uns.get(KEY)
     sample_natives = curves.obs_names
@@ -112,13 +119,10 @@ def _canonical_table(table: pd.DataFrame, sample_identity: pd.Series, drug_ident
         failure_fraction=UNMAPPED_FAILURE_FRACTION,
     )
     out = canonicalize(table, sample_map, drug_map)
-    logger.info("Replicate-fits table: %d of %d rows resolved, %s", len(out), len(table), _status_counts(out))
+    logger.info(
+        "Replicate-fits table: %d of %d rows resolved, %s", len(out), len(table), out["status"].value_counts().to_dict()
+    )
     return out
-
-
-def _status_counts(table: pd.DataFrame) -> dict[str, int]:
-    """Rows per fit status, for the log."""
-    return {str(status): int(count) for status, count in table["status"].value_counts().items()}
 
 
 def _annotate(adata: ad.AnnData, *, cell_line_names: dict[str, str], drug_mapping: pd.DataFrame) -> None:
@@ -134,7 +138,29 @@ def _annotate(adata: ad.AnnData, *, cell_line_names: dict[str, str], drug_mappin
 
     adata.obs_names.name = layout.SAMPLE_INDEX_NAME
     adata.var_names.name = VAR_INDEX_NAME
-    adata.uns["x_column"] = RESPONSE_X_COLUMN
+    adata.uns["x_column"] = CURVES_X_COLUMN
+
+
+def use_as_x(adata: ad.AnnData, measure: str) -> None:
+    """Make one layer the ``X`` matrix in place, moving the current ``X`` to a layer of its own.
+
+    Args:
+        adata: Response with ``uns["x_column"]`` naming what ``X`` holds.
+        measure: The layer to move into ``X``.
+
+    Raises:
+        CurationError: If *adata* has no such layer.
+    """
+    current = str(adata.uns["x_column"])
+    if measure == current:
+        return
+    if measure not in adata.layers:
+        layers = sorted(str(name) for name in adata.layers.keys() if name is not None)
+        msg = f"The response has no {measure} layer to use as X; layers: {layers}"
+        raise CurationError(msg)
+    adata.layers[current] = np.asarray(adata.X)
+    adata.X = adata.layers.pop(measure)
+    adata.uns["x_column"] = measure
 
 
 def main(dataset: str) -> None:
@@ -147,9 +173,6 @@ def main(dataset: str) -> None:
     fmt = dataset_config(dataset, "response")["format"]
 
     drug_mapping = pd.read_parquet(str(layout.drug_mapping(dataset)))
-    # Identifiers are stored as strings in the Parquet file; the cast is kept as
-    # a defensive guard for any future reader that passes a non-string column.
-    drug_mapping["pubchem_id"] = drug_mapping["pubchem_id"].astype(str)
     # One canonical ID and one SMILES per drug across all datasets.
     drug_mapping = apply_structures(drug_mapping, read_structures())
 
@@ -162,6 +185,7 @@ def main(dataset: str) -> None:
     logger.info("Harmonized to %s canonical identifiers", adata.shape)
 
     add_published_layers(adata, fmt, raw_dir, model_list_path, drug_mapping)
+    use_as_x(adata, RESPONSE_X_COLUMN)
 
     adata.write_h5ad(str(output_path))
     logger.info("Wrote %s", output_path)

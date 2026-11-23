@@ -1,8 +1,7 @@
 """Curated PubChem CID overrides for drug names PubChem cannot resolve.
 
-These were established by manual review (see the legacy preprocess_drp_data
-notebooks) for drug names that carry vendor codes, typos, or synonyms that the
-PubChem name endpoint does not match. Applied before falling back to a
+Established by manual review for drug names that carry vendor codes, typos, or synonyms
+that the PubChem name endpoint does not match. Applied before falling back to a
 dataset-prefixed pseudo-ID.
 
 Combination compounds are deliberately absent: they have no single CID and are
@@ -18,7 +17,7 @@ PDX_BRUNA_CID_OVERRIDES: dict[str, int] = {
 #: without help, so this table is a pinned fallback for the day a lookup goes
 #: flaky rather than a set of corrections: without it a transient failure would
 #: silently bake a pseudo-ID into the output. Keys are the exact strings in
-#: table S11; CIDs are the ones the original notebook's manual review recorded.
+#: table S11.
 CCLE_CID_OVERRIDES: dict[str, int] = {
     "17-AAG": 6505803,  # Tanespimycin
     "AEW541": 11476171,  # NVP-AEW541

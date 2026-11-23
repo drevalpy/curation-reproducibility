@@ -94,10 +94,8 @@ def test_fetch_records_failed_batches_per_cid(monkeypatch: pytest.MonkeyPatch) -
 
     monkeypatch.setattr(pubchem, "_request", failing)
     failures: list[tuple[str, str]] = []
-    assert pubchem.fetch_inchikeys(["1", "2"], failures) == {}
-    assert [query for query, _ in failures] == ["inchikey:1", "inchikey:2"]
-    with pytest.raises(pubchem.PubChemUnavailable):
-        pubchem.fetch_cross_references(["1"])
+    assert pubchem.fetch_cross_references(["1", "2"], failures) == {}
+    assert [query for query, _ in failures] == ["cross_reference:1", "cross_reference:2"]
 
 
 def test_budget_at_threshold_passes_and_writes_report(tmp_dir: UPath) -> None:

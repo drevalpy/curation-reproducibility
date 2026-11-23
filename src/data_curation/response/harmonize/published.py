@@ -13,7 +13,7 @@ import numpy as np
 import pandas as pd
 from upath import UPath
 
-from data_curation.cell_lines.sidm_mapping import build_name_to_cellosaurus_map, build_sidm_to_cellosaurus_map
+from data_curation.cell_lines.sidm_mapping import build_id_to_cellosaurus_map, build_name_to_cellosaurus_map
 from data_curation.core import standard
 from data_curation.core.errors import CurationError
 from data_curation.core.paths import find_file
@@ -58,7 +58,7 @@ def _add_gdsc(adata: ad.AnnData, raw_dir: UPath, model_list_path: UPath, drug_ma
     logger.info("Adding published LN_IC50/AUC layers from %s", fitted_file)
     fitted = pd.read_excel(str(fitted_file))
 
-    sidm_to_cvcl = build_sidm_to_cellosaurus_map(model_list_path)
+    sidm_to_cvcl = build_id_to_cellosaurus_map(model_list_path, "model_id")
     if "SANGER_MODEL_ID" not in fitted.columns:
         msg = (
             f"{fitted_file} has no SANGER_MODEL_ID column, so its rows cannot be joined to the "

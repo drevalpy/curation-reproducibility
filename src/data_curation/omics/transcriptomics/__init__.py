@@ -1,6 +1,5 @@
-"""Dataset-specific transcriptomics sources.
+"""Transcriptomics readers, one per source.
 
-Both datasets here sit outside Cell Model Passports and publish their expression
-matrix with their paper, so each needs its own reader rather than the shared
-``cmp_matrix`` path.
+The shared GDSC and CCLE releases, and the per-dataset downloads of PRISM, BeatAML2,
+PDX_Bruna and the standard format.
 """

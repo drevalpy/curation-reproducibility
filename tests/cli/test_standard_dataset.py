@@ -96,7 +96,11 @@ def _fake_fit() -> None:
         X=np.array([[6.0, 5.5, 5.0], [6.5, 6.0, 4.5]], dtype=np.float32),
         obs=pd.DataFrame(index=pd.Index(["S1", "S2"])),
         var=pd.DataFrame(index=pd.Index(drugs)),
-        layers={"signal_quality": np.ones((2, 3), dtype=np.float32), "RMSE": np.zeros((2, 3), dtype=np.float32)},
+        layers={
+            "signal_quality": np.ones((2, 3), dtype=np.float32),
+            "RMSE": np.zeros((2, 3), dtype=np.float32),
+            "LN_IC50": np.full((2, 3), -1.0, dtype=np.float32),
+        },
     )
     layout.curves(DATASET).parent.mkdir(parents=True, exist_ok=True)
     curves.write_h5ad(str(layout.curves(DATASET)))
@@ -140,6 +144,8 @@ def _run_pipeline() -> md.MuData:
     harmonize_response.main(DATASET)
     process_transcriptomics.main(DATASET)
     process_sample_meta.main(DATASET)
+    layout.DRUG_ONTOLOGY.parent.mkdir(parents=True, exist_ok=True)
+    pd.DataFrame(index=pd.Index([], name="pubchem_id")).to_parquet(str(layout.DRUG_ONTOLOGY))
     assemble_mudata.main(DATASET)
     check_drug_structures.main()
     return md.read_h5mu(str(layout.assembled(DATASET)))

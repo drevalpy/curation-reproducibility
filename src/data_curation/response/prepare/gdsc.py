@@ -68,12 +68,13 @@ _READ_COLUMNS = frozenset([*_STRING_COLUMNS, *_NUMERIC_COLUMNS, "INTENSITY"])
 _LIB_DRUG_PATTERN = r"((L|R)\d+)(-D\d+)?-(S|C)"
 
 
-def prepare_gdsc(raw_dir: UPath, ds_params: dict) -> Wells:
+def prepare_gdsc(raw_dir: UPath, *, negative_control_tag: str, positive_control_tag: str) -> Wells:
     """Control-normalize the GDSC well-level intensities.
 
     Args:
         raw_dir: Raw response directory for the dataset.
-        ds_params: ``datasets.<ds>.response`` params, read for the control tags.
+        negative_control_tag: ``TAG`` of the untreated wells (``NC-0`` in GDSC1, ``NC-1`` in GDSC2).
+        positive_control_tag: ``TAG`` of the blank wells.
 
     Returns:
         Library wells keyed by ``SANGER_MODEL_ID`` and ``DRUG_ID``, grouped into series per plate and slot.
@@ -88,10 +89,8 @@ def prepare_gdsc(raw_dir: UPath, ds_params: dict) -> Wells:
 
     df = _drop_failed_wells(df)
 
-    nc_tag = ds_params["negative_control_tag"]
-    pc_tag = ds_params["positive_control_tag"]
-    nc = df[df["TAG"] == nc_tag].groupby("SCAN_ID")["INTENSITY"].mean().rename("nc_mean")
-    pc = df[df["TAG"] == pc_tag].groupby("SCAN_ID")["INTENSITY"].mean().rename("pc_mean")
+    nc = df[df["TAG"] == negative_control_tag].groupby("SCAN_ID")["INTENSITY"].mean().rename("nc_mean")
+    pc = df[df["TAG"] == positive_control_tag].groupby("SCAN_ID")["INTENSITY"].mean().rename("pc_mean")
     controls = pd.concat([nc, pc], axis=1)
 
     # Keep only library drug wells (excludes anchor/combination arms).

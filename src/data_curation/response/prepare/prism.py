@@ -91,12 +91,11 @@ def _filter_mts010(treatment_info: pd.DataFrame) -> pd.DataFrame:
     return treatment_info[keep_mask].copy()
 
 
-def prepare_prism(raw_dir: UPath, ds_params: dict) -> Wells:  # noqa: ARG001
+def prepare_prism(raw_dir: UPath) -> Wells:
     """Convert PRISM secondary screen log-fold-change matrix to viability.
 
     Args:
         raw_dir: Raw response directory for the dataset.
-        ds_params: Unused; the signature is shared across preparers.
 
     Returns:
         Wells keyed by ``depmap_id`` and ``broad_id``, grouped into series per detection plate and pool.

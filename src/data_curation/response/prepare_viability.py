@@ -1,17 +1,15 @@
 """Turn raw drug response files into the well table ``drevalpy.curation.curate()`` reads.
 
-This is the cheap half of what used to be one ``process_response`` stage. Each
-dataset's preparer normalizes its raw measurements into well-level rows keyed by
+Each dataset's preparer normalizes its raw measurements into well-level rows keyed by
 the dataset's **own** identifiers and names the columns that group them into dose
 series; :func:`~data_curation.response.prepare.wells.to_wells` renames those into
 curate's ``sample``, ``drug``, ``concentration``, ``intensity``, ``experiment``,
 ``replicate`` and ``position`` columns, followed by the dataset's metadata columns.
 How wells become numbered series is curate's business, in ``fit_curves``.
 
-Nothing here resolves identity. That deliberate omission is the point of the
-split: the fit that consumes this table then depends only on the table and the
-``curvecurator`` params, so a change to Cellosaurus resolution or the PubChem
-drug mapping can no longer invalidate a ~9 h curve fit it cannot affect.
+Nothing here resolves identity, so the fit that consumes this table depends only on
+the table and the ``curvecurator`` params: a change to Cellosaurus resolution or the
+PubChem drug mapping cannot invalidate a curve fit it does not affect.
 """
 
 import logging
@@ -33,8 +31,8 @@ from data_curation.response.prepare.wells import Wells, metadata_columns, to_wel
 
 logger = logging.getLogger(__name__)
 
-PREPARERS: dict[str, Callable[[UPath, dict], Wells]] = {
-    "gdsc": prepare_gdsc,
+#: Preparers that need nothing but the raw directory; ``gdsc`` also takes its control tags.
+PREPARERS: dict[str, Callable[[UPath], Wells]] = {
     "ctrpv1": prepare_ctrpv1,
     "ctrpv2": prepare_ctrpv2,
     "ccle": prepare_ccle,
@@ -60,12 +58,17 @@ def prepare(dataset: str, ds_params: dict, raw_dir: UPath) -> Wells:
         CurationError: If the configured format has no preparer.
     """
     fmt = ds_params["format"]
-    if fmt not in PREPARERS:
-        msg = f"Unknown response format '{fmt}' for dataset {dataset}"
-        raise CurationError(msg)
-
     logger.info("Preparing %s viability data (format=%s)...", dataset, fmt)
-    return PREPARERS[fmt](raw_dir, ds_params)
+    if fmt == "gdsc":
+        return prepare_gdsc(
+            raw_dir,
+            negative_control_tag=ds_params["negative_control_tag"],
+            positive_control_tag=ds_params["positive_control_tag"],
+        )
+    if fmt in PREPARERS:
+        return PREPARERS[fmt](raw_dir)
+    msg = f"Unknown response format '{fmt}' for dataset {dataset}"
+    raise CurationError(msg)
 
 
 def main(dataset: str) -> None:

@@ -2,9 +2,8 @@
 
 Every stage logs through the stdlib ``logging`` module and knows nothing about
 Rich; the handler is installed once here, from the root callback, so the
-implementation modules stay free of presentation concerns. This replaces the nine
-near-identical ``logging.basicConfig`` calls the stage modules used to carry,
-which had already drifted apart in level and format.
+implementation modules stay free of presentation concerns, and every stage logs
+at the same level and in the same format.
 
 Two settings matter for running under DVC rather than in a terminal:
 

@@ -77,10 +77,10 @@ class DatasetSnapshot:
     n_drugs: int
     n_measured: int
     tissues: pd.Series
-    response_drugs: pd.Index = field(default_factory=lambda: pd.Index([]))
-    omics_samples: dict[str, pd.Index] = field(default_factory=dict)
-    omics_features: dict[str, int] = field(default_factory=dict)
-    replicates: ReplicateCounts = field(default_factory=ReplicateCounts)
+    response_drugs: pd.Index
+    omics_samples: dict[str, pd.Index]
+    omics_features: dict[str, int]
+    replicates: ReplicateCounts
 
 
 def replicate_counts(table: pd.DataFrame | None) -> ReplicateCounts:
@@ -121,19 +121,10 @@ def replicate_counts(table: pd.DataFrame | None) -> ReplicateCounts:
     )
 
 
-def discover_datasets(assembled_dir: UPath = ASSEMBLED_DIR, exclude: tuple[str, ...] | None = None) -> list[UPath]:
-    """List the assembled ``.h5mu`` files, leaving out the toy dataset.
-
-    Args:
-        assembled_dir: Directory holding the assembled files.
-        exclude: Dataset names to skip. Defaults to the configured toy dataset.
-
-    Returns:
-        Paths sorted by dataset name.
-    """
-    if exclude is None:
-        exclude = (str(processing_config("toy")["name"]),)
-    return sorted((p for p in assembled_dir.glob("*.h5mu") if p.stem not in exclude), key=lambda p: p.stem)
+def discover_datasets(assembled_dir: UPath = ASSEMBLED_DIR) -> list[UPath]:
+    """List the assembled ``.h5mu`` files, leaving out the toy dataset, sorted by dataset name."""
+    toy = str(processing_config("toy")["name"])
+    return sorted((p for p in assembled_dir.glob("*.h5mu") if p.stem != toy), key=lambda p: p.stem)
 
 
 @contextmanager
@@ -170,11 +161,6 @@ def finite_counts(matrix, chunk_rows: int = 256) -> tuple[np.ndarray, np.ndarray
     return rows, cols
 
 
-def count_finite(matrix, chunk_rows: int = 256) -> np.ndarray:
-    """Count finite values per row; see :func:`finite_counts`."""
-    return finite_counts(matrix, chunk_rows)[0]
-
-
 def _measured(mdata: md.MuData, key: str) -> tuple[pd.Index, pd.Index, int]:
     """Return the rows and columns with any finite value in one modality, and the total count."""
     modality = mdata.mod[key]
@@ -205,7 +191,7 @@ def read_snapshot(path: UPath) -> DatasetSnapshot:
         else:
             tissues = pd.Series("Unknown", index=samples, dtype="object")
 
-        omics = {k: m for k, m in mdata.mod.items() if not k.startswith(RESPONSE_KEY)}
+        omics = {k: m for k, m in mdata.mod.items() if k != RESPONSE_KEY}
         replicates = replicate_counts(mdata.mod[RESPONSE_KEY].uns.get(replicate_fits.KEY))
 
         return DatasetSnapshot(

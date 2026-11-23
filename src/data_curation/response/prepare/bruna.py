@@ -47,12 +47,11 @@ _DOSE_COLUMNS = {
 }
 
 
-def prepare_bruna(raw_dir: UPath, ds_params: dict) -> Wells:  # noqa: ARG001
+def prepare_bruna(raw_dir: UPath) -> Wells:
     """Control-normalize the wide five-dose PDTC screen.
 
     Args:
         raw_dir: Raw response directory for the dataset.
-        ds_params: Unused; the signature is shared across preparers.
 
     Returns:
         Wells keyed by ``ID`` and ``DRUG_ID``, one series per plate.

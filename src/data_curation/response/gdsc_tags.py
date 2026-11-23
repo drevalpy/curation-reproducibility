@@ -8,8 +8,8 @@ negative and blank controls, ``PC*`` for positive-control compounds, and
 Only the library arm becomes a dose-response measurement, so both stages have to
 agree on which drugs that leaves. A drug screened solely as a plate control has
 no curve to fit: GDSC2 runs Staurosporine (DRUG_ID 1034) as ``PC2-*`` on every
-plate, and mapping it while the response stage drops it made the drug mapping
-report one more drug than the response matrix holds.
+plate, so mapping it would give the drug mapping one more drug than the response
+matrix holds.
 """
 
 import pandas as pd

@@ -11,9 +11,9 @@ from drevalpy.curation._replicate_fits import ID_COLUMNS, METRICS, to_schema
 from drevalpy.data._replicate_fits import KEY
 from upath import UPath
 
+from data_curation.core.config import processing_config
 from data_curation.report import summary
 from data_curation.report.reading import (
-    count_finite,
     discover_datasets,
     finite_counts,
     read_snapshot,
@@ -98,21 +98,26 @@ def two_datasets(tmp_path: Path) -> list[UPath]:
     return [a, b]
 
 
-class TestCountFinite:
+class TestFiniteCounts:
     @pytest.mark.parametrize("chunk_rows", [1, 2, 3, 100])
     def test_result_does_not_depend_on_chunk_size(self, chunk_rows: int) -> None:
         matrix = np.array([[1, NAN], [NAN, NAN], [2, 3], [np.inf, 0]])
-        assert count_finite(matrix, chunk_rows=chunk_rows).tolist() == [1, 0, 2, 1]
-        assert finite_counts(matrix, chunk_rows=chunk_rows)[1].tolist() == [2, 2]
+        rows, cols = finite_counts(matrix, chunk_rows=chunk_rows)
+        assert rows.tolist() == [1, 0, 2, 1]
+        assert cols.tolist() == [2, 2]
 
     def test_empty_matrix(self) -> None:
-        assert count_finite(np.empty((0, 3))).tolist() == []
+        rows, cols = finite_counts(np.empty((0, 3)))
+        assert rows.tolist() == []
+        assert cols.tolist() == [0, 0, 0]
 
 
 class TestDiscoverDatasets:
-    def test_excluded_names_are_skipped(self, two_datasets: list[UPath]) -> None:
-        found = discover_datasets(two_datasets[0].parent, exclude=("B",))
-        assert [p.stem for p in found] == ["A"]
+    def test_the_toy_dataset_is_skipped(self, two_datasets: list[UPath]) -> None:
+        toy = two_datasets[0].with_name(f"{processing_config('toy')['name']}.h5mu")
+        toy.write_bytes(two_datasets[0].read_bytes())
+        found = discover_datasets(two_datasets[0].parent)
+        assert [p.stem for p in found] == ["A", "B"]
 
 
 class TestReadSnapshot:

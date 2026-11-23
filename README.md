@@ -4,8 +4,9 @@ A DVC pipeline that turns nine public drug response datasets into the MuData
 (`.h5mu`) files [drevalpy](https://github.com/daisybio/drevalpy) loads: CCLE,
 CTRPv1, CTRPv2, GDSC1, GDSC2, BeatAML2, PDX_Bruna, PRISM_19Q4 and PRISM_20Q2, plus
 the TOYv1 subsample. Each file holds the omics of every sample (transcriptomics,
-mutations, CNV, proteomics, where the dataset has them) and a `response` modality
-of fitted dose-response curves.
+methylation, mutations, CNV, proteomics, where the dataset has them) and a
+`response` modality of fitted dose-response curves, whose `X` holds LN_IC50
+(`uns["x_column"]`) and whose layers hold pEC50 and the other curve metrics.
 
 ## Reproduce the datasets
 
@@ -26,6 +27,16 @@ The repository configures no DVC remote, so a fresh clone rebuilds everything fr
 the public sources. To keep the outputs, add your own remote with
 `dvc remote add --local -d storage s3://<bucket>/<prefix>`.
 
+One source has no download stage. cancerrxgene.org no longer serves the GDSC1000
+expression and methylation files, so they are tracked with `dvc add`
+(`data/01_raw/gdsc/<kind>.dvc`) and kept in the DVC remote. Without a remote that
+holds them, fetch them before `dvc repro`; the pinned hashes check that the
+Internet Archive and GEO still serve the same files:
+
+```bash
+uv run data-curation omics download-shared gdsc
+```
+
 ## Where the data goes
 
 Each step writes to its own numbered directory and reads only from lower-numbered
@@ -34,7 +45,7 @@ ones. `src/data_curation/core/layout.py` defines every path.
 ```text
 data/
   01_raw/          downloads
-  02_omics/        processed transcriptomics, mutations, CNV and proteomics
+  02_omics/        processed transcriptomics, methylation, mutations, CNV and proteomics
   03_drugs/        drug mapping, canonical structures and the drug ontology
   04_response/     wells/ -> curves/ -> harmonized/
   06_samples/      sample metadata
@@ -116,8 +127,35 @@ Every `.h5mu` indexes `obs` and every modality by `sample_id`:
 | PDX_Bruna | PDX model ID | `tissue` |
 | BeatAML2 | patient sample ID (dbGaP subject) | `tissue` |
 
-CCLE, CTRPv1, CTRPv2, GDSC1 and GDSC2 all take their omics from the same Cell Model
-Passports release.
+## Omics sources
+
+As in drevalpy v1 ([preprocess_drp_data](https://github.com/daisybio/preprocess_drp_data)),
+expression and methylation come from each screen's own omics release, and
+mutations, CNV and proteomics from [Cell Model Passports](https://cellmodelpassports.sanger.ac.uk/downloads)
+for all five cell-line screens. `config/sources.yaml` pins every file; each dataset
+names its sources in its `omics` mapping.
+
+| Datasets | Gene expression | Methylation |
+| --- | --- | --- |
+| GDSC1, GDSC2 | GDSC1000 RMA-normalised microarray, log2 (`log2_rma`) | GDSC1000 Illumina 450K beta values per CpG island |
+| CCLE, CTRPv1, CTRPv2 | CCLE 2019 RNA-seq (Broad), log2(TPM+1), read counts as a layer | CCLE 2019 RRBS beta values of the TSS CpG clusters |
+| PRISM_19Q4, PRISM_20Q2 | DepMap 19Q4 / 20Q2 `CCLE_expression.csv`, log2(TPM+1) | as CCLE |
+| PDX_Bruna, BeatAML2 | their own release | none |
+
+The two methylation platforms share one feature space, the GDSC CpG islands
+(`chr9:138852639-138853439`), which drevalpy's `methylation_intersection` gene
+list names. Each island takes the CCLE cluster that overlaps it most, ties going
+to the higher coverage; clusters shorter than 200 bp or on chrX/chrY are dropped.
+Both expression releases predate many HGNC renames (`AARS` is now `AARS1`), so a
+gene whose own symbol is out of date takes the Cell Model Passports symbol of its
+Ensembl ID (CCLE) or HGNC accession (GDSC), from the pinned CMP gene annotation.
+This puts expression on the gene names of the CMP omics and of drevalpy's gene
+lists. CCLE also keeps the annotated genes its counts file lacks, with missing counts.
+
+Missing beta values are filled with 0.0, as in v1; `uns["missing_fraction"]` of the
+`methylation` modality records how many were. Gene expression is on different
+scales across GDSC (microarray) and the CCLE screens (RNA-seq), so cross-study
+models should standardize it per dataset.
 
 ## Replicates
 
@@ -149,7 +187,7 @@ The main columns of `replicate_fits`:
 | `n_doses` | the number of distinct doses |
 | `source` | `replicate` for its own fit. `pooled` if the pair has a single series, copied from the pooled curve. |
 | `status` | `fitted`, `fit_failed` or `too_few_doses` |
-| `pEC50` to `back_error` | the 22 curve metrics of the response layers, NaN unless fitted |
+| `pEC50` to `back_error` | the 22 curve metrics of the response modality, NaN unless fitted |
 
 ## Curation decisions
 

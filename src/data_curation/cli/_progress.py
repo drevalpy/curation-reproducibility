@@ -2,13 +2,10 @@
 
 The drug stages spend most of their wall time in rate-limited PubChem loops -
 ``map_drugs`` sleeps 0.25 s between lookups and can run for over an hour on
-GDSC1. Those loops used to log one INFO line per drug (roughly 1143 lines for a
-full run), which is unreadable in a terminal and drowns out the warnings that
-actually matter.
-
-:func:`track` replaces that with a Rich progress bar interactively, and with one
-periodic summary line under ``dvc repro``, where a bar redrawing itself into a
-pipe would produce thousands of useless escape-laden lines.
+GDSC1. Logging one INFO line per drug would drown out the warnings that actually
+matter, so :func:`track` shows a Rich progress bar interactively and one periodic
+summary line under ``dvc repro``, where a bar redrawing itself into a pipe would
+produce thousands of useless escape-laden lines.
 """
 
 import logging

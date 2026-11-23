@@ -94,6 +94,30 @@ class TestCmpLayout:
         assert set(source_config("cell_model_passports")) == set(layout.CMP_KINDS)
 
 
+class TestSharedSourceLayout:
+    @pytest.mark.parametrize("source", list(layout.SHARED_SOURCES))
+    def test_every_kind_is_declared_in_the_sources(self, source: str) -> None:
+        from data_curation.core.config import source_config
+
+        assert set(source_config(source)) == set(layout.SHARED_SOURCES[source][1])
+
+    def test_each_source_has_its_own_raw_directory(self) -> None:
+        roots = [root for root, _ in layout.SHARED_SOURCES.values()]
+        assert len(set(roots)) == len(roots)
+        assert all(root.parent == layout.RAW for root in roots)
+
+    def test_the_cmp_kinds_resolve_like_cmp_raw(self) -> None:
+        assert [layout.source_raw("cell_model_passports", kind) for kind in layout.CMP_KINDS] == [
+            layout.cmp_raw(kind) for kind in layout.CMP_KINDS
+        ]
+
+    def test_an_undeclared_kind_or_source_is_rejected(self) -> None:
+        with pytest.raises(ValueError, match="Unknown ccle kind"):
+            layout.source_raw("ccle", "cnv")
+        with pytest.raises(ValueError, match="Unknown shared omics source"):
+            layout.source_raw("depmap", "methylation")
+
+
 def test_nextflow_launch_dirs_are_untracked_scratch() -> None:
     """The launch directory is not a DVC out, so it must sit in the git-ignored cache."""
     assert str(layout.nextflow_launch_dir("GDSC2")) == "data/cache/nextflow/GDSC2"

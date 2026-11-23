@@ -1,13 +1,8 @@
 """Recover a drug's name from the source dataset that screened it.
 
-The ontology names drugs from PubChem, which can only name a real CID. Drugs
-whose lookup failed carry a dataset-prefixed pseudo-ID (``GDSC_1195``,
-``CTRP_660221``) and so came out as ``unknown``, even though the source dataset
-records a perfectly good name. Combinations are the starkest case: they are
-pseudo-IDs by design, so every one of them was nameless.
-
-The drug mapping CSVs written by ``map_drugs`` keep the source ``DRUG_NAME``
-alongside the assigned ID, which is all that is needed to fill the gap.
+The ontology names drugs from PubChem, which can only name a real CID. Drugs with a
+dataset-prefixed pseudo-ID (``GDSC_1195``, ``CTRP_660221``, every combination) take the
+``DRUG_NAME`` that the drug mapping files keep alongside the assigned ID.
 """
 
 import logging
@@ -20,13 +15,13 @@ from data_curation.response.harmonize.structures import apply_structures
 logger = logging.getLogger(__name__)
 
 
-def load_source_drug_names(mapping_dir: UPath, structures: pd.DataFrame | None = None) -> pd.Series:
+def load_source_drug_names(mapping_dir: UPath, structures: pd.DataFrame) -> pd.Series:
     """Collect the source drug name of every mapped drug, keyed by drug ID.
 
     Args:
         mapping_dir: Directory holding the per-dataset drug mapping CSVs.
-        structures: If given, the structure table; drug IDs are then rewritten onto
-            canonical IDs before the names are collected.
+        structures: The structure table; drug IDs are rewritten onto canonical IDs before the names
+            are collected.
 
     Returns:
         Series of source drug names indexed by ``pubchem_id``, one row per
@@ -38,9 +33,7 @@ def load_source_drug_names(mapping_dir: UPath, structures: pd.DataFrame | None =
     for path in sorted(mapping_dir.glob("*.parquet")):
         frame = pd.read_parquet(str(path))
         frame["pubchem_id"] = frame["pubchem_id"].astype(str)
-        if structures is not None:
-            frame = apply_structures(frame, structures)
-        frame = frame[["pubchem_id", "DRUG_NAME"]].copy()
+        frame = apply_structures(frame, structures)[["pubchem_id", "DRUG_NAME"]].copy()
         frame["DRUG_NAME"] = frame["DRUG_NAME"].astype(str).str.strip()
         frames.append(frame)
 
@@ -58,12 +51,10 @@ def load_source_drug_names(mapping_dir: UPath, structures: pd.DataFrame | None =
 def fill_missing_names(names: pd.Series, source_names: pd.Series, unknown: str) -> pd.Series:
     """Substitute the source dataset's name wherever PubChem supplied none.
 
-    PubChem's name wins when it exists, so drugs that resolved to a real CID are
-    untouched and keep their canonical name.
-
     Args:
         names: Current ``drug_name`` column, indexed by drug ID.
-        source_names: Source names keyed by drug ID, from ``load_source_drug_names``.
+        source_names: Source names keyed by drug ID, from ``load_source_drug_names``; PubChem's name
+            wins wherever it exists.
         unknown: Placeholder value marking a missing name.
 
     Returns:

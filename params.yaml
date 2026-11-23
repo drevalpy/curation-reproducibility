@@ -3,15 +3,36 @@
 # processing knobs live in config/sources.yaml and config/processing.yaml;
 # dvc.yaml tracks those via file-scoped params: blocks.
 
-# Datasets whose omics all come from the shared Cell Model Passports downloads
-# (`omics_source: cell_model_passports` in config/sources.yaml) and so have the
-# full omics complement: transcriptomics, mutations, cnv and proteomics.
+# Datasets with the full omics complement: mutations, cnv and proteomics from the
+# shared Cell Model Passports downloads, transcriptomics and methylation from their
+# screen's own release (the `omics` mapping of each dataset in config/sources.yaml).
 cmp_datasets:
   - CCLE
   - CTRPv1
   - CTRPv2
   - GDSC1
   - GDSC2
+
+# Of those, the datasets taking transcriptomics and methylation from GDSC's release
+# (the `gdsc` block of config/sources.yaml) ...
+gdsc_omics_datasets:
+  - GDSC1
+  - GDSC2
+
+# ... and from the Broad's CCLE release (the `ccle` block).
+ccle_omics_datasets:
+  - CCLE
+  - CTRPv1
+  - CTRPv2
+
+# Datasets whose methylation is the CCLE RRBS: the CCLE-release datasets and PRISM,
+# whose lines are CCLE lines.
+ccle_methylation_datasets:
+  - CCLE
+  - CTRPv1
+  - CTRPv2
+  - PRISM_19Q4
+  - PRISM_20Q2
 
 # Datasets with their own transcriptomics download (not Cell Model Passports).
 transcriptomics_datasets:
@@ -20,9 +41,9 @@ transcriptomics_datasets:
   - PRISM_19Q4
   - PRISM_20Q2
 
-# Datasets whose only omics modality is transcriptomics. DVC cannot interpolate a
-# whole list into `deps`, so datasets with a different modality set need their
-# own stage group.
+# Datasets with their own transcriptomics processor (all but PRISM have no other
+# omics; PRISM also has methylation). DVC cannot interpolate a whole list into
+# `deps`, so datasets with a different modality set need their own stage group.
 assembly_datasets_rna_only:
   - PDX_Bruna
   - BeatAML2

@@ -23,6 +23,9 @@ from data_curation.omics import COUNT_LAYER
 
 logger = logging.getLogger(__name__)
 
+#: Unit of ``X``, recorded in ``uns["expression_unit"]``.
+EXPRESSION_UNIT = "log2_cpm"
+
 _METADATA_COLUMNS = ["stable_id", "description", "biotype"]
 _GENE_SYMBOL_COLUMN = "display_label"
 
@@ -83,4 +86,5 @@ def process_beataml_transcriptomics(raw_dir: UPath) -> ad.AnnData:
     # Several RNA-seq specimens can belong to one subject; keep the first
     adata = adata[~adata.obs_names.duplicated(keep="first")].copy()
 
+    adata.uns["expression_unit"] = EXPRESSION_UNIT
     return adata

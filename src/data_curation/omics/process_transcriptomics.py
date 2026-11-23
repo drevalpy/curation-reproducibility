@@ -1,16 +1,17 @@
 """Process raw transcriptomics data into a standardized AnnData file.
 
 Handles dataset-specific processing:
-- CCLE/GDSC1/GDSC2/CTRPv1/CTRPv2: the shared Cell Model Passports RNA-seq download
-  (``data/01_raw/cmp/rnaseq``), log2(TPM+1) as ``X``
-  with the RSEM expected counts kept as a layer, SIDM ID mapping to Cellosaurus
-  accessions via the model list.
+- GDSC1/GDSC2 (``omics.transcriptomics: gdsc``): the GDSC1000 RMA-normalised
+  microarray expression, keyed by COSMIC ID; see ``transcriptomics/gdsc.py``.
+- CCLE/CTRPv1/CTRPv2 (``omics.transcriptomics: ccle``): the Broad's CCLE 2019
+  RNA-seq, log2(TPM+1) as ``X`` with the read counts as a layer, keyed by CCLE
+  name; see ``transcriptomics/ccle.py``.
+- PRISM_19Q4/PRISM_20Q2: the DepMap release's log2(TPM+1), keyed by DepMap ID.
 - BeatAML2: log2-normalized RNA-seq keyed by patient subject.
 - PDX_Bruna: log2 microarray intensities keyed by PDTC sample.
 - Any dataset with ``transcriptomics.format: standard``: the long
-  ``expression.parquet`` of the standard contract, processed like the CMP
-  RNA-seq (log2(TPM+1) as ``X``, counts as a layer in the configured
-  ``counts_unit``); see ``transcriptomics/standard.py``.
+  ``expression.parquet`` of the standard contract: log2(TPM+1) as ``X``, counts
+  as a layer in the configured ``counts_unit``; see ``transcriptomics/standard.py``.
 
 The value semantics differ per source, so each processor records its unit in
 ``adata.uns["expression_unit"]`` and, where layers exist, in
@@ -24,89 +25,33 @@ from upath import UPath
 
 from data_curation.cell_lines.download_model_list import cmp_model_list_path
 from data_curation.core import layout, standard
-from data_curation.core.config import is_cmp_dataset, source_config
+from data_curation.core.config import omics_source, source_config
 from data_curation.core.errors import CurationError
-from data_curation.core.paths import find_first
-from data_curation.omics import COUNT_LAYER
-from data_curation.omics.cmp_matrix import CmpMatrix, read_cmp_matrix, to_cell_line_anndata
 from data_curation.omics.transcriptomics.beataml import process_beataml_transcriptomics
 from data_curation.omics.transcriptomics.bruna import process_bruna_transcriptomics
+from data_curation.omics.transcriptomics.ccle import process_ccle_transcriptomics
+from data_curation.omics.transcriptomics.gdsc import process_gdsc_transcriptomics
 from data_curation.omics.transcriptomics.prism import process_prism_transcriptomics
 from data_curation.omics.transcriptomics.standard import process_standard_transcriptomics
 
-# model_id / model_name / data_source / (gene_symbol, ensembl_gene_id, gene_id)
-# precede the per-gene data rows.
-RNASEQ_HEADER_ROWS = 4
-
-# Gene annotation column used as var_names, matching the symbol-keyed CNV and
-# mutation views.
-GENE_SYMBOL_COLUMN = "gene_symbol"
-
-
-def _assert_matrices_aligned(tpm: CmpMatrix, counts: CmpMatrix) -> None:
-    """Check that the TPM and count matrices describe the same genes and samples.
-
-    Raises:
-        CurationError: If gene order or sample columns differ between the two files.
-    """
-    if tpm.sample_ids != counts.sample_ids:
-        msg = "TPM and expected-count matrices do not share the same sample columns"
-        raise CurationError(msg)
-    if not tpm.annotations.equals(counts.annotations):
-        msg = "TPM and expected-count matrices do not share the same gene order"
-        raise CurationError(msg)
-
-
-def _process_cmp_rnaseq(raw_dir: UPath, model_list_path: UPath) -> ad.AnnData:
-    """Process Cell Model Passports RNA-seq into AnnData.
-
-    ``X`` holds the distributed log2(TPM+1) values and the RSEM expected counts
-    are kept alongside as a layer. Genes with any missing value in either matrix
-    are dropped: missingness is a Broad-vs-Sanger batch artifact that is absent
-    or complete per source block, so imputing it would encode the source itself.
-    Shared processor for the CMP datasets (CTRPv1, CTRPv2, GDSC1, GDSC2).
-    """
-    tpm = read_cmp_matrix(find_first(raw_dir, ("*rsem_tpm*", "*tpm*")), RNASEQ_HEADER_ROWS)
-    counts = read_cmp_matrix(find_first(raw_dir, ("*expected_count*", "*read_count*")), RNASEQ_HEADER_ROWS)
-    _assert_matrices_aligned(tpm, counts)
-
-    complete = tpm.values.notna().all(axis=1) & counts.values.notna().all(axis=1)
-
-    adata = to_cell_line_anndata(
-        values=tpm.values.loc[complete],
-        gene_names=tpm.annotations.loc[complete, GENE_SYMBOL_COLUMN],
-        model_list_path=model_list_path,
-        layers={COUNT_LAYER: counts.values.loc[complete]},
-    )
-    adata.uns["layer_units"] = {COUNT_LAYER: "rsem_expected_count"}
-    return adata
-
-
-#: Processors of the datasets with their own transcriptomics download. The Cell
-#: Model Passports datasets (``omics_source: cell_model_passports`` in
-#: ``config/sources.yaml``) all use ``_process_cmp_rnaseq``.
-PROCESSORS: dict[str, Callable[..., ad.AnnData]] = {
+#: Processors of the datasets with their own transcriptomics download, called with
+#: its raw directory.
+PROCESSORS: dict[str, Callable[[UPath], ad.AnnData]] = {
     "BeatAML2": process_beataml_transcriptomics,
     "PDX_Bruna": process_bruna_transcriptomics,
     "PRISM_19Q4": process_prism_transcriptomics,
     "PRISM_20Q2": process_prism_transcriptomics,
 }
 
+#: Processors of the shared sources a dataset can name in ``omics.transcriptomics``
+#: (``config/sources.yaml``), called with the source's raw directory and the model list.
+SHARED_PROCESSORS: dict[str, Callable[[UPath, UPath], ad.AnnData]] = {
+    "ccle": process_ccle_transcriptomics,
+    "gdsc": process_gdsc_transcriptomics,
+}
+
 #: Unit of the counts layer of a standard dataset without ``counts_unit`` in its config.
 DEFAULT_STANDARD_COUNTS_UNIT = "counts"
-
-# Value semantics of X per dataset, recorded in adata.uns.
-EXPRESSION_UNITS: dict[str, str] = {
-    "CCLE": "log2_tpm_plus_1",
-    "CTRPv1": "log2_tpm_plus_1",
-    "CTRPv2": "log2_tpm_plus_1",
-    "GDSC1": "log2_tpm_plus_1",
-    "GDSC2": "log2_tpm_plus_1",
-    "BeatAML2": "log2_cpm",
-    "PDX_Bruna": "log2_microarray",
-    "PRISM_19Q4": "log2_tpm_plus_1",
-    "PRISM_20Q2": "log2_tpm_plus_1",
-}
 
 
 def _standard_config(dataset: str) -> dict | None:
@@ -118,21 +63,17 @@ def _standard_config(dataset: str) -> dict | None:
 
 def main(dataset: str) -> None:
     """Process transcriptomics for the given dataset into an AnnData .h5ad file."""
-    output_path = layout.omics("transcriptomics", dataset)
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-
     config = _standard_config(dataset)
     if config is not None:
         counts_unit = str(config.get("counts_unit", DEFAULT_STANDARD_COUNTS_UNIT))
         adata = process_standard_transcriptomics(layout.raw_dir("transcriptomics", dataset), counts_unit)
-        adata.write_h5ad(str(output_path))
-        return
-    if dataset in PROCESSORS:
+    elif (source := omics_source(dataset, "transcriptomics")) in SHARED_PROCESSORS:
+        adata = SHARED_PROCESSORS[source](layout.source_raw(source, "transcriptomics"), cmp_model_list_path())
+    elif dataset in PROCESSORS:
         adata = PROCESSORS[dataset](layout.raw_dir("transcriptomics", dataset))
-    elif dataset in EXPRESSION_UNITS and is_cmp_dataset(dataset):
-        adata = _process_cmp_rnaseq(layout.cmp_raw("rnaseq"), cmp_model_list_path())
     else:
         msg = f"No transcriptomics processor implemented for dataset: {dataset}"
         raise CurationError(msg)
-    adata.uns["expression_unit"] = EXPRESSION_UNITS[dataset]
+    output_path = layout.omics("transcriptomics", dataset)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
     adata.write_h5ad(str(output_path))

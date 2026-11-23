@@ -33,24 +33,34 @@ drug_ontology:
   # pages through the annotations endpoint and records the retrieval date.
   ncit_heading: "NCI Thesaurus Code"
 
-# Cell Model Passports (CMP) downloads, declared once. Every CMP-based dataset
-# (those with `omics_source: cell_model_passports` below) reads the same files,
-# so `data-curation omics download-cmp` fetches each of them a single time into
-# data/01_raw/cmp/<kind>/ and the process stages read from there.
-# Each entry: url, known_hash (of the file at `url`, i.e. the archive for a .zip),
-# optional fname (local name) and keep (globs of extracted files the pipeline
-# reads; the rest is pruned).
+# Omics downloads shared by several datasets, declared once per source. A dataset
+# names the source of each such modality in its `omics` mapping below, and
+# `data-curation omics download-shared <source>` fetches each file a single time
+# into data/01_raw/<cmp|ccle|gdsc>/<kind>/, where the process stages read it.
+# Each kind is one entry (url, known_hash, optional fname) or a `files` list of
+# them, plus `keep` (globs of the extracted files the pipeline reads; the rest is
+# pruned). known_hash is the hash of the file at `url`, i.e. the archive for a .zip.
+#
+# As in drevalpy v1 (github.com/daisybio/preprocess_drp_data), gene expression and
+# methylation come from each screen's own omics release - GDSC's for GDSC1/2, the
+# Broad's CCLE release for CCLE and CTRPv1/v2 - and mutations, CNV and proteomics
+# from Cell Model Passports for all five.
+
+# Cell Model Passports: mutations, CNV, proteomics, and the model list that maps
+# every cell-line identifier (SIDM, COSMIC, CCLE name, DepMap ID) to Cellosaurus.
 cell_model_passports:
   model_list:
     url: "https://cog.sanger.ac.uk/cmp/download/model_list_20260811.csv"
     known_hash: "sha256:f3f5fb866f51d9cf6f89b92da0e9dcb21446b441e5caf8b9220b0031bbc95048"
     fname: "model_list.csv"
-  rnaseq:
-    url: "https://cog.sanger.ac.uk/cmp/download/rnaseq_merged_20260323.zip"
-    known_hash: "sha256:d2a6acd70647cc4098a990cdedaca564c74411a87385b6f0d33e8081ce27b4c9"
-    keep:
-      - "*rsem_tpm*"
-      - "*expected_count*"
+  gene_identifiers:
+    # HGNC, Ensembl and Entrez IDs of every gene CMP uses. The GDSC and CCLE
+    # expression files predate many HGNC renames; their genes take the CMP symbol
+    # of their HGNC accession / Ensembl ID, so that they match the CMP omics and
+    # drevalpy's gene lists (see omics/gene_symbols.py).
+    url: "https://cog.sanger.ac.uk/cmp/download/gene_identifiers_20241212.csv"
+    known_hash: "sha256:4dea1c6f302f4e72556feb4852dd0a18dbf619f860d29b2e407f9369bcedb66c"
+    fname: "gene_identifiers.csv"
   mutations:
     url: "https://cog.sanger.ac.uk/cmp/download/mutations_all_20260724.zip"
     known_hash: "sha256:66de21ce8e499cc63c98e66485c38671cd99f25bf579adc8a4b10d69e96b9b45"
@@ -70,9 +80,65 @@ cell_model_passports:
     keep:
       - "*proteomics*"
 
+# CCLE 2019 (Ghandi et al., Nature 569:503), the Broad's legacy CCLE release, used
+# by CCLE, CTRPv1/v2 (screened on CCLE lines) and, for methylation, PRISM.
+# Samples are CCLE names (A549_LUNG), resolved through the model list's CCLE_ID.
+ccle:
+  transcriptomics:
+    # RSEM gene TPMs, and RNA-SeQC gene read counts, which also carry the gene
+    # symbols the TPM file lacks. v1 re-quantified the raw reads (PRJNA523380)
+    # with nf-core/rnaseq instead; these are the Broad's own quantification.
+    files:
+      - url: "https://data.broadinstitute.org/ccle/CCLE_RNAseq_rsem_genes_tpm_20180929.txt.gz"
+        known_hash: "sha256:612d2e6087364fa89d57e22676a1429f58fa3bf001dfbbe1b16addb9102c651b"
+        fname: "CCLE_RNAseq_rsem_genes_tpm_20180929.txt.gz"
+      - url: "https://data.broadinstitute.org/ccle/CCLE_RNAseq_genes_counts_20180929.gct.gz"
+        known_hash: "sha256:6972b5522a3a1c48aa9b94b66dcb3cd91fe49368aa6eed85fe2475cae02ebe2a"
+        fname: "CCLE_RNAseq_genes_counts_20180929.gct.gz"
+  methylation:
+    # RRBS beta values of the CpG clusters around each transcription start site.
+    url: "https://data.broadinstitute.org/ccle/CCLE_RRBS_TSS_CpG_clusters_20180614.txt"
+    known_hash: "sha256:35290643c3c9bd78b880514978b9dd667d9a09b8eef2c5fc09d672cf9dff23e9"
+    fname: "CCLE_RRBS_TSS_CpG_clusters_20180614.txt"
+
+# GDSC1000 (Iorio et al. 2016, Cell 166:740). cancerrxgene.org no longer serves
+# these files (HTTP 410), so they are fetched once from the Internet Archive and
+# GEO with `data-curation omics fetch-gdsc` and tracked with `dvc add`
+# (data/01_raw/gdsc/<kind>.dvc) rather than by a download stage: the DVC remote
+# keeps them, and no stage depends on the archive staying online.
+gdsc:
+  transcriptomics:
+    # RMA-normalised Affymetrix HG-U219 expression, samples keyed by COSMIC ID.
+    # Originally https://www.cancerrxgene.org/gdsc1000/GDSC1000_WebResources/Data/preprocessed/Cell_line_RMA_proc_basalExp.txt.zip
+    # (an earlier snapshot, 20221005165130, is truncated).
+    url: "https://web.archive.org/web/20260209143748id_/https://www.cancerrxgene.org/gdsc1000/GDSC1000_WebResources/Data/preprocessed/Cell_line_RMA_proc_basalExp.txt.zip"
+    known_hash: "sha256:a087c0f703050d86e9f108b03096308e541a70fdc105c6ea0a3c85f8f9b3b0d7"
+    keep:
+      - "Cell_line_RMA_proc_basalExp.txt"
+  methylation:
+    # Illumina 450K beta values averaged over each CpG island, samples keyed by
+    # Sentrix array ID. The archive holds F2_METH_CELL_DATA.txt, the file v1 used.
+    # Originally https://www.cancerrxgene.org/gdsc1000/GDSC1000_WebResources/Data/preprocessed/methylation/METH_CELL_DATA.txt.zip
+    url: "https://web.archive.org/web/20220616031452id_/https://www.cancerrxgene.org/gdsc1000/GDSC1000_WebResources//Data/preprocessed/methylation/METH_CELL_DATA.txt.zip"
+    known_hash: "sha256:dd577a5fca23d5163bad92ad46876b1dbf5e7a9ab1ce753a538106313cedb8f6"
+    keep:
+      - "F2_METH_CELL_DATA.txt"
+  methylation_samples:
+    # GEO series of the same arrays: maps each Sentrix ID (in the IDAT file names)
+    # to the COSMIC ID of its cell line. Replaces v1's methSampleId_2_cosmicIds.xlsx,
+    # which the Internet Archive does not hold.
+    url: "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE68nnn/GSE68379/matrix/GSE68379_series_matrix.txt.gz"
+    known_hash: "sha256:7c61636fa9ceb61abbea67d86d86f2893d64992f9bb36d987c76b5c4dbdaca6e"
+    fname: "GSE68379_series_matrix.txt.gz"
+
 datasets:
   CCLE:
-    omics_source: cell_model_passports
+    omics:
+      transcriptomics: ccle
+      methylation: ccle
+      mutations: cell_model_passports
+      cnv: cell_model_passports
+      proteomics: cell_model_passports
     response:
       # Barretina et al. 2012, Nature 483:603, supplementary table S11 (sheet 11).
       # The PMC copy (NIHMS361223-supplement-4.xlsx) sits behind a proof-of-work
@@ -90,7 +156,12 @@ datasets:
       keep:
         - "*supplementary_tables*"
   CTRPv1:
-    omics_source: cell_model_passports
+    omics:
+      transcriptomics: ccle
+      methylation: ccle
+      mutations: cell_model_passports
+      cnv: cell_model_passports
+      proteomics: cell_model_passports
     response:
       url: "https://d1hp0ufb0xxisr.cloudfront.net/CTD2/Broad/CTRPv1.0_2013_pub_Cell_154_1151.zip"
       known_hash: "sha256:c1cfaa6923b0adb22d03a99548af1a98b19979cfdb04d30d31e43dcc063e76b3"
@@ -100,7 +171,12 @@ datasets:
         - "*avg_pct_viability_data*"
         - "*informer_set*"
   CTRPv2:
-    omics_source: cell_model_passports
+    omics:
+      transcriptomics: ccle
+      methylation: ccle
+      mutations: cell_model_passports
+      cnv: cell_model_passports
+      proteomics: cell_model_passports
     response:
       url: "https://d1hp0ufb0xxisr.cloudfront.net/CTD2/Broad/CTRPv2.0_2015_ctd2_ExpandedDataset.zip"
       known_hash: "sha256:8f62b3b5ed70cfd367cf52ce0a99884dd0a674d1a8c301474b707648689bdee3"
@@ -112,7 +188,12 @@ datasets:
         - "*meta.per_cell_line*"
         - "*meta.per_compound*"
   GDSC1:
-    omics_source: cell_model_passports
+    omics:
+      transcriptomics: gdsc
+      methylation: gdsc
+      mutations: cell_model_passports
+      cnv: cell_model_passports
+      proteomics: cell_model_passports
     response:
       url: "https://cog.sanger.ac.uk/cancerrxgene/GDSC_release8.5/GDSC1_public_raw_data_27Oct23.csv.zip"
       known_hash: "sha256:8c8d9564096f09971d7fc9ebfe4c87bacf083e52d6352eaf7f53287c6d61939e"
@@ -127,7 +208,12 @@ datasets:
       keep:
         - "*public_raw_data*"
   GDSC2:
-    omics_source: cell_model_passports
+    omics:
+      transcriptomics: gdsc
+      methylation: gdsc
+      mutations: cell_model_passports
+      cnv: cell_model_passports
+      proteomics: cell_model_passports
     response:
       url: "https://cog.sanger.ac.uk/cancerrxgene/GDSC_release8.5/GDSC2_public_raw_data_27Oct23.csv.zip"
       known_hash: "sha256:7bc484eb0e859d58bfca30f72121cd353b26d35b28d18549464d496f3fc1bfc6"
@@ -204,6 +290,9 @@ datasets:
     # Gene expression: CCLE_expression.csv from the DepMap 19Q4 Public release
     # (doi:10.6084/m9.figshare.11384241.v3). Rows = DepMap cell line IDs, columns = genes.
     # Tissue and other cell-line metadata come from Cell Model Passports.
+    omics:
+      # The PRISM lines are CCLE lines; their expression is the DepMap release below.
+      methylation: ccle
     response:
       format: "prism"
       normalize: false
@@ -234,6 +323,9 @@ datasets:
     # Gene expression: CCLE_expression.csv from the DepMap 20Q2 Public release
     # (doi:10.6084/m9.figshare.12280541).
     # Tissue and other cell-line metadata come from Cell Model Passports.
+    omics:
+      # The PRISM lines are CCLE lines; their expression is the DepMap release below.
+      methylation: ccle
     drug_mapping:
       # This release lists 12 compounds without name or structure (10 are 19Q4 compounds, e.g. imatinib and
       # bortezomib; they would otherwise keep a pseudo-ID). They take both from the named release's

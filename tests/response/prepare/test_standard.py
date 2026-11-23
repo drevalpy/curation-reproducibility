@@ -57,7 +57,7 @@ class TestColumns:
         ]
 
     def test_the_spec_names_the_optional_columns(self, tmp_dir: UPath) -> None:
-        spec = prepare_standard(_write(tmp_dir, FULL), {}).spec
+        spec = prepare_standard(_write(tmp_dir, FULL)).spec
         assert (spec.key, spec.experiment, spec.position, spec.metadata) == (
             ("replicate",),
             ("experiment",),
@@ -81,9 +81,9 @@ class TestValues:
 class TestContract:
     def test_a_missing_file_is_a_curation_error(self, tmp_dir: UPath) -> None:
         with pytest.raises(CurationError, match="wells.parquet"):
-            prepare_standard(tmp_dir, {})
+            prepare_standard(tmp_dir)
 
     def test_a_missing_required_column_is_a_curation_error(self, tmp_dir: UPath) -> None:
         columns = {key: value for key, value in MINIMAL.items() if key != "intensity"}
         with pytest.raises(CurationError, match="intensity"):
-            prepare_standard(_write(tmp_dir, columns), {})
+            prepare_standard(_write(tmp_dir, columns))
